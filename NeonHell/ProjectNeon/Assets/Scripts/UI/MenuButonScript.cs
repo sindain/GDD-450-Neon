@@ -15,7 +15,7 @@ public class MenuButonScript : NetworkBehaviour {
 	
 	}
 	public void Transition(){
-		Application.LoadLevel ("Title");
+		Application.LoadLevel ("MainMenu");
 		Time.timeScale =1;
         NetworkServer.Shutdown();
         NetworkClient.ShutdownAll();
