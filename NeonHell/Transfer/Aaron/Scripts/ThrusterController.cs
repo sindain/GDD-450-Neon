@@ -2,51 +2,57 @@
 using System.Collections;
 
 public class ThrusterController : MonoBehaviour {
-	public float thrustStrength;
-	public float thrustDistance;
-	
+
+	public float iThrustPercent = 2.0f;
+
+	//Private variables
 	private int iThrusterCount;
+	public float fThrustStrength;
+	private float fThrustDistance;
 	private Transform[] thrusters;
 	private Rigidbody rb;
 	
 	// Use this for initialization
 	void Start () {
-		iThrusterCount = transform.FindChild("Thrusters").childCount;
+		rb = GetComponent<Rigidbody> ();
+		iThrusterCount = transform.FindChild ("Thrusters").childCount;
 		thrusters = new Transform[iThrusterCount];
 		for (int i = 0; i < iThrusterCount; i++)
-			thrusters[i] = transform.FindChild("Thrusters").GetChild(i);
+			thrusters [i] = transform.FindChild ("Thrusters").GetChild (i);
+		fThrustStrength = -Physics.gravity.y * .75f;
+		if (GetComponent<PlayerController> () != null)
+			fThrustDistance = GetComponent<PlayerController> ().getAirborneDistance () - 1;
+		else
+			fThrustDistance = GetComponent<NPCController> ().getAirborneDistance () - 1;
 	}
 
 	void Awake(){
 		rb = GetComponent<Rigidbody>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-	
 	//Fixed update is called every frame
 	void FixedUpdate(){
 		//RaycastHit to check if car is close to an object
 		RaycastHit hit;
-		
+
 		//Iterate through each thruster
 		foreach(Transform i in thrusters){
 			//Variables needed for each thruster
 			Vector3 downardForce;
 			float distancePercentage;
-			
+
 			//If the raycast hit an object
-			if(Physics.Raycast (i.position, -i.up, out hit, thrustDistance * 2f)){
+			if(Physics.Raycast (i.position, -i.up, out hit, fThrustDistance)){
 				//Check to make sure the object hit wasn't a trigger
 				if(hit.collider.isTrigger)
 					return;
+
+				float x = rb.GetPointVelocity(i.position).y < 0? iThrustPercent + iThrustPercent * -rb.GetPointVelocity(i.position).y : iThrustPercent;
 				//Do some math to calculate the thruster strength and apply it to the ships rigid body
-				distancePercentage = 2-(hit.distance * 2 /thrustDistance);
-				downardForce = transform.up * thrustStrength * distancePercentage;
-				downardForce = downardForce * Time.deltaTime * rb.mass;
-				rb.AddForceAtPosition(downardForce, i.position);
+				distancePercentage = -x / fThrustDistance * hit.distance + x;
+				downardForce = transform.up * fThrustStrength * distancePercentage;
+				rb.AddForceAtPosition(downardForce, i.position, ForceMode.Acceleration);
+				print (distancePercentage);
 			}//End if(Physics.Raycast (i.position, -i.up, out hit, thrustDistance)
 		}//End foreach(Transform i in thrusters)
 	}//End void FixedUpdate()

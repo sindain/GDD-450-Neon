@@ -14,6 +14,8 @@ public class PlayerController : NetworkBehaviour {
 	//Public variables
 	public float fMaxVelocity;
 	public float fAcceleration;
+	public float fHandling;
+	public float fMass;
 	public float fTurnAngle;
 	public float fRotationRate;
 	//public float fStrafeAcceleration;
@@ -23,29 +25,23 @@ public class PlayerController : NetworkBehaviour {
 
 	//Private variables
 	private int lap = 0;
-	private int iNumEngines;
-	private float rotationVelocity;
-	private float fPercThrustCurrent;
+	private float rotationVelocityX = 0.0f;
+	private float rotationVelocityZ = 0.0f;
+	private float fAirborneDistance = 4.0f;
+	private float fThrustCurrent;
 	private GameObject currentPoint;
 	private Rigidbody rb;
-	private Transform[] engines;
 
 	// Use this for initialization
 	void Start () {
-        
-        lap = 0;
-        //Grab the Engines
-        iNumEngines = transform.FindChild("Engines").childCount;
-        engines = new Transform[iNumEngines];
-  		for(int i = 0; i < iNumEngines; i++)
-  			engines[i] = transform.FindChild("Engines").GetChild(i);
-  			
-        fPercThrustCurrent = 0.0f;
+        lap = 0;  			
+        fThrustCurrent = 0.0f;
 		PlayerPrefs.SetInt ("laps", 0);
         trackWaypoints = GameObject.FindWithTag("WList");
 		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
 		rb = GetComponent<Rigidbody> ();
         canMove = false;
+		rb.mass += fMass * .5f;
 	} //End void Start()
 	
 	// Update is called once per frame
@@ -62,29 +58,26 @@ public class PlayerController : NetworkBehaviour {
 
 		//Vector help keep the ship upright
         Vector3 newRotation;
-        
-		float turnAngle = -Input.GetAxis("Horizontal") * fTurnAngle;
-		print (turnAngle);
-		foreach(Transform i in engines)
-			i.localEulerAngles = new Vector3(i.localEulerAngles.x, turnAngle, i.localEulerAngles.z);
-			
+		RaycastHit hit;			
 		//If the player is close to the something, allow moving forward
-        if (Physics.Raycast(transform.position, -this.transform.up, 4.0f)){
+        if (Physics.Raycast(transform.position, -this.transform.up,out hit, fAirborneDistance)){
             rb.drag = 1;
-            //Calculate force to apply
-			float fPercThrustTarget = Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1);
-			fPercThrustCurrent = fAcceleration / fPercThrustTarget < fAcceleration / fPercThrustCurrent ? Time.deltaTime + fPercThrustCurrent: fAcceleration * fPercThrustTarget;
-			if(fPercThrustCurrent > fAcceleration)
-				fPercThrustCurrent = 4.0f;
+            //Thrust Calculations
+			float fThrustTarget = Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * fAcceleration;
 			float c = (Mathf.Exp(1) - 1) / fAcceleration;
-			float fPercThrustPower = Mathf.Log(c * fPercThrustCurrent + 1);
+			if(fThrustTarget <= fThrustCurrent)
+				fThrustCurrent = fThrustTarget;
+			else{
+				if((Mathf.Exp (rb.velocity.magnitude/fMaxVelocity) - 1) / c > fThrustCurrent)
+					fThrustCurrent = (Mathf.Exp (rb.velocity.magnitude/fMaxVelocity) - 1) / c;
+				fThrustCurrent += Time.deltaTime;
+			} //End Else
+			fThrustCurrent = Mathf.Clamp(fThrustCurrent,0,fAcceleration);
+			float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 			
 			//More force calculations
-			float forwardForce = fMaxVelocity * 50.0f * fPercThrustPower * Time.deltaTime * rb.mass;
-			forwardForce /= iNumEngines;
-            foreach(Transform i in engines)
-            	rb.AddForceAtPosition(i.forward * forwardForce, i.position);
-            //rb.AddForce(forwardForce);
+			Vector3 forwardForce = transform.forward * fMaxVelocity * fPercThrustPower;
+            rb.AddForce(forwardForce, ForceMode.Acceleration);
             //rb.AddRelativeForce (Input.GetAxis ("Strafe") * new Vector3 (strafeAcceleration, 0.0f, 0.0f) * Time.deltaTime * rb.mass);
             //if ((transform.rotation * rb.velocity).z < minVelocity)
             //rb.AddRelativeForce (new Vector3 (0.0f, 0.0f, minVelocity * rb.drag * 50 * Time.deltaTime * rb.mass));
@@ -94,17 +87,17 @@ public class PlayerController : NetworkBehaviour {
 		else{
             rb.drag = 0;
 			//The following 4 lines help keep the ship upright while in midair
-            newRotation = transform.eulerAngles;
-			newRotation.x = Mathf.SmoothDampAngle(newRotation.x, 0.0f, ref rotationVelocity, fRotationSeekSpeed);
-			newRotation.z = Mathf.SmoothDampAngle(newRotation.z, 0.0f, ref rotationVelocity, fRotationSeekSpeed);
+			newRotation = transform.eulerAngles;
+			newRotation.x = Mathf.SmoothDampAngle(newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
+			newRotation.z = Mathf.SmoothDampAngle(newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
             transform.eulerAngles = newRotation;
         } //End else
 
 		
 		//Apply torque, e.g. turn the ship left and right
-		//Vector3 turnTorque = transform.up * fRotationRate * Input.GetAxis("Horizontal");
-        //turnTorque = turnTorque * Time.deltaTime * rb.mass;
-        //rb.AddTorque(turnTorque);
+		Vector3 turnTorque = transform.up * fRotationRate * Input.GetAxis("Horizontal");
+        turnTorque = turnTorque * Time.deltaTime * rb.mass;
+        rb.AddTorque(turnTorque);
 	} // End void FixedUpdate()
 
 	//-----------------------------------------------------------------------------------------------------------------
@@ -143,6 +136,9 @@ public class PlayerController : NetworkBehaviour {
 		lap = pLap;
 	} // End public void setLap(int pLap)
 
+	public float getAirborneDistance(){
+		return fAirborneDistance;
+	}
 	//-----------------------------------------------------------------------------------------------------------------
 	//Name: 		OnTriggerEnter
 	//Description:	Handles events that occure when entering a trigger
