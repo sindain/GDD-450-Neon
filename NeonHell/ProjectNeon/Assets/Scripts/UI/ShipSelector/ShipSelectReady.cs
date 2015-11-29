@@ -4,24 +4,25 @@ using UnityEngine.UI;
 public class ShipSelectReady : MonoBehaviour {
 
 	public static string lvlName="none";
-	private bool isLvlSelected=false;
+	private bool isShipSelected=false;
+	public static string ShipName="none";
 	// Use this for initialization
 	void Start () {
-		isLvlSelected = false;
-		lvlName = "none";
+		isShipSelected = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (lvlName != "none" && !isLvlSelected) 
+		if (ShipName != "none" && !isShipSelected) 
 		{
-			isLvlSelected=true;
+			isShipSelected=true;
 			gameObject.GetComponent<Button>().interactable=true;
 		}
 		
 	}
 	public void Transition(){
-		if (isLvlSelected) {
+		if (isShipSelected) {
+			lvlName=ReadyButtScript.lvlName;
 			PlayerPrefs.SetInt("place", 0);
 			UIHandler.lose = false;
 			Time.timeScale = 1;

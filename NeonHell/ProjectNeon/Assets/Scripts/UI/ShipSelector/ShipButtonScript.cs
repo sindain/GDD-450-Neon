@@ -2,12 +2,13 @@
 using System.Collections;
 using UnityEngine.UI;
 public class ShipButtonScript : MonoBehaviour {
-	public GameObject Map;
+	public GameObject ship;
 	public Text Desc;
-	public string SceneName;
-	public string TrackDesc;
+	public string shipName;
+	public string shipDesc;
 	// Use this for initialization
 	void Start () {
+
 		Desc.text = "Ship Description";
 		
 	}
@@ -18,17 +19,17 @@ public class ShipButtonScript : MonoBehaviour {
 	}
 	public void Clicked()
 	{
-		LvlDisplay.Old = LvlDisplay.New;
-		LvlDisplay.New = Map;
-		LvlDisplay.New.SetActive (true);
-		if (LvlDisplay.Old != null) 
+		ShipSelector.Old = ShipSelector.New;
+		ShipSelector.New = ship;
+		ShipSelector.New.SetActive (true);
+		if (ShipSelector.Old != null) 
 		{
-			if(LvlDisplay.Old!=LvlDisplay.New)
+			if(ShipSelector.Old!=ShipSelector.New)
 			{
-				LvlDisplay.Old.SetActive (false);
+				ShipSelector.Old.SetActive (false);
 			}
 		}
-		ReadyButtScript.lvlName=SceneName;
-		Desc.text = TrackDesc;;
+		ShipSelectReady.ShipName=shipName;
+		Desc.text = shipDesc;;
 	}
 }
