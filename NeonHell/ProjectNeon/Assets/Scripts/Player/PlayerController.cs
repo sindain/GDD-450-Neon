@@ -16,7 +16,6 @@ public class PlayerController : NetworkBehaviour {
 	public float fAcceleration;
 	public float fHandling;
 	public float fMass;
-	public float fTurnAngle;
 	public float fRotationRate;
 	//public float fStrafeAcceleration;
 	public float fRotationSeekSpeed;
