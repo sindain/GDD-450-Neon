@@ -13,6 +13,7 @@ public class NPCController : MonoBehaviour {
 	private GameObject direction;
 	private int iAccelDir = 0;
 	private float rotationVelocity;
+	private float fAirborneDistance = 4.0f;
 	private bool canMove;
 
 	// Use this for initialization
@@ -68,7 +69,7 @@ public class NPCController : MonoBehaviour {
 		//Turn towards target
 		iAccelDir = y2 < y1 + 180.0f && y2 > y1 ? 1 : -1;
 		//Rotate character up to turnspeed
-		rb.AddTorque (transform.up * fTurnSpeed * iAccelDir * Time.deltaTime * rb.mass);
+		rb.AddTorque (transform.up * fTurnSpeed * iAccelDir * rb.mass);
 	}
 
 	public void nextPoint(){
@@ -88,6 +89,10 @@ public class NPCController : MonoBehaviour {
 	public void setLap(int pLap){
 		lap = pLap;
 	} // End public void setLap(int pLap)
+	
+	public float getAirborneDistance(){
+		return fAirborneDistance;
+	}
 
 	void OnTriggerEnter(Collider other){
 		if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ())) {
