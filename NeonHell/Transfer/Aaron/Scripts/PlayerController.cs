@@ -16,7 +16,6 @@ public class PlayerController : NetworkBehaviour {
 	public float fAcceleration;
 	public float fHandling;
 	public float fMass;
-	public float fTurnAngle;
 	public float fRotationRate;
 	//public float fStrafeAcceleration;
 	public float fRotationSeekSpeed;
@@ -27,7 +26,7 @@ public class PlayerController : NetworkBehaviour {
 	private int lap = 0;
 	private float rotationVelocityX = 0.0f;
 	private float rotationVelocityZ = 0.0f;
-	private float fAirborneDistance = 4.0f;
+	private float fAirborneDistance = 8.0f;
 	private float fThrustCurrent;
 	private GameObject currentPoint;
 	private Rigidbody rb;
@@ -76,8 +75,8 @@ public class PlayerController : NetworkBehaviour {
 			float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 			
 			//More force calculations
-			Vector3 forwardForce = transform.forward * fMaxVelocity * fPercThrustPower;
-            rb.AddForce(forwardForce, ForceMode.Acceleration);
+			Vector3 forwardForce = transform.forward * fMaxVelocity * fPercThrustPower * rb.mass;
+            rb.AddForce(forwardForce);
             //rb.AddRelativeForce (Input.GetAxis ("Strafe") * new Vector3 (strafeAcceleration, 0.0f, 0.0f) * Time.deltaTime * rb.mass);
             //if ((transform.rotation * rb.velocity).z < minVelocity)
             //rb.AddRelativeForce (new Vector3 (0.0f, 0.0f, minVelocity * rb.drag * 50 * Time.deltaTime * rb.mass));
@@ -95,8 +94,7 @@ public class PlayerController : NetworkBehaviour {
 
 		
 		//Apply torque, e.g. turn the ship left and right
-		Vector3 turnTorque = transform.up * fRotationRate * Input.GetAxis("Horizontal");
-        turnTorque = turnTorque * Time.deltaTime * rb.mass;
+		Vector3 turnTorque = transform.up * fRotationRate * Input.GetAxis("Horizontal") * rb.mass;
         rb.AddTorque(turnTorque);
 	} // End void FixedUpdate()
 
