@@ -26,7 +26,7 @@ public class LevelSelect : NetworkBehaviour {
 		
 	    	}
     void OnGUI(){
-        if(levelSelector){
+        //if(levelSelector){
 
             if (GUI.Button(new Rect(Screen.width / 1.5f, 15, Screen.width / 10, Screen.height / 20), "T-track"))
             {
@@ -55,7 +55,7 @@ public class LevelSelect : NetworkBehaviour {
                 selectedLvl.text = "Track Selected: Mount Doom";
             }   
 
-        }
+       // }
 
     }
 }
