@@ -2,12 +2,12 @@
 using System.Collections;
 
 public class SpawnSinglePlayerScript : MonoBehaviour {
-	public GameObject Player1;
+	public GameObject[] Ships;
 	// Use this for initialization
 	void Start () {
         if (PlayerPrefs.GetFloat("multi") == 0)
         {
-            Instantiate(Player1, gameObject.transform.position, gameObject.transform.rotation);
+			Instantiate(Ships[PlayerPrefs.GetInt("ship")], gameObject.transform.position, gameObject.transform.rotation);
         }
 	
 	}
