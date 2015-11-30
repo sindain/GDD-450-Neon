@@ -4,8 +4,10 @@ using UnityEngine.UI;
 public class ShipButtonScript : MonoBehaviour {
 	public GameObject ship;
 	public Text Desc;
-	public string shipName;
+	public int shipNum;
 	public string shipDesc;
+	public string shipName;
+
 	// Use this for initialization
 	void Start () {
 
@@ -30,6 +32,7 @@ public class ShipButtonScript : MonoBehaviour {
 			}
 		}
 		ShipSelectReady.ShipName=shipName;
-		Desc.text = shipDesc;;
+		PlayerPrefs.SetInt ("ship",shipNum);
+		//Desc.text = shipDesc;
 	}
 }
