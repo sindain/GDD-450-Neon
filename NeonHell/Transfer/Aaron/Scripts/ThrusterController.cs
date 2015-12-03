@@ -8,7 +8,6 @@ public class ThrusterController : MonoBehaviour {
 	private int iThrusterCount;
 	private float fThrustStrength;
 	private float fThrustDistance;
-	private float fTiltStrength;
 	private float fMaxG = 8.0f;
 	private Transform[] thrusters;
 	private Rigidbody rb;
@@ -28,13 +27,10 @@ public class ThrusterController : MonoBehaviour {
 		fThrustStrength = (-Physics.gravity.y * rb.mass) / iThrusterCount;
 
 		//Determine thrust distanct e.g. the hover height of vehicle
-		if (GetComponent<PlayerController> () != null) {
+		if (GetComponent<PlayerController> () != null)
 			fThrustDistance = GetComponent<PlayerController> ().getAirborneDistance () / 2.0f;
-			fTiltStrength = GetComponent<PlayerController>().fHandling;
-		} else {
+		else 
 			fThrustDistance = GetComponent<NPCController> ().getAirborneDistance () / 2.0f;
-			fTiltStrength = 4.0f; //GetComponent<NPCController>().fHandling;
-		}
 	
 	}
 
@@ -67,14 +63,6 @@ public class ThrusterController : MonoBehaviour {
 				else
 					distancePercentage = -1 / fRaycastDistance * hit.distance + 2;
 				distancePercentage = Mathf.Abs(distancePercentage);
-
-				//Calculate additional thrust from tilting
-				/*float fTiltThrust = 0.0f;
-				if(Input.GetAxis("HorizontalTilt") * -i.localPosition.x > 0.0f)
-					fTiltThrust += Input.GetAxis("HorizontalTilt") * fTiltStrength;
-				if(Input.GetAxis("VerticalTilt") * -i.localPosition.z > 0)
-					fTiltThrust += Input.GetAxis("VerticalTilt") * fTiltStrength;
-				fTiltThrust = Mathf.Abs(fTiltThrust * rb.mass / 10.0f);*/
 
 				downardForce = transform.up * fThrustStrength * distancePercentage;
 				rb.AddForceAtPosition(downardForce, i.position);

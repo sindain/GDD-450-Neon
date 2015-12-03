@@ -24,6 +24,7 @@ public class NPCController : MonoBehaviour {
 	void Start () {
 		trackWaypoints = GameObject.FindWithTag("WList");
 		rb = GetComponent<Rigidbody> ();
+		rb.angularDrag = 3.0f;
 		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
 		direction = new GameObject();
 		//target = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint ().transform;
@@ -61,9 +62,9 @@ public class NPCController : MonoBehaviour {
 			float threshold = 45.0f;
 			if(Mathf.Abs(y2 - y1) <= threshold){
 				//Add force if ship is within threshold
-				float fThrustTarget = (1-(Mathf.Abs(y2-y1)/threshold)) * fAcceleration;
+				float fThrustTarget = (1-(Mathf.Abs(y2-y1)/threshold)) * (fAcceleration-0.5f);
 				//print (fThrustTarget);
-				float c = (Mathf.Exp(1) - 1) / fAcceleration;
+				float c = (Mathf.Exp(1) - 1) / (fAcceleration-0.5f);
 				if(fThrustTarget <= fThrustCurrent)
 					fThrustCurrent = fThrustTarget;
 				else{
@@ -71,19 +72,14 @@ public class NPCController : MonoBehaviour {
 						fThrustCurrent = (Mathf.Exp (rb.velocity.magnitude/fMaxVelocity) - 1) / c;
 					fThrustCurrent += Time.deltaTime;
 				} //End Else
-				fThrustCurrent = Mathf.Clamp(fThrustCurrent,0,fAcceleration);
+				fThrustCurrent = Mathf.Clamp(fThrustCurrent,0,(fAcceleration-0.5f));
 				float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 				
 				//More force calculations
-				Vector3 forwardForce = transform.forward * fMaxVelocity * fPercThrustPower * rb.mass;
+				Vector3 forwardForce = transform.forward * (fMaxVelocity+2.0f) * fPercThrustPower * rb.mass;
 				rb.AddForce(forwardForce);
 
 			}
-			/*if (Mathf.Abs(y2 - y1) >= 15){
-				iAccelDir = y2 < y1 + 180.0f && y2 > y1 ? 1 : -1;
-				rb.AddTorque (Vector3.up * fHandling * 0.75f * iAccelDir * rb.mass);
-				rb.AddTorque (transform.forward * fHandling * 5.0f * -iAccelDir * rb.mass);
-			}*/
 		} 
 		//Ship to far from ground, turn drag off and right the ship
 		else {
@@ -97,7 +93,7 @@ public class NPCController : MonoBehaviour {
 		//Turn towards target
 		iAccelDir = y2 < y1 + 180.0f && y2 > y1 ? 1 : -1;
 		//Rotate character up to turnspeed
-		rb.AddTorque (transform.up * fHandling * 0.75f * iAccelDir * rb.mass);
+		rb.AddTorque (transform.up * (fHandling+15.0f) * rb.angularDrag * iAccelDir * rb.mass);
 	}
 
 	public void nextPoint(){
