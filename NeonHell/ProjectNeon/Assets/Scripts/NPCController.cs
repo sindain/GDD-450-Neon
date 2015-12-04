@@ -4,10 +4,10 @@ using System.Collections;
 public class NPCController : MonoBehaviour {
 
 	//Public variables
-	public float fMaxVelocity;
-	public float fAcceleration;
-	public float fHandling;
-	public float fMass;
+	public float fMaxVelocity = 95.0f;
+	public float fAcceleration = 6.0f;
+	public float fHandling = 3.0f;
+	public float fMass = 5.0f;
 	public bool canMove;
 
 	private int 		lap = 1;
