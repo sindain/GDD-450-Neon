@@ -11,7 +11,12 @@ public class ShipSelector : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		New.transform.Rotate (new Vector3 (0, 50, 0) * Time.deltaTime);
+		if(New != null)
+		{
+			New.transform.Rotate (new Vector3 (0, 50, 0) * Time.deltaTime);
+			print (Time.deltaTime);
+			print("is rotating"+New.name);
+		}
 	}
 }
 
