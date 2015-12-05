@@ -9,8 +9,9 @@ public class NPCController : MonoBehaviour {
 	public float fHandling = 3.0f;
 	public float fMass = 5.0f;
 	public bool canMove;
+	public GameObject placeCounter; // The networked object holding the placing counter
 
-	private int 		lap = 1;
+	private int 		lap = 0;
 	private int 		iAccelDir = 0;
 	private float 		rotationVelocity;
 	private float 		fAirborneDistance = 6.0f;
@@ -19,10 +20,15 @@ public class NPCController : MonoBehaviour {
 	private GameObject 	direction;
 	private GameObject 	currentPoint;
 	private GameObject 	trackWaypoints;
+	private bool finished;
+
+
 
 	// Use this for initialization
 	void Start () {
 		trackWaypoints = GameObject.FindWithTag("WList");
+		placeCounter = GameObject.FindWithTag("placeCounter");
+		finished = false;
 		rb = GetComponent<Rigidbody> ();
 		rb.angularDrag = 3.0f;
 		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
@@ -32,12 +38,17 @@ public class NPCController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
+		if (lap >= 2&& !finished) {
+			//Incrementing the server place counter variable
+			placeCounter.GetComponent<PlaceCounter>().placeCounter = placeCounter.GetComponent<PlaceCounter>().placeCounter + 1;
+			//finishing the player
+			finished = true;
+		}
 	}
 
 	void FixedUpdate(){
-        //if (PlayerPrefs.GetFloat("start") != 1)
-        //    return;
+        if (PlayerPrefs.GetFloat("start") != 1)
+            return;
 
 		//Update the direction that the NPC needs to go
 		direction.transform.position = transform.position;
