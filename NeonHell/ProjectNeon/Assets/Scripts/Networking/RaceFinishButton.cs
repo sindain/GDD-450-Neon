@@ -20,7 +20,7 @@ public class RaceFinishButton : MonoBehaviour {
     }
     public void Transition()
     {
-        Application.LoadLevel("Title");
+        Application.LoadLevel("MainMenu");
         Time.timeScale = 1;
     }
 }
