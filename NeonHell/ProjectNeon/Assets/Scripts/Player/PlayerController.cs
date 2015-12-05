@@ -50,8 +50,8 @@ public class PlayerController : NetworkBehaviour {
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
-		//if (!(canMove && PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
-		//	return;
+		if (!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
+			return;
 
 		//Vector help keep the ship upright
         Vector3 newRotation;
@@ -87,7 +87,7 @@ public class PlayerController : NetworkBehaviour {
 
 		//If the player isn't close to something
 		else{
-            rb.drag = 0.2f;
+            rb.drag = 0.16f;
 			//The following 4 lines help keep the ship upright while in midair
 			newRotation = transform.eulerAngles;
 			newRotation.x = Mathf.SmoothDampAngle(newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
