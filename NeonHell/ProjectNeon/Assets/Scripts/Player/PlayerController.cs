@@ -50,8 +50,8 @@ public class PlayerController : NetworkBehaviour {
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
-		//if (!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
-		//	return;
+		if (!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
+			return;
 
 		//Vector help keep the ship upright
         Vector3 newRotation;
