@@ -82,7 +82,10 @@ public class MenuScript : MonoBehaviour {
 		Camera.main.transform.position = camPos;
 		Camera.main.transform.rotation = camRot;
 		*/
-
+		if (Input.anyKey) 
+		{
+			counter=3;
+		}
 		if (fadeToScreen)
 		{
 			Fader.color=new Color (0,0,0,Mathf.SmoothDamp(Fader.color.a,0,ref refA,fadeTime));
@@ -92,15 +95,18 @@ public class MenuScript : MonoBehaviour {
 				fadeToScreen =false;
 				fadeToBlack=true;
 				counter+=1;
-				if(counter==3)
-				{
-					fadeToBlack=false;
-					fadeToScreen=false;
-					Fader.gameObject.SetActive(false);
-				}
+
 			}
 
 		}
+		if(counter==3)
+		{
+			fadeToBlack=false;
+			fadeToScreen=false;
+			Fader.gameObject.SetActive(false);
+			CompName.gameObject.SetActive(false);
+		}
+
 		print (fadeToBlack+": "+fadeToScreen);
 		print (Fader.color.a);
 		if (fadeToBlack)
