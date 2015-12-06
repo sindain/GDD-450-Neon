@@ -15,7 +15,10 @@ public class NPCController : MonoBehaviour {
 	private int 		iAccelDir = 0;
 	private float 		rotationVelocity;
 	private float 		fAirborneDistance = 6.0f;
-	private float 		fThrustCurrent;
+	private float 		fThrustCurrent;	
+	private float 		fBoostTime = 2.0f;
+	private float 		fBoostTargetTime;
+	private bool  		bManuallyBoosting = false;
 	private Rigidbody 	rb;
 	private GameObject 	direction;
 	private GameObject 	currentPoint;
@@ -85,7 +88,13 @@ public class NPCController : MonoBehaviour {
 				} //End Else
 				fThrustCurrent = Mathf.Clamp(fThrustCurrent,0,(fAcceleration-0.5f));
 				float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
-				
+
+				float flTotalThrust = fMaxVelocity;
+				if(bManuallyBoosting || Time.time <= fBoostTargetTime){
+					flTotalThrust = fMaxVelocity + 12.0f;
+					fPercThrustPower = 1.0f;
+				}
+
 				//More force calculations
 				Vector3 forwardForce = transform.forward * (fMaxVelocity+2.0f) * fPercThrustPower * rb.mass;
 				rb.AddForce(forwardForce);
@@ -129,15 +138,35 @@ public class NPCController : MonoBehaviour {
 		return fAirborneDistance;
 	}
 
+	//-----------------------------------------------------------------------------------------------------------------
+	//Name: 		OnTriggerEnter
+	//Description:	Handles events that occure when entering a trigger
+	//Parameters:   Collider other - What the object has collided with
+	//-----------------------------------------------------------------------------------------------------------------
 	void OnTriggerEnter(Collider other){
-		if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ())) {
-			nextPoint ();
+		switch(other.tag){
+		case "Waypoint":
+			if(other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
+				nextPoint();
+			break;
+		case "KillPlane":
+			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
+			transform.rotation= new Quaternion(currentPoint.transform.rotation.x,currentPoint.transform.rotation.y,currentPoint.transform.rotation.z,currentPoint.transform.rotation.w);
+			gameObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
+			gameObject.GetComponent<Rigidbody>().angularVelocity=Vector3.zero;
+			break;
+		case "Booster":
+			fBoostTargetTime = Time.time + fBoostTime; 
+			break;
 		}
+		/*if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
+			nextPoint ();
 		if (other.tag == "KillPlane") {
 			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
 			transform.rotation= new Quaternion(currentPoint.transform.rotation.x,currentPoint.transform.rotation.y,currentPoint.transform.rotation.z,currentPoint.transform.rotation.w);
 			gameObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
 			gameObject.GetComponent<Rigidbody>().angularVelocity=Vector3.zero;
-		}
-	}
+		}*/
+		
+	} // End void OnTriggerEnter(Collider other)
 }

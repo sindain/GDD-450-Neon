@@ -24,7 +24,10 @@ public class PlayerController : NetworkBehaviour {
 	private float rotationVelocityZ = 0.0f;
 	private float fAirborneDistance = 6.0f;
 	private float fRotationSeekSpeed = 0.6f;
+	private float fBoostTime = 2.0f;
+	private float fBoostTargetTime;
 	private float fThrustCurrent;
+	private bool  bManuallyBoosting = false;
 	private GameObject currentPoint;
 	private GameObject trackWaypoints;
 	private Rigidbody rb;
@@ -44,14 +47,14 @@ public class PlayerController : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		bManuallyBoosting = Input.GetKey(KeyCode.Space);
 	} //End void Update()
 
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
-		if (!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
-			return;
+		//if (!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
+		//	return;
 
 		//Vector help keep the ship upright
         Vector3 newRotation;
@@ -75,9 +78,15 @@ public class PlayerController : NetworkBehaviour {
 			} //End Else
 			fThrustCurrent = Mathf.Clamp(fThrustCurrent,0,fAcceleration);
 			float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
-			
+
+			float flTotalThrust = fMaxVelocity;
+			if(bManuallyBoosting || Time.time <= fBoostTargetTime){
+				flTotalThrust = fMaxVelocity + 10.0f;
+				fPercThrustPower = 1.0f;
+			}
+
 			//More force calculations
-			Vector3 forwardForce = transform.forward * fMaxVelocity * fPercThrustPower * rb.mass;
+			Vector3 forwardForce = transform.forward * flTotalThrust * fPercThrustPower * rb.mass;
 			rb.AddForce(forwardForce);
 
 			//Brake force
@@ -143,14 +152,30 @@ public class PlayerController : NetworkBehaviour {
 	//Parameters:   Collider other - What the object has collided with
 	//-----------------------------------------------------------------------------------------------------------------
 	void OnTriggerEnter(Collider other){
-		if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
+		switch(other.tag){
+		case "Waypoint":
+			if(other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
+				nextPoint();
+			break;
+		case "KillPlane":
+			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
+			transform.rotation= new Quaternion(currentPoint.transform.rotation.x,currentPoint.transform.rotation.y,currentPoint.transform.rotation.z,currentPoint.transform.rotation.w);
+			gameObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
+			gameObject.GetComponent<Rigidbody>().angularVelocity=Vector3.zero;
+			break;
+		case "Booster":
+			fBoostTargetTime = Time.time + fBoostTime; 
+			break;
+		}
+		/*if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
 			nextPoint ();
 		if (other.tag == "KillPlane") {
 			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
 			transform.rotation= new Quaternion(currentPoint.transform.rotation.x,currentPoint.transform.rotation.y,currentPoint.transform.rotation.z,currentPoint.transform.rotation.w);
 			gameObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
 			gameObject.GetComponent<Rigidbody>().angularVelocity=Vector3.zero;
-		}
+		}*/
+
 	} // End void OnTriggerEnter(Collider other)
 
 	//-----------------------------------------------------------------------------------------------------------------
