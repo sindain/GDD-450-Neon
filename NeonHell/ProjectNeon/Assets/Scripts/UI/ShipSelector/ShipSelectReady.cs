@@ -8,6 +8,7 @@ public class ShipSelectReady : MonoBehaviour {
 	public static string ShipName="none";
 	// Use this for initialization
 	void Start () {
+        PlayerPrefs.SetFloat("multi", 0);
 		isShipSelected = false;
 	}
 	
@@ -22,6 +23,7 @@ public class ShipSelectReady : MonoBehaviour {
 	}
 	public void Transition(){
 		if (isShipSelected) {
+            PlayerPrefs.SetFloat("multi", 1);
 			lvlName=ReadyButtScript.lvlName;
 			PlayerPrefs.SetInt("place", 0);
 			UIHandler.lose = false;

@@ -22,6 +22,8 @@ public class ThrusterController : MonoBehaviour {
 		fThrustStrength = (-Physics.gravity.y * rb.mass) / iThrusterCount;
 		if (GetComponent<PlayerController> () != null)
 			fThrustDistance = GetComponent<PlayerController> ().getAirborneDistance () - 1;
+        if (GetComponent<NetworkPlayerController>() != null)
+            fThrustDistance = GetComponent<NetworkPlayerController>().getAirborneDistance() - 1;
 		else
 			fThrustDistance = GetComponent<NPCController> ().getAirborneDistance () - 1;
 	}

@@ -18,7 +18,7 @@ public class RaceStarter : NetworkBehaviour {
         placed = 0;
         place = 0;
         placeCounter = GameObject.FindWithTag("placeCounter");
-        player.GetComponent<PlayerController>().setLap(0);
+        player.GetComponent<NetworkPlayerController>().setLap(0);
         finished = false;
         start.color = Color.red;
         start.text = "3";
@@ -34,7 +34,7 @@ public class RaceStarter : NetworkBehaviour {
             menu.enabled = !menu.enabled;
         }
         //Checking if the local player has finished the race
-        if (finished == false && player.GetComponent<PlayerController>().getLap() >= 2)
+        if (finished == false && player.GetComponent<NetworkPlayerController>().getLap() >= 2)
         {
             //Incrementing the server place counter variable
             placeCounter.GetComponent<PlaceCounter>().placeCounter = placeCounter.GetComponent<PlaceCounter>().placeCounter + 1;
@@ -45,10 +45,10 @@ public class RaceStarter : NetworkBehaviour {
         place = placeCounter.GetComponent<PlaceCounter>().placeCounter;
         
         //Check for isLocalPlayer or for SinglePlayer
-        if (player.GetComponent<PlayerController>().canMove || PlayerPrefs.GetFloat("multi") == 0)
+        if (player.GetComponent<NetworkPlayerController>().canMove || PlayerPrefs.GetFloat("multi") == 0)
         {
             //Update the lap text
-            laps.text = "Laps: " + player.GetComponent<PlayerController>().getLap() + "/2";
+            laps.text = "Laps: " + player.GetComponent<NetworkPlayerController>().getLap() + "/2";
             
             //The coundown timer text updating
             if (timer < 5)
@@ -80,7 +80,7 @@ public class RaceStarter : NetworkBehaviour {
             }
 
             //Places the player according to the server variable placeCounter
-            if (player.GetComponent<PlayerController>().getLap() >= 2)
+            if (player.GetComponent<NetworkPlayerController>().getLap() >= 2)
             {
                 if (place == 1 && placed == 0)
                 {

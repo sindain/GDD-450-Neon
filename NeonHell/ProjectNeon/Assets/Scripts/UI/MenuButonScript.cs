@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.Networking;
 public class MenuButonScript : NetworkBehaviour {
 	public GameObject LobbyPref;
-    public NetworkManager manager;
+    private NetworkManager manager;
 	// Use this for initialization
 	void Start () {
         LobbyPref = GameObject.FindWithTag("lobby");

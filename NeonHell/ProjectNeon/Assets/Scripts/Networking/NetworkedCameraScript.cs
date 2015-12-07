@@ -12,7 +12,7 @@ public class NetworkedCameraScript : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
+        
         if(canRender){
             GetComponent<Camera>().enabled = true;
         }

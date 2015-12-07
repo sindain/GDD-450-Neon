@@ -18,6 +18,7 @@ public class NetworkPlayerController : NetworkBehaviour
     public float fHandling;
     public float fMass;
     public float fRotationRate;
+    public int shipID;
     //public float fStrafeAcceleration;
     public float fRotationSeekSpeed;
     public bool canMove;
@@ -35,13 +36,14 @@ public class NetworkPlayerController : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
+        NetworkView nView = GetComponent<NetworkView>();
+        //canMove = false;
         lap = 0;
         fThrustCurrent = 0.0f;
         PlayerPrefs.SetInt("laps", 0);
         trackWaypoints = GameObject.FindWithTag("WList");
         currentPoint = trackWaypoints.transform.GetChild(0).GetComponent<WaypointController>().getPoint();
         rb = GetComponent<Rigidbody>();
-        canMove = false;
         rb.mass += fMass * .5f;
     } //End void Start()
 
@@ -55,7 +57,7 @@ public class NetworkPlayerController : NetworkBehaviour
     void FixedUpdate()
     {
         //Checking if this ship can be controlled by the local player
-        if (!(canMove) /*&& PlayerPrefs.GetFloat ("start") == 1) || lap >=2*/)
+        if (!(canMove && PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
         	return;
 
         //Vector help keep the ship upright
