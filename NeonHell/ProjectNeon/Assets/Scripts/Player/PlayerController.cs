@@ -17,6 +17,7 @@ public class PlayerController : NetworkBehaviour {
 	public float fHandling = 3.0f;
 	public float fMass = 5.0f;
 	public bool canMove;
+	public bool bMasterCanMove = false;
 
 	//Private variables
 	private int lap = 0;
@@ -53,8 +54,8 @@ public class PlayerController : NetworkBehaviour {
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
-		//if (!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
-		//	return;
+		if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
+			return;
 
 		//Vector help keep the ship upright
         Vector3 newRotation;
