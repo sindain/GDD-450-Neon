@@ -13,12 +13,12 @@ public class IsLocal : NetworkBehaviour {
 	void Update () {
         if (isLocalPlayer)
         {
-            ship.GetComponent<PlayerController>().canMove = true;
+            ship.GetComponent<NetworkPlayerController>().canMove = true;
             shipCam.GetComponent<NetworkedCameraScript>().canRender = true;
         }
         if (PlayerPrefs.GetFloat("multi") == 0)
         {
-            ship.GetComponent<PlayerController>().canMove = true;
+            ship.GetComponent<NetworkPlayerController>().canMove = true;
             shipCam.GetComponent<NetworkedCameraScript>().canRender = true;
         }
 	}

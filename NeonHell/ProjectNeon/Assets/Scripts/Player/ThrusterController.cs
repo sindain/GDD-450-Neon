@@ -29,6 +29,8 @@ public class ThrusterController : MonoBehaviour {
 		//Determine thrust distanct e.g. the hover height of vehicle
 		if (GetComponent<PlayerController> () != null)
 			fThrustDistance = GetComponent<PlayerController> ().getAirborneDistance () / 2.0f;
+        if(GetComponent<NetworkPlayerController>() != null)
+            fThrustDistance = GetComponent<NetworkPlayerController>().getAirborneDistance() / 2.0f;
 		else 
 			fThrustDistance = GetComponent<NPCController> ().getAirborneDistance () / 2.0f;
 	
