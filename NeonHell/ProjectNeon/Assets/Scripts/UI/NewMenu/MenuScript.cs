@@ -129,7 +129,7 @@ public class MenuScript : MonoBehaviour {
 	}
 	public void onMultiPlayerClicked()
 	{
-		//Application.LoadLevel("MultiplayerLobby");
+		Application.LoadLevel("lobbyScene");
 		//Application.LoadLevel("LvlSelect");
 	}
 	public void onControlsClicked()
