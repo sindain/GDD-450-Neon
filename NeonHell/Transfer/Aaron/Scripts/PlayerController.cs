@@ -16,19 +16,17 @@ public class PlayerController : NetworkBehaviour {
 	public float fAcceleration;
 	public float fHandling;
 	public float fMass;
-	public float fRotationRate;
-	//public float fStrafeAcceleration;
-	public float fRotationSeekSpeed;
 	public bool canMove;
-	public GameObject trackWaypoints;
 
 	//Private variables
 	private int lap = 0;
 	private float rotationVelocityX = 0.0f;
 	private float rotationVelocityZ = 0.0f;
-	private float fAirborneDistance = 8.0f;
+	private float fAirborneDistance = 6.0f;
+	private float fRotationSeekSpeed = 0.6f;
 	private float fThrustCurrent;
 	private GameObject currentPoint;
+	private GameObject trackWaypoints;
 	private Rigidbody rb;
 
 	// Use this for initialization
@@ -39,8 +37,9 @@ public class PlayerController : NetworkBehaviour {
         trackWaypoints = GameObject.FindWithTag("WList");
 		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
 		rb = GetComponent<Rigidbody> ();
+		rb.angularDrag = 3.0f;
         canMove = false;
-		rb.mass += fMass * .5f;
+		rb.mass += fMass * 250.0f;
 	} //End void Start()
 	
 	// Update is called once per frame
@@ -51,13 +50,16 @@ public class PlayerController : NetworkBehaviour {
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
-        
 		//if (!(canMove && PlayerPrefs.GetFloat ("start") == 1) || lap >=2)
 		//	return;
 
 		//Vector help keep the ship upright
         Vector3 newRotation;
-		RaycastHit hit;			
+		RaycastHit hit;		
+
+		//Apply torque, e.g. turn the ship left and right
+		rb.AddTorque(transform.up * fHandling * rb.angularDrag * Input.GetAxis("Horizontal") * rb.mass);
+
 		//If the player is close to the something, allow moving forward
         if (Physics.Raycast(transform.position, -this.transform.up,out hit, fAirborneDistance)){
             rb.drag = 1;
@@ -76,15 +78,16 @@ public class PlayerController : NetworkBehaviour {
 			
 			//More force calculations
 			Vector3 forwardForce = transform.forward * fMaxVelocity * fPercThrustPower * rb.mass;
-            rb.AddForce(forwardForce);
-            //rb.AddRelativeForce (Input.GetAxis ("Strafe") * new Vector3 (strafeAcceleration, 0.0f, 0.0f) * Time.deltaTime * rb.mass);
-            //if ((transform.rotation * rb.velocity).z < minVelocity)
-            //rb.AddRelativeForce (new Vector3 (0.0f, 0.0f, minVelocity * rb.drag * 50 * Time.deltaTime * rb.mass));
+			rb.AddForce(forwardForce);
+
+			//Brake force
+			if(Input.GetAxis("Brake") < 0)
+				rb.AddForce(transform.forward * fMaxVelocity * 0.2f * Input.GetAxis("Brake") * rb.mass);
 		} //End if (Physics.Raycast(transform.position, -this.transform.up, 4.0f))
 
 		//If the player isn't close to something
 		else{
-            rb.drag = 0;
+            rb.drag = 0.2f;
 			//The following 4 lines help keep the ship upright while in midair
 			newRotation = transform.eulerAngles;
 			newRotation.x = Mathf.SmoothDampAngle(newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
@@ -92,10 +95,7 @@ public class PlayerController : NetworkBehaviour {
             transform.eulerAngles = newRotation;
         } //End else
 
-		
-		//Apply torque, e.g. turn the ship left and right
-		Vector3 turnTorque = transform.up * fRotationRate * Input.GetAxis("Horizontal") * rb.mass;
-        rb.AddTorque(turnTorque);
+
 	} // End void FixedUpdate()
 
 	//-----------------------------------------------------------------------------------------------------------------

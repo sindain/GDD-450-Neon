@@ -27,7 +27,7 @@ public class RaceStarter : NetworkBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () { if (placeCounter == null) return;
         //Hide/Shows the menu button
         if (Input.GetKeyDown(KeyCode.Escape))
         {

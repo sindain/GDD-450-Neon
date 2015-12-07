@@ -11,7 +11,7 @@ public class ShipButtonScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		Desc.text = "Ship Description";
+		//Desc.text = "Ship Description";
 		
 	}
 	
