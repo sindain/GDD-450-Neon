@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-public class ShipAnimator : MonoBehaviour {
+using UnityEngine.Networking;
+public class ShipAnimator : NetworkBehaviour {
 	private Animator anim;
 	private Rigidbody rb;
 	// Use this for initialization
@@ -14,6 +14,19 @@ public class ShipAnimator : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		anim.SetFloat ("AnimSpeed", rb.velocity.magnitude/30);
-	
+        RpcAnimate();
+        CmdAnimate();
 	}
+    [Command]
+    public void CmdAnimate()
+    {
+        anim.SetFloat("AnimSpeed", rb.velocity.magnitude / 30);
+    }
+
+    [ClientRpc]
+    public void RpcAnimate()
+    {
+        anim.SetFloat("AnimSpeed", rb.velocity.magnitude / 30);
+    }
+
 }
