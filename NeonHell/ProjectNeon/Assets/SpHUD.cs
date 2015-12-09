@@ -114,7 +114,34 @@ public class SpHUD : MonoBehaviour {
                     start.color = Color.red;
                     start.text = "4th Place :(";
                 }
-
+                if (place == 5 && placed == 0)
+                {
+                    placed = 1;
+                    start.enabled = true;
+                    start.color = Color.red;
+                    start.text = "5th Place :((";
+                }
+                if (place == 6 && placed == 0)
+                {
+                    placed = 1;
+                    start.enabled = true;
+                    start.color = Color.red;
+                    start.text = "6th Place :(((";
+                }
+                if (place == 7 && placed == 0)
+                {
+                    placed = 1;
+                    start.enabled = true;
+                    start.color = Color.red;
+                    start.text = "7th Place :((((";
+                }
+                if (place == 8 && placed == 0)
+                {
+                    placed = 1;
+                    start.enabled = true;
+                    start.color = Color.red;
+                    start.text = "8th Place :(((((";
+                }
                 menu.enabled = true;
                 //end the race somehow
             }
