@@ -15,8 +15,8 @@ public class PlayerCameraController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Vector3 newPos = transform.position + transform.rotation * vCameraOffset;
-		Vector3 newRot = new Vector3(playerCamera.transform.eulerAngles.x, transform.eulerAngles.y, playerCamera.transform.eulerAngles.z);
-		newRot.x = Mathf.SmoothDampAngle(newRot.x, transform.eulerAngles.x + 15.0f, ref rotVelocity, rotSpeed);
+		Vector3 newRot = new Vector3(transform.eulerAngles.x+15.0f, transform.eulerAngles.y, transform.eulerAngles.z);
+		//newRot.x = Mathf.SmoothDampAngle(newRot.x, transform.eulerAngles.x + 15.0f, ref rotVelocity, rotSpeed);
 		playerCamera.transform.eulerAngles = newRot;
 		playerCamera.transform.position = newPos;
 	}
