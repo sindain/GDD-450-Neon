@@ -2,34 +2,16 @@
 using System.Collections;
 
 public class WaypointController : MonoBehaviour {
-
-
+	
+	public bool bMagnetize = false;
 	public GameObject nextPoint;
-	// Use this for initialization
-	void Start () {
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+	//Setters
+	public void setNextPoint(GameObject pNextPoint){nextPoint = pNextPoint;}
+	public void setbMagnetize(bool pbMagnetize){bMagnetize = pbMagnetize;}
 
-	void OnTriggerEnter(Collider other){
-		if (other.tag == "Player") {
-			//other.GetComponent<NPCController>().nextPoint();
-		}
-	}
-
-	public void setNextPoint(GameObject pNextPoint){
-		nextPoint = pNextPoint;
-	}
-
-	public GameObject getNextPoint(){
-		return nextPoint;
-	}
-
-	public GameObject getPoint(){
-		return this.gameObject;
-	}
+	//Getters
+	public GameObject getNextPoint(){return nextPoint;}
+	public GameObject getPoint(){return this.gameObject;}
+	public bool getbMagnetize(){return bMagnetize;}	
 }
