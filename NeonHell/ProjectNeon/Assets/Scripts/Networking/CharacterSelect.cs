@@ -6,12 +6,13 @@ using UnityEngine.Networking;
 public class CharacterSelect : NetworkBehaviour {
 
     public GameObject manager;
-    
+
     [SyncVar]
     public int ship;
     // Use this for initialization
     void Start()
     {
+        print("I AM LOCAL BOIS: " + isLocalPlayer);
         ship = 0;
         manager = GameObject.FindGameObjectWithTag("lobby");
     }
