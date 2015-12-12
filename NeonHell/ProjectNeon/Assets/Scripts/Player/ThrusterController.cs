@@ -8,7 +8,7 @@ public class ThrusterController : MonoBehaviour {
 	private int   iThrusterCount;
 	private float fThrustStrength;
 	private float fThrustDistance;
-	private float fGMax = 8.0f;
+	private float fGMax = 12.0f;
 	private float[] fDThrusters;
 	public bool  bMagnetize = false;
 	private Transform[] thrusters;
@@ -60,7 +60,7 @@ public class ThrusterController : MonoBehaviour {
 				//Vector3 vForce = thrusters[i].up;
 				float fGForce = 0.0f;
 				float fAPoint = 0.0f;
-				//float fAdditionalForce = 0.0f;
+				
 				//Ensure object hit wasn't a trigger or wall
 				if(hit.collider.isTrigger || hit.transform.tag == "Wall")
 					return;
@@ -70,11 +70,11 @@ public class ThrusterController : MonoBehaviour {
 				fDThrusters[2*i + 1] = hit.distance;
 				fAPoint = (hit.distance - fDThrusters[2*i + 1] - (fDThrusters[2*i + 1] - fDThrusters[2*i])) / Mathf.Pow(Time.deltaTime, 2);
 				//Add force to keep player from bottoming out
-				if(hit.distance < fThrustDistance / 5.0f  && fAPoint > 100.0f)
-					rb.AddForceAtPosition(thrusters[i].up * rb.mass * fAPoint / iThrusterCount, thrusters[i].position);
-				//Add force to keep player from flying off of track if magnetized
-				else if(hit.distance > fThrustDistance + (alpha * fThrustDistance - fThrustDistance ) * 0.75f && bMagnetize && fAPoint < -100.0f)
-					rb.AddForceAtPosition(thrusters[i].up * rb.mass * fAPoint / iThrusterCount, thrusters[i].position);	
+//				if(hit.distance < fThrustDistance / 3.0f  && fAPoint > 100.0f)
+//					rb.AddForceAtPosition(thrusters[i].up * rb.mass * fAPoint / iThrusterCount, thrusters[i].position);
+//				//Add force to keep player from flying off of track if magnetized
+//				else if(hit.distance > fThrustDistance + (alpha * fThrustDistance - fThrustDistance ) * 0.75f && bMagnetize && fAPoint < -100.0f)
+//					rb.AddForceAtPosition(thrusters[i].up * rb.mass * fAPoint / iThrusterCount, thrusters[i].position);	
 				
 				//Calculate g force to apply on each thruster
 				if(hit.distance <= fThrustDistance)

@@ -1,37 +1,27 @@
 fileFormatVersion: 2
-guid: be727ada856f63f4c912f9c6ca176ce9
-timeCreated: 1449361026
+guid: d77b2b4b84c9b1848b83df81ce2de615
+timeCreated: 1449875230
 licenseType: Free
 ModelImporter:
   serializedVersion: 18
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: bank_left_railing
-    100004: bank_left_road
-    100006: barrier
-    100008: rail
-    100010: road
-    400000: //RootNode
-    400002: bank_left_railing
-    400004: bank_left_road
-    400006: barrier
-    400008: rail
-    400010: road
-    2300000: bank_left_railing
-    2300002: bank_left_road
-    2300004: barrier
-    2300006: rail
-    2300008: road
-    3300000: bank_left_railing
-    3300002: bank_left_road
-    3300004: barrier
-    3300006: rail
-    3300008: road
-    4300000: bank_left_road
-    4300002: bank_left_railing
-    4300004: barrier
-    4300006: road
-    4300008: rail
+    100000: barrier
+    100002: hill_10degree_railing
+    100004: hill_10degree_road
+    100006: //RootNode
+    400000: barrier
+    400002: hill_10degree_railing
+    400004: hill_10degree_road
+    400006: //RootNode
+    2300000: barrier
+    2300002: hill_10degree_railing
+    2300004: hill_10degree_road
+    3300000: barrier
+    3300002: hill_10degree_railing
+    3300004: hill_10degree_road
+    4300000: barrier
+    4300002: hill_10degree_road
+    4300004: hill_10degree_railing
     9500000: //RootNode
   materials:
     importMaterials: 1

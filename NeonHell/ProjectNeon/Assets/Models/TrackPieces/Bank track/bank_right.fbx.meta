@@ -9,19 +9,29 @@ ModelImporter:
     100002: bank_right_railing
     100004: bank_right_road
     100006: barrier
+    100008: railing
+    100010: road
     400000: //RootNode
     400002: bank_right_railing
     400004: bank_right_road
     400006: barrier
+    400008: railing
+    400010: road
     2300000: bank_right_railing
     2300002: bank_right_road
     2300004: barrier
+    2300006: railing
+    2300008: road
     3300000: bank_right_railing
     3300002: bank_right_road
     3300004: barrier
+    3300006: railing
+    3300008: road
     4300000: bank_right_road
     4300002: bank_right_railing
     4300004: barrier
+    4300006: road
+    4300008: railing
     9500000: //RootNode
   materials:
     importMaterials: 1
