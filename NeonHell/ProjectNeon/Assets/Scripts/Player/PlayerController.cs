@@ -16,8 +16,11 @@ public class PlayerController : NetworkBehaviour {
 	public float fAcceleration = 6.0f;
 	public float fHandling = 3.0f;
 	public float fMass = 5.0f;
+	public float maxBoost=100.0f;
+	public float DispBoost=100.0f;
 	public bool canMove;
 	public bool bMasterCanMove = false;
+
 
 	//Private variables
 	private int lap = 0;
@@ -28,6 +31,7 @@ public class PlayerController : NetworkBehaviour {
 	private float fBoostTime = 2.0f;
 	private float fBoostTargetTime;
 	private float fThrustCurrent;
+	private float currentBoost;
 	private bool  bManuallyBoosting = false;
 	private GameObject currentPoint;
 	private GameObject trackWaypoints;
@@ -35,7 +39,8 @@ public class PlayerController : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        lap = 0;  			
+        lap = 0; 
+		currentBoost = maxBoost;
         fThrustCurrent = 0.0f;
 		PlayerPrefs.SetInt ("laps", 0);
         trackWaypoints = GameObject.FindWithTag("WList");
@@ -81,9 +86,14 @@ public class PlayerController : NetworkBehaviour {
 			float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 
 			float flTotalThrust = fMaxVelocity;
-			if(bManuallyBoosting || Time.time <= fBoostTargetTime){
+			if((bManuallyBoosting && DispBoost>=1) || Time.time <= fBoostTargetTime){
 				flTotalThrust = fMaxVelocity + 10.0f;
 				fPercThrustPower = 1.0f;
+				if(bManuallyBoosting)
+				{
+					DispBoost=(currentBoost/maxBoost)*100.0f;
+					currentBoost-=20.0f*Time.deltaTime;
+				}
 			}
 
 			//More force calculations
@@ -156,7 +166,10 @@ public class PlayerController : NetworkBehaviour {
 		switch(other.tag){
 		case "Waypoint":
 			if(other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
+			{
 				nextPoint();
+				GetComponent<ThrusterController>().setbMagnetize(other.gameObject.GetComponent<WaypointController>().getbMagnetize());
+			}
 			break;
 		case "KillPlane":
 			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
