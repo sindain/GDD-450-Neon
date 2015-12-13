@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class NetworkLobbyM : NetworkLobbyManager
 {
     public int connections;
+    public NetworkLobbyManager manager;
     void Start()
     {
+        manager = GetComponent<NetworkLobbyManager>();
         connections = 0;
         PlayerPrefs.SetFloat("multi", 1);
     }
