@@ -5,12 +5,20 @@ using UnityEngine.Networking;
 
 public class CharacterSelectArray : NetworkBehaviour {
     public int[] shipSelected;
+    public string[] ships;
     public string track;
     public Text selTrack;
     public Text charSelect;
 	// Use this for initialization
 	void Start () {
-        
+        ships = new string[7];
+        ships[0] = "X-Jet";
+        ships[1] = "Bloaty";
+        ships[2] = "Gyroscope";
+        ships[3] = "Bullet";
+        ships[4] = "The Bus";
+        ships[5] = "Mag-U";
+        ships[6] = "DeathWheel";
         selTrack = GameObject.FindGameObjectWithTag("trackSelectedTXT").GetComponent<Text>();
         charSelect = GameObject.FindGameObjectWithTag("charSelect").GetComponent<Text>();
         shipSelected = new int[10];
@@ -22,7 +30,7 @@ public class CharacterSelectArray : NetworkBehaviour {
         if (selTrack != null)
         {
             selTrack.text = track;
-            //charSelect.text = "Player 1: " + shipSelected[0] + "  Player 2: " + shipSelected[1] + "  Player 3: " + shipSelected[2] + "  Player 4: " + shipSelected[3];
+            charSelect.text = "Player 1: " + ships[shipSelected[0]] + "  Player 2: " + ships[shipSelected[1]] + "  Player 3: " + ships[shipSelected[2]] + "  Player 4: " + ships[shipSelected[3]];
         }
 	}
 
