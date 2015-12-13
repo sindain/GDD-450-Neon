@@ -6,7 +6,12 @@ namespace UnityEngine.Networking
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	public class NetworkManagerHUD : MonoBehaviour
 	{
+        public Texture findMatch;
+        public Texture join;
+        public Texture host;
+        //public Texture findMatch;
 		public NetworkManager manager;
+        public GUISkin buttons;
 		[SerializeField] public bool showGUI = true;
 		[SerializeField] public int offsetX;
 		[SerializeField] public int offsetY;
@@ -18,6 +23,8 @@ namespace UnityEngine.Networking
 		void Awake()
 		{
 			manager = GetComponent<NetworkManager>();
+            //findMatch.width =;
+            //findMatch.height = 20;
 		}
 
 		void Update()
@@ -66,19 +73,19 @@ namespace UnityEngine.Networking
 			{
 				if (NetworkServer.active)
 				{
-					GUI.Label(new Rect(xpos, ypos, 300, 20), "Server: port=" + manager.networkPort);
-					ypos += spacing;
+					//GUI.Label(new Rect(xpos, ypos, 300, 20), "Server: port=" + manager.networkPort);
+					//ypos += spacing;
 				}
 				if (NetworkClient.active)
 				{
-					GUI.Label(new Rect(xpos, ypos, 300, 20), "Client: address=" + manager.networkAddress + " port=" + manager.networkPort);
-					ypos += spacing;
+					//GUI.Label(new Rect(xpos, ypos, 300, 20), "Client: address=" + manager.networkAddress + " port=" + manager.networkPort);
+					//ypos += spacing;
 				}
 			}
 
 			if (NetworkServer.active || NetworkClient.active)
 			{
-				if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Stop (X)"))
+				if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Disconnect"))
 				{
 					manager.StopHost();
                     manager.StopClient();
@@ -92,7 +99,7 @@ namespace UnityEngine.Networking
 
 				if (manager.matchMaker == null)
 				{
-					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Enable Match Maker (M)"))
+					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Matchmaking"))
 					{
 						manager.StartMatchMaker();
 					}
@@ -104,7 +111,7 @@ namespace UnityEngine.Networking
 					{
 						if (manager.matches == null)
 						{
-							if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Create Internet Match"))
+							if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Host Internet Match"))
 							{
 								manager.matchMaker.CreateMatch(manager.matchName, manager.matchSize, true, "", manager.OnMatchCreate);
 							}
@@ -116,7 +123,7 @@ namespace UnityEngine.Networking
 
 							ypos += 10;
 
-							if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Find Internet Match"))
+                            if (GUI.Button(new Rect(xpos, ypos, 200, 20), findMatch, buttons.button))
 							{
 								manager.matchMaker.ListMatches(0,20, "", manager.OnMatchList);
 							}
@@ -137,9 +144,7 @@ namespace UnityEngine.Networking
 						}
 					}
 
-					ypos += spacing;
-
-					ypos += spacing;
+	
 
 					if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Disable Match Maker"))
 					{
