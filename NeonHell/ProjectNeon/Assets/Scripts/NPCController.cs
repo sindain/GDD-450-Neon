@@ -146,8 +146,11 @@ public class NPCController : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		switch(other.tag){
 		case "Waypoint":
-			if(other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
-				nextPoint();
+                if (other.gameObject.Equals(currentPoint.GetComponent<WaypointController>().getNextPoint()))
+                {
+                    nextPoint();
+                    GetComponent<ThrusterController>().setbMagnetize(other.gameObject.GetComponent<WaypointController>().getbMagnetize());
+                }
 			break;
 		case "KillPlane":
 			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
