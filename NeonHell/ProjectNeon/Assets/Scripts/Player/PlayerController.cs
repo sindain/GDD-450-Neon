@@ -53,6 +53,7 @@ public class PlayerController : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        DispBoost = (currentBoost / maxBoost) * 100.0f;
 		bManuallyBoosting = Input.GetKey(KeyCode.Space);
 	} //End void Update()
 
@@ -91,7 +92,6 @@ public class PlayerController : NetworkBehaviour {
 				fPercThrustPower = 1.0f;
 				if(bManuallyBoosting)
 				{
-					DispBoost=(currentBoost/maxBoost)*100.0f;
 					currentBoost-=20.0f*Time.deltaTime;
 				}
 			}
