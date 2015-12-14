@@ -14,19 +14,6 @@ public class ShipAnimator : NetworkBehaviour {
 	// Update is called once per frame
 	void Update () {
 		anim.SetFloat ("AnimSpeed", rb.velocity.magnitude/30);
-        RpcAnimate();
-        CmdAnimate();
 	}
-    [Command]
-    public void CmdAnimate()
-    {
-        anim.SetFloat("AnimSpeed", rb.velocity.magnitude / 30);
-    }
-
-    [ClientRpc]
-    public void RpcAnimate()
-    {
-        anim.SetFloat("AnimSpeed", rb.velocity.magnitude / 30);
-    }
 
 }
