@@ -9,6 +9,11 @@ public class CharacterSelectArray : NetworkBehaviour {
     public string track;
     public Text selTrack;
     public Text charSelect;
+    public int ship1;
+    public int ship2;
+    public int ship3;
+    public int ship4;
+
 	// Use this for initialization
 	void Start () {
         ships = new string[7];
@@ -29,15 +34,16 @@ public class CharacterSelectArray : NetworkBehaviour {
 	void Update () {
         if (selTrack != null)
         {
-            selTrack.text = track;
-            charSelect.text = "Player 1: " + ships[shipSelected[0]] + "  Player 2: " + ships[shipSelected[1]] + "  Player 3: " + ships[shipSelected[2]] + "  Player 4: " + ships[shipSelected[3]];
+            selTrack.text = track;            
         }
+        charSelect.text = "Player 1: " + ships[shipSelected[0]] + "  Player 2: " + ships[shipSelected[1]] + "  Player 3: " + ships[shipSelected[2]] + "  Player 4: " + ships[shipSelected[3]];
+        RpcCharSelect();
 	}
 
     [ClientRpc]
     public void RpcCharSelect()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 3; i++)
         {
             shipSelected[i] = shipSelected[i];
         }
