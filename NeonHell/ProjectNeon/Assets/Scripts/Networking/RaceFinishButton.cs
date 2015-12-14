@@ -13,7 +13,10 @@ public class RaceFinishButton : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        manager = GameObject.FindGameObjectWithTag("lobby").GetComponent<NetworkLobbyM>();
+        if (GameObject.FindGameObjectWithTag("lobby").GetComponent<NetworkLobbyM>() != null)
+        {
+            manager = GameObject.FindGameObjectWithTag("lobby").GetComponent<NetworkLobbyM>();
+        }
     }
 
     // Update is called once per frame
