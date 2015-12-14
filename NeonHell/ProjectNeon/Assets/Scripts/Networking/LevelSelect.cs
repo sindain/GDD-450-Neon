@@ -33,35 +33,35 @@ public class LevelSelect : NetworkBehaviour {
             RpcTrackSelect(track);
             CmdTrackSelect(track);
         }
-        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height/25, Screen.width / 10, Screen.height / 20), "T-track"))
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height/25, Screen.width / 8, Screen.height / 20), "T-track"))
         {
             network.GetComponent<NetworkLobbyManager>().playScene = "NewTTrack";
             RpcTrackSelect("Track Selected: T-Track");
             CmdTrackSelect("Track Selected: T-Track");
             track = "Track Selected: T-Track";
         }
-        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 10, Screen.width / 10, Screen.height / 20), "L-Track"))
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 10, Screen.width / 8, Screen.height / 20), "Mobius Strip"))
         {
-            network.GetComponent<NetworkLobbyManager>().playScene = "Track2";
-            RpcTrackSelect("Track Selected: L-Track");
-            CmdTrackSelect("Track Selected: L-Track");
-            track = "Track Selected: L-Track";
+            network.GetComponent<NetworkLobbyManager>().playScene = "MobiusTrack";
+            RpcTrackSelect("Track Selected: Mobius Strip");
+            CmdTrackSelect("Track Selected: Mobius Strip");
+            track = "Track Selected: Mobius Strip";
         }
-        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 6.7f, Screen.width / 10, Screen.height / 20), "Thread Needle"))
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 6.4f, Screen.width / 8, Screen.height / 20), "Thread Needle"))
         {
             network.GetComponent<NetworkLobbyManager>().playScene = "ThreadTheNeedle";
             RpcTrackSelect("Track Selected: Thread The Needle");
             CmdTrackSelect("Track Selected: Thread The Needle");
             track = "Track Selected: Thread The Needle";
         }
-        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 4, Screen.width / 10, Screen.height / 20), "Springen"))
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 4.7f, Screen.width / 8, Screen.height / 20), "Under Over"))
         {
             network.GetComponent<NetworkLobbyManager>().playScene = "ramping track";
             RpcTrackSelect("Track Selected: Springen");
             CmdTrackSelect("Track Selected: Springen");
             track = "Track Selected: Springen";
         }
-        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 3, Screen.width / 10, Screen.height / 20), "Doom Knot"))
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 3.7f, Screen.width / 6, Screen.height / 20), "Doom Knot (Multiplayer Exclusive)"))
         {
             network.GetComponent<NetworkLobbyManager>().playScene = "DoomKnot";
             CmdTrackSelect("Track Selected: Doom Knot");
