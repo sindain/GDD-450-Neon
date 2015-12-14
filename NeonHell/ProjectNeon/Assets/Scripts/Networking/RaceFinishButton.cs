@@ -26,8 +26,9 @@ public class RaceFinishButton : MonoBehaviour {
     }
     public void Transition()
     {
-        manager.StopClient();
+        
         Application.LoadLevel("MainMenu");
         Time.timeScale = 1;
+        manager.StopClient();
     }
 }
