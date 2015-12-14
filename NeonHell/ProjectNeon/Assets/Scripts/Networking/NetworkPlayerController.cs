@@ -40,8 +40,9 @@ public class NetworkPlayerController : NetworkBehaviour
     // Use this for initialization
     void Start()
     {
-        NetworkView nView = GetComponent<NetworkView>();
+        //NetworkView nView = GetComponent<NetworkView>();
         lap = 0;
+        currentBoost = maxBoost;
         fThrustCurrent = 0.0f;
         PlayerPrefs.SetInt("laps", 0);
         trackWaypoints = GameObject.FindWithTag("WList");
@@ -55,6 +56,7 @@ public class NetworkPlayerController : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        DispBoost = (currentBoost / maxBoost) * 100.0f;
         bManuallyBoosting = Input.GetKey(KeyCode.Space);
     } //End void Update()
 
@@ -63,8 +65,7 @@ public class NetworkPlayerController : NetworkBehaviour
     {
         //Checking if this ship can be controlled by the local player
         if ((!(canMove && PlayerPrefs.GetFloat("start") == 1) || lap >= 2) && !bMasterCanMove)
-        	return;
-
+            return;
 
         //Vector help keep the ship upright
         Vector3 newRotation;
@@ -92,13 +93,11 @@ public class NetworkPlayerController : NetworkBehaviour
             float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 
             float flTotalThrust = fMaxVelocity;
-            if (bManuallyBoosting || Time.time <= fBoostTargetTime)
-            {
+            if((bManuallyBoosting && DispBoost>=1) || Time.time <= fBoostTargetTime){
                 flTotalThrust = fMaxVelocity + 10.0f;
                 fPercThrustPower = 1.0f;
                 if (bManuallyBoosting)
                 {
-                    DispBoost = (currentBoost / maxBoost) * 100.0f;
                     currentBoost -= 20.0f * Time.deltaTime;
                 }
             }
@@ -179,7 +178,10 @@ public class NetworkPlayerController : NetworkBehaviour
         {
             case "Waypoint":
                 if (other.gameObject.Equals(currentPoint.GetComponent<WaypointController>().getNextPoint()))
+                {
                     nextPoint();
+                    GetComponent<ThrusterController>().setbMagnetize(other.gameObject.GetComponent<WaypointController>().getbMagnetize());
+                }
                 break;
             case "KillPlane":
                 transform.position = new Vector3(currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
@@ -189,6 +191,7 @@ public class NetworkPlayerController : NetworkBehaviour
                 break;
             case "Booster":
                 fBoostTargetTime = Time.time + fBoostTime;
+                currentBoost += 25f;
                 break;
         }
     } // End void OnTriggerEnter(Collider other)
