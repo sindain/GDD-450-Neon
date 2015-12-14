@@ -7,6 +7,7 @@ public class SpHUD : MonoBehaviour {
     public GameObject player; //Local Player Object
     public Text start; // The countdown text
     public Text laps; // The lap counter text
+	public Text Energy;
     public Image menu; // The button that allows you you to go to the menu if you press escape
     public float timer; // The timer for the countdown
     private bool finished; // The boolean keeping track if the player has finished the race
@@ -37,6 +38,8 @@ public class SpHUD : MonoBehaviour {
         {
             menu.enabled = !menu.enabled;
         }
+		string BoostString = player.GetComponent<PlayerController> ().DispBoost.ToString ();
+		Energy.text = "Energy: " + BoostString.Substring(0,(BoostString.IndexOf(".")<0)?BoostString.Length:BoostString.IndexOf("."))+"%";
         //Checking if the local player has finished the race
         if (finished == false && player.GetComponent<PlayerController>().getLap() >= 2)
         {
