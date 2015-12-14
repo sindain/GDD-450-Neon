@@ -123,7 +123,7 @@ namespace UnityEngine.Networking
 
 							ypos += 10;
 
-                            if (GUI.Button(new Rect(xpos, ypos, 200, 20), findMatch, buttons.button))
+                            if (GUI.Button(new Rect(xpos, ypos, 200, 20), "Find Matches"))//findMatch, buttons.button))
 							{
 								manager.matchMaker.ListMatches(0,20, "", manager.OnMatchList);
 							}
