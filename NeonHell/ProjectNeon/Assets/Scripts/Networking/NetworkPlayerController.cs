@@ -17,6 +17,8 @@ public class NetworkPlayerController : NetworkBehaviour
     public float fAcceleration = 6.0f;
     public float fHandling = 3.0f;
     public float fMass = 5.0f;
+    public float maxBoost = 100.0f;
+    public float DispBoost = 100.0f;
     public bool canMove;
     public bool bMasterCanMove = false;
 
@@ -29,6 +31,7 @@ public class NetworkPlayerController : NetworkBehaviour
     private float fBoostTime = 2.0f;
     private float fBoostTargetTime;
     private float fThrustCurrent;
+    private float currentBoost;
     private bool bManuallyBoosting = false;
     private GameObject currentPoint;
     private GameObject trackWaypoints;
@@ -93,6 +96,11 @@ public class NetworkPlayerController : NetworkBehaviour
             {
                 flTotalThrust = fMaxVelocity + 10.0f;
                 fPercThrustPower = 1.0f;
+                if (bManuallyBoosting)
+                {
+                    DispBoost = (currentBoost / maxBoost) * 100.0f;
+                    currentBoost -= 20.0f * Time.deltaTime;
+                }
             }
 
             //More force calculations
