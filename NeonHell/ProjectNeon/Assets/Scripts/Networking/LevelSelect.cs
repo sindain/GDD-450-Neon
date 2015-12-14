@@ -56,10 +56,10 @@ public class LevelSelect : NetworkBehaviour {
         }
         if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 4.7f, Screen.width / 8, Screen.height / 20), "Under Over"))
         {
-            network.GetComponent<NetworkLobbyManager>().playScene = "ramping track";
-            RpcTrackSelect("Track Selected: Springen");
-            CmdTrackSelect("Track Selected: Springen");
-            track = "Track Selected: Springen";
+            network.GetComponent<NetworkLobbyManager>().playScene = "Under_Over";
+            RpcTrackSelect("Track Selected: Under Over");
+            CmdTrackSelect("Track Selected: Under Over");
+            track = "Track Selected: Under Over";
         }
         if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 3.7f, Screen.width / 6, Screen.height / 20), "Doom Knot (Multiplayer Exclusive)"))
         {
@@ -67,6 +67,13 @@ public class LevelSelect : NetworkBehaviour {
             CmdTrackSelect("Track Selected: Doom Knot");
             RpcTrackSelect("Track Selected: Doom Knot");
             track = "Track Selected: Doom Knot";
+        }
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 3.06f, Screen.width / 6, Screen.height / 20), "Loop-Duh-Loop"))
+        {
+            network.GetComponent<NetworkLobbyManager>().playScene = "Looptrack";
+            CmdTrackSelect("Track Selected: Loop-Duh-Loop");
+            RpcTrackSelect("Track Selected: Loop-Duh-Loop");
+            track = "Track Selected: Loop-Duh-Loop";
         }
         // }
     }
