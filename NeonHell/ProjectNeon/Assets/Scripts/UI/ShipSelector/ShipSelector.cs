@@ -14,8 +14,8 @@ public class ShipSelector : MonoBehaviour {
 		if(New != null)
 		{
 			New.transform.Rotate (new Vector3 (0, 50, 0) * Time.deltaTime);
-			print (Time.deltaTime);
-			print("is rotating"+New.name);
+			//print (Time.deltaTime);
+			//print("is rotating"+New.name);
 		}
 	}
 }
