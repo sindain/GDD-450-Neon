@@ -11,7 +11,6 @@ public class LvlDisplay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(New != null)
-			New.transform.Rotate (new Vector3 (0, 50, 0) * Time.deltaTime);
+		New.transform.Rotate (new Vector3 (0, 50, 0) * Time.deltaTime);
 	}
 }
