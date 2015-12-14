@@ -61,12 +61,12 @@ public class LevelSelect : NetworkBehaviour {
             CmdTrackSelect("Track Selected: Springen");
             track = "Track Selected: Springen";
         }
-        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 3, Screen.width / 10, Screen.height / 20), "Mount Doom"))
+        if (GUI.Button(new Rect(Screen.width / 1.5f, Screen.height / 3, Screen.width / 10, Screen.height / 20), "Doom Knot"))
         {
-            network.GetComponent<NetworkLobbyManager>().playScene = "HillTrack";
-            CmdTrackSelect("Track Selected: Mount Doom");
-            RpcTrackSelect("Track Selected: Mount Doom");
-            track = "Track Selected: Mount Doom";
+            network.GetComponent<NetworkLobbyManager>().playScene = "DoomKnot";
+            CmdTrackSelect("Track Selected: Doom Knot");
+            RpcTrackSelect("Track Selected: Doom Knot");
+            track = "Track Selected: Doom Knot";
         }
         // }
     }
