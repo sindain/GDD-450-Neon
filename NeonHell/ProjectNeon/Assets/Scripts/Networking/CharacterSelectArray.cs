@@ -37,16 +37,21 @@ public class CharacterSelectArray : NetworkBehaviour {
             selTrack.text = track;            
         }
         charSelect.text = "Player 1: " + ships[shipSelected[0]] + "  Player 2: " + ships[shipSelected[1]] + "  Player 3: " + ships[shipSelected[2]] + "  Player 4: " + ships[shipSelected[3]];
+        
+        ship1 = shipSelected[0];
+        ship2 = shipSelected[1];
+        ship3 = shipSelected[2];
+        ship4 = shipSelected[3];
         RpcCharSelect();
 	}
 
     [ClientRpc]
     public void RpcCharSelect()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            shipSelected[i] = shipSelected[i];
-        }
+        shipSelected[0] = ship1;
+        shipSelected[1] = ship2;
+        shipSelected[2] = ship3;
+        shipSelected[3] = ship4;
     }
 
 }
