@@ -7,7 +7,8 @@ public class MenuButonScript : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
         LobbyPref = GameObject.FindWithTag("lobby");
-        manager = LobbyPref.GetComponent<NetworkManager>();
+		if(LobbyPref != null)
+        	manager = LobbyPref.GetComponent<NetworkManager>();
 	}
 	
 	// Update is called once per frame
@@ -26,11 +27,13 @@ public class MenuButonScript : NetworkBehaviour {
         Destroy(GameObject.FindGameObjectsWithTag("lobbyPlayer")[0]);
         Destroy(GameObject.FindGameObjectsWithTag("lobbyPlayer")[1]);
         Destroy(GameObject.FindGameObjectsWithTag("lobbyPlayer")[2]);
-        Destroy(GameObject.FindGameObjectsWithTag("lobbyPlayer")[3]);
-        manager.StopClient();
-        manager.StopAllCoroutines();
-        manager.StopHost();
-        manager.StopMatchMaker();
-        manager.StopServer();
+		Destroy(GameObject.FindGameObjectsWithTag("lobbyPlayer")[3]);
+		if(LobbyPref != null) {
+			manager.StopClient ();
+			manager.StopAllCoroutines ();
+			manager.StopHost ();
+			manager.StopMatchMaker ();
+			manager.StopServer ();
+		}
 	}
 }

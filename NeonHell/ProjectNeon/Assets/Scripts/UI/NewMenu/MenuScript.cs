@@ -107,8 +107,8 @@ public class MenuScript : MonoBehaviour {
 			CompName.gameObject.SetActive(false);
 		}
 
-		print (fadeToBlack+": "+fadeToScreen);
-		print (Fader.color.a);
+		//print (fadeToBlack+": "+fadeToScreen);
+		//print (Fader.color.a);
 		if (fadeToBlack)
 		{
 			Fader.color=new Color (0,0,0,Mathf.SmoothDamp(Fader.color.a,1,ref refU,fadeTime));
