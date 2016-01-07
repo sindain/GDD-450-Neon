@@ -5,12 +5,9 @@ public class ShipButtonScript : MonoBehaviour {
 	public GameObject ship;
 	public Text Desc;
 	public int shipNum;
-	public string shipDesc;
-	public string shipName;
 
 	// Use this for initialization
 	void Start () {
-
 		//Desc.text = "Ship Description";
 		
 	}
@@ -21,7 +18,7 @@ public class ShipButtonScript : MonoBehaviour {
 	}
 	public void Clicked()
 	{
-		ShipSelector.Old = ShipSelector.New;
+		/*ShipSelector.Old = ShipSelector.New;
 		ShipSelector.New = ship;
 		ShipSelector.New.SetActive (true);
 		if (ShipSelector.Old != null) 
@@ -32,7 +29,7 @@ public class ShipButtonScript : MonoBehaviour {
 			}
 		}
 		ShipSelectReady.ShipName=shipName;
-		PlayerPrefs.SetInt ("ship",shipNum);
+		PlayerPrefs.SetInt ("ship",shipNum);*/
 		//Desc.text = shipDesc;
 	}
 }
