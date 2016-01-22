@@ -12,17 +12,19 @@ using UnityEngine.Networking;
 public class PlayerController : NetworkBehaviour {
 
 	//Public variables
-	public float fMaxVelocity = 95.0f;
-	public float fAcceleration = 6.0f;
-	public float fHandling = 3.0f;
-	public float fMass = 5.0f;
-	public float maxBoost=100.0f;
-	public float DispBoost=100.0f;
+
 	public bool canMove;
 	public bool bMasterCanMove = false;
+	public float DispBoost = 100.0f; 
 
 
 	//Private variables
+	private float fMaxVelocity = 1.0f;
+	private float fAcceleration = 1.0f;
+	private float fHandling= 1.0f;
+	private float fMass = 1.0f; 
+	private float maxBoost = 1.0f;
+
 	private int lap = 0;
 	private float rotationVelocityX = 0.0f;
 	private float rotationVelocityZ = 0.0f;
@@ -39,6 +41,11 @@ public class PlayerController : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		fMaxVelocity = gameObject.GetComponent<ShipStats>().fMaxVelocity;
+		fAcceleration = gameObject.GetComponent<ShipStats>().fAcceleration;
+		fHandling = gameObject.GetComponent<ShipStats>().fHandling;
+		fMass = gameObject.GetComponent<ShipStats>().fMass;
+		maxBoost = gameObject.GetComponent<ShipStats>().maxBoost;
         lap = 0; 
 		currentBoost = maxBoost;
         fThrustCurrent = 0.0f;
