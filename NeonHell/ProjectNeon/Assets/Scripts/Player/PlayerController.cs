@@ -9,13 +9,14 @@ using UnityEngine;
 using System.Collections;
 
 using UnityEngine.Networking;
-public class PlayerController : NetworkBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	//Public variables
 
 	public bool canMove;
 	public bool bMasterCanMove = false;
 	public float DispBoost = 100.0f; 
+	public Camera playerCamera;
 
 
 	//Private variables
@@ -24,6 +25,9 @@ public class PlayerController : NetworkBehaviour {
 	private float fHandling= 1.0f;
 	private float fMass = 1.0f; 
 	private float maxBoost = 1.0f;
+
+	private float fSlerpTime = 0.0f;
+	private Vector3 vCameraOffset;
 
 	private int lap = 0;
 	private float rotationVelocityX = 0.0f;
@@ -46,7 +50,10 @@ public class PlayerController : NetworkBehaviour {
 		fHandling = gameObject.GetComponent<ShipStats>().fHandling;
 		fMass = gameObject.GetComponent<ShipStats>().fMass;
 		maxBoost = gameObject.GetComponent<ShipStats>().maxBoost;
-        lap = 0; 
+		fSlerpTime = gameObject.GetComponent<ShipStats> ().fSlerpTime;
+		vCameraOffset=gameObject.GetComponent<ShipStats>().vCameraOffset;
+		playerCamera = Camera.main;
+		lap = 0; 
 		currentBoost = maxBoost;
         fThrustCurrent = 0.0f;
 		PlayerPrefs.SetInt ("laps", 0);
@@ -69,7 +76,8 @@ public class PlayerController : NetworkBehaviour {
     {
 		if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
 			return;
-
+		playerCamera.transform.position = Vector3.Slerp(playerCamera.transform.position, transform.position + transform.rotation * vCameraOffset, fSlerpTime);
+		playerCamera.transform.rotation = Quaternion.Slerp(playerCamera.transform.rotation, transform.rotation, fSlerpTime);
 		//Vector help keep the ship upright
         Vector3 newRotation;
 		RaycastHit hit;		
