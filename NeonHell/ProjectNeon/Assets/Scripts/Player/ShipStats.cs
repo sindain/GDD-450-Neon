@@ -9,6 +9,7 @@ public class ShipStats : MonoBehaviour {
 	public float maxBoost=100.0f;
 	public float fSlerpTime	= 0.333f;
 	public Vector3 vCameraOffset;
+	public int Polarity = 0;
 
 	// Use this for initialization
 	void Start () {

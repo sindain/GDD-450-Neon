@@ -17,6 +17,10 @@ public class PlayerController : MonoBehaviour {
 	public bool bMasterCanMove = false;
 	public float DispBoost = 100.0f; 
 	public Camera playerCamera;
+	public float currentBoost;
+	public int Polarity=0;
+
+
 
 
 	//Private variables
@@ -25,7 +29,6 @@ public class PlayerController : MonoBehaviour {
 	private float fHandling= 1.0f;
 	private float fMass = 1.0f; 
 	private float maxBoost = 1.0f;
-
 	private float fSlerpTime = 0.0f;
 	private Vector3 vCameraOffset;
 
@@ -37,14 +40,16 @@ public class PlayerController : MonoBehaviour {
 	private float fBoostTime = 2.0f;
 	private float fBoostTargetTime;
 	private float fThrustCurrent;
-	private float currentBoost;
+
 	private bool  bManuallyBoosting = false;
 	private GameObject currentPoint;
 	private GameObject trackWaypoints;
 	private Rigidbody rb;
 
+
 	// Use this for initialization
 	void Start () {
+		Polarity = gameObject.GetComponent<ShipStats> ().Polarity;
 		fMaxVelocity = gameObject.GetComponent<ShipStats>().fMaxVelocity;
 		fAcceleration = gameObject.GetComponent<ShipStats>().fAcceleration;
 		fHandling = gameObject.GetComponent<ShipStats>().fHandling;
@@ -67,17 +72,47 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        DispBoost = (currentBoost / maxBoost) * 100.0f;
 		bManuallyBoosting = Input.GetKey(KeyCode.Space);
+		if (Input.GetKeyDown (KeyCode.Alpha9)) 
+		{
+			if (Polarity == 0) {
+				return;
+			} 
+			else if (Polarity == 1) 
+			{
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			}
+			else if (Polarity == -1) 
+			{
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			}
+		}
+		if (Input.GetKeyDown (KeyCode.Alpha1)) 
+		{
+			Polarity = -1;
+			gameObject.GetComponent<ShipStats> ().Polarity = -1;
+		}
+		if (Input.GetKeyDown (KeyCode.Alpha2)) 
+		{
+			Polarity = 1;
+			gameObject.GetComponent<ShipStats> ().Polarity = 1;
+		}
+
 	} //End void Update()
 
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
-		if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
-			return;
 		playerCamera.transform.position = Vector3.Slerp(playerCamera.transform.position, transform.position + transform.rotation * vCameraOffset, fSlerpTime);
 		playerCamera.transform.rotation = Quaternion.Slerp(playerCamera.transform.rotation, transform.rotation, fSlerpTime);
+		if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
+			return;
+		if (currentBoost < 100f && !bManuallyBoosting) {
+			currentBoost += 5.0f * Time.deltaTime;
+		}
+		//Polarity=gameObject.GetComponent<ShipStats>().Polarity;
 		//Vector help keep the ship upright
         Vector3 newRotation;
 		RaycastHit hit;		
@@ -102,13 +137,15 @@ public class PlayerController : MonoBehaviour {
 			float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 
 			float flTotalThrust = fMaxVelocity;
-			if((bManuallyBoosting && DispBoost>=1) || Time.time <= fBoostTargetTime){
+
+			if((bManuallyBoosting && currentBoost >= 1f) || Time.time <= fBoostTargetTime){
 				flTotalThrust = fMaxVelocity + 10.0f;
 				fPercThrustPower = 1.0f;
 				if(bManuallyBoosting)
 				{
 					currentBoost-=20.0f*Time.deltaTime;
 				}
+
 			}
 
 			//More force calculations
@@ -158,7 +195,6 @@ public class PlayerController : MonoBehaviour {
 	public int getLap(){
 		return lap;
 	} //End public int getLap()
-
 	//-----------------------------------------------------------------------------------------------------------------
 	//Name: 		SetLap
 	//Description:	Sets the lap variable to given parameter
@@ -219,4 +255,5 @@ public class PlayerController : MonoBehaviour {
 	{
 		return currentPoint;
 	}//End public GameObject getCurrentPoint
+
 }
