@@ -4,20 +4,27 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 
 public class SpHUD : MonoBehaviour {
+	//public vars
     public GameObject player; //Local Player Object
     public Text start; // The countdown text
     public Text laps; // The lap counter text
 	public Text Energy;
+	public Text Polarity;
+	public string pol="N/A";
+
     public Image menu; // The button that allows you you to go to the menu if you press escape
     public float timer; // The timer for the countdown
     private bool finished; // The boolean keeping track if the player has finished the race
     private int placed; // Boolean keeping track if the player has been placed
     public GameObject placeCounter; // The networked object holding the placing counter
     public int place; // Local variable for the local players place
+	//private vars
+	private float displayBoost=100.0f;
     // Use this for initialization
     void Start()
     {
         //Initialize all variables to their starting positions
+		player=GameObject.FindGameObjectWithTag("Player");
         placed = 0;
         place = 0;
         placeCounter = GameObject.FindWithTag("placeCounter");
@@ -38,8 +45,17 @@ public class SpHUD : MonoBehaviour {
         {
             menu.enabled = !menu.enabled;
         }
-		string BoostString = player.GetComponent<PlayerController> ().DispBoost.ToString ();
+		displayBoost = (player.GetComponent<PlayerController>().currentBoost / player.GetComponent<ShipStats>().maxBoost) * 100.0f;
+		string BoostString = displayBoost.ToString ();
 		Energy.text = "Energy: " + BoostString.Substring(0,(BoostString.IndexOf(".")<0)?BoostString.Length:BoostString.IndexOf("."))+"%";
+		if (player.GetComponent<ShipStats> ().Polarity == 1) {
+			pol = "+";
+		} else if (player.GetComponent<ShipStats> ().Polarity == -1) {
+			pol = "-";
+		} else{
+			pol ="N/A";
+		}
+		Polarity.text = "Polarity: "+pol;
         //Checking if the local player has finished the race
         if (finished == false && player.GetComponent<PlayerController>().getLap() >= 2)
         {
