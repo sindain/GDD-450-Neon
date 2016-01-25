@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
-
+using UnityEngine.Networking.Match;
 
 public class GameManager : NetworkManager {
 
@@ -21,6 +21,16 @@ public class GameManager : NetworkManager {
   public override void OnServerRemovePlayer (NetworkConnection conn, UnityEngine.Networking.PlayerController player)
   {
     base.OnServerRemovePlayer (conn, player);
+  }
+
+  public override void OnMatchList(ListMatchResponse matchList) {
+    GameObject.Find("MainMenu").transform.FindChild("MultiplayerLobby").GetComponent<MultiplayerLobby>().matchResponse(matchList);
+    //base.OnMatchList(matchList);
+  }
+
+  public void StartMatchMaking() {
+    StartMatchMaker();
+    matchMaker.ListMatches(0, 5, "", OnMatchList);
   }
 
   public void StartLocalGame() {

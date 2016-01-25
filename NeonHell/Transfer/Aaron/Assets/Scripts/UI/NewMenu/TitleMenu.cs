@@ -21,6 +21,8 @@ public class TitleMenu : MonoBehaviour {
 
   }
   public void onMultiPlayerClicked() {
+    transform.parent.FindChild("MultiplayerLobby").gameObject.SetActive(true);
+    gameObject.SetActive(false);
   }
   public void onControlsClicked() {
     transform.parent.FindChild("Controls").gameObject.SetActive(true);

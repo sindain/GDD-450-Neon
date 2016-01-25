@@ -9,13 +9,18 @@ using UnityEngine;
 using System.Collections;
 
 using UnityEngine.Networking;
-public class PlayerController : NetworkBehaviour {
+public class PlayerController : MonoBehaviour {
 
 	//Public variables
 
 	public bool canMove;
 	public bool bMasterCanMove = false;
 	public float DispBoost = 100.0f; 
+	public Camera playerCamera;
+	public float currentBoost;
+	public int Polarity=0;
+
+
 
 
 	//Private variables
@@ -24,29 +29,37 @@ public class PlayerController : NetworkBehaviour {
 	private float fHandling= 1.0f;
 	private float fMass = 1.0f; 
 	private float maxBoost = 1.0f;
+	private float fSlerpTime = 0.0f;
+	private Vector3 vCameraOffset;
 
 	private int lap = 0;
+	private int BoostType = 0;// 1 is good boost -1 is bad boost
 	private float rotationVelocityX = 0.0f;
 	private float rotationVelocityZ = 0.0f;
 	private float fAirborneDistance = 6.0f;
 	private float fRotationSeekSpeed = 0.6f;
-	private float fBoostTime = 2.0f;
+	private float fBoostTime = 0.5f;
 	private float fBoostTargetTime;
 	private float fThrustCurrent;
-	private float currentBoost;
+
 	private bool  bManuallyBoosting = false;
 	private GameObject currentPoint;
 	private GameObject trackWaypoints;
 	private Rigidbody rb;
 
+
 	// Use this for initialization
 	void Start () {
+		Polarity = gameObject.GetComponent<ShipStats> ().Polarity;
 		fMaxVelocity = gameObject.GetComponent<ShipStats>().fMaxVelocity;
 		fAcceleration = gameObject.GetComponent<ShipStats>().fAcceleration;
 		fHandling = gameObject.GetComponent<ShipStats>().fHandling;
 		fMass = gameObject.GetComponent<ShipStats>().fMass;
 		maxBoost = gameObject.GetComponent<ShipStats>().maxBoost;
-        lap = 0; 
+		fSlerpTime = gameObject.GetComponent<ShipStats> ().fSlerpTime;
+		vCameraOffset=gameObject.GetComponent<ShipStats>().vCameraOffset;
+		playerCamera = Camera.main;
+		lap = 0; 
 		currentBoost = maxBoost;
         fThrustCurrent = 0.0f;
 		PlayerPrefs.SetInt ("laps", 0);
@@ -60,16 +73,47 @@ public class PlayerController : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        DispBoost = (currentBoost / maxBoost) * 100.0f;
 		bManuallyBoosting = Input.GetKey(KeyCode.Space);
+		if (Input.GetKeyDown (KeyCode.Alpha9)) 
+		{
+			if (Polarity == 0) {
+				return;
+			} 
+			else if (Polarity == 1) 
+			{
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			}
+			else if (Polarity == -1) 
+			{
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			}
+		}
+		if (Input.GetKeyDown (KeyCode.Alpha1)) 
+		{
+			Polarity = -1;
+			gameObject.GetComponent<ShipStats> ().Polarity = -1;
+		}
+		if (Input.GetKeyDown (KeyCode.Alpha2)) 
+		{
+			Polarity = 1;
+			gameObject.GetComponent<ShipStats> ().Polarity = 1;
+		}
+
 	} //End void Update()
 
 	//FixedUpdate is called every frame
     void FixedUpdate()
     {
+		playerCamera.transform.position = Vector3.Slerp(playerCamera.transform.position, transform.position + transform.rotation * vCameraOffset, fSlerpTime);
+		playerCamera.transform.rotation = Quaternion.Slerp(playerCamera.transform.rotation, transform.rotation, fSlerpTime);
 		if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
 			return;
-
+		if (currentBoost < 100f && !bManuallyBoosting) {
+			currentBoost += 5.0f * Time.deltaTime;
+		}
+		//Polarity=gameObject.GetComponent<ShipStats>().Polarity;
 		//Vector help keep the ship upright
         Vector3 newRotation;
 		RaycastHit hit;		
@@ -94,12 +138,26 @@ public class PlayerController : NetworkBehaviour {
 			float fPercThrustPower = Mathf.Log(c * fThrustCurrent + 1);
 
 			float flTotalThrust = fMaxVelocity;
-			if((bManuallyBoosting && DispBoost>=1) || Time.time <= fBoostTargetTime){
+
+			if((bManuallyBoosting && currentBoost >= 1f)){
 				flTotalThrust = fMaxVelocity + 10.0f;
 				fPercThrustPower = 1.0f;
 				if(bManuallyBoosting)
 				{
 					currentBoost-=20.0f*Time.deltaTime;
+				}
+
+			}
+			if(Time.time <= fBoostTargetTime){
+				if(BoostType==1)
+				{
+					flTotalThrust = fMaxVelocity + 20.0f;
+					fPercThrustPower = 3.0f;
+				}
+				else if(BoostType==-1)
+				{
+					flTotalThrust = fMaxVelocity-100.0f;
+					fPercThrustPower = .10f;
 				}
 			}
 
@@ -150,7 +208,6 @@ public class PlayerController : NetworkBehaviour {
 	public int getLap(){
 		return lap;
 	} //End public int getLap()
-
 	//-----------------------------------------------------------------------------------------------------------------
 	//Name: 		SetLap
 	//Description:	Sets the lap variable to given parameter
@@ -184,8 +241,48 @@ public class PlayerController : NetworkBehaviour {
 			gameObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
 			gameObject.GetComponent<Rigidbody>().angularVelocity=Vector3.zero;
 			break;
-		case "Booster":
-			fBoostTargetTime = Time.time + fBoostTime; 
+		case "+Booster":
+			//fBoostTargetTime = Time.time + fBoostTime;
+			if(Polarity==1)
+			{
+				fBoostTargetTime = Time.time + fBoostTime;
+				BoostType = 1;
+			}
+
+			else if (Polarity==-1)
+			{
+				fBoostTargetTime = Time.time + fBoostTime;
+				BoostType = -1;
+			}
+
+			break;
+		case "-Booster":
+			if (Polarity==-1)
+			{
+				fBoostTargetTime = Time.time + fBoostTime;
+				BoostType = 1;
+			}
+			
+			else if (Polarity==1)
+			{
+				fBoostTargetTime = Time.time + fBoostTime;
+				BoostType = -1;
+			}
+			break;
+		case "SwitchGate":
+			if (Polarity == 0) {
+				return;
+			} 
+			else if (Polarity == 1) 
+			{
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			}
+			else if (Polarity == -1) 
+			{
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			}
 			break;
 		}
 		/*if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
@@ -211,4 +308,5 @@ public class PlayerController : NetworkBehaviour {
 	{
 		return currentPoint;
 	}//End public GameObject getCurrentPoint
+
 }
