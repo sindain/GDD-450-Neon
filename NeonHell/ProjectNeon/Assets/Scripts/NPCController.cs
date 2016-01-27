@@ -12,18 +12,19 @@ public class NPCController : MonoBehaviour {
 	public GameObject placeCounter; // The networked object holding the placing counter
 
 	private int 		lap = 0;
-	private int 		iAccelDir = 0;
+	private float 		fAccelDir = 0;
 	private float 		rotationVelocity;
 	private float 		fAirborneDistance = 6.0f;
 	private float 		fThrustCurrent;	
 	private float 		fBoostTime = 2.0f;
 	private float 		fBoostTargetTime;
+    private float       degOffset;
 	private bool  		bManuallyBoosting = false;
 	private Rigidbody 	rb;
 	private GameObject 	direction;
 	private GameObject 	currentPoint;
 	private GameObject 	trackWaypoints;
-	private bool finished;
+	private bool        finished;
 
 
 
@@ -57,26 +58,23 @@ public class NPCController : MonoBehaviour {
 		direction.transform.position = transform.position;
 		direction.transform.eulerAngles = transform.eulerAngles;
 		direction.transform.LookAt(currentPoint.GetComponent<WaypointController>().getNextPoint().transform);
+
 		//Rotation vector to help keep ships upright
 		Vector3 newRotation;
 
 		//Find the angle the ship is going and where it wants to go relative to eachother
-		float y1 = transform.eulerAngles.y;
-		float y2 = direction.transform.eulerAngles.y;
-		y2 -= 90 * (int)(y1 / 90);
-		y1 -= 90 * (int)(y1 / 90);
-		if (y2 < 0)
-			y2 += 360;
-
-		//Is the ship hovering close enough to the ground?
+		Vector3 tProj = direction.transform.forward - (Vector3.Dot(direction.transform.forward, gameObject.transform.up)/Mathf.Pow(Vector3.Magnitude(gameObject.transform.up),2)) * gameObject.transform.up;
+        degOffset = Mathf.Acos(Vector3.Dot(tProj, gameObject.transform.forward) / (Vector3.Magnitude(tProj) * Vector3.Magnitude(gameObject.transform.forward)));
+        print("degOff: " + degOffset);
+        //Is the ship hovering close enough to the ground?
 		if (Physics.Raycast (transform.position, - this.transform.up, 4.0f)) {
 			rb.drag = 1;
 			//If turn goal is within threshold, the speed up.
 			//iAccelDir = Mathf.Abs (y2 - y1) <= 45 ? 1 : 0;
-			float threshold = 45.0f;
-			if(Mathf.Abs(y2 - y1) <= threshold){
+			float threshold = Mathf.PI/4.0f;
+			if(degOffset <= threshold){
 				//Add force if ship is within threshold
-				float fThrustTarget = (1-(Mathf.Abs(y2-y1)/threshold)) * (fAcceleration-0.5f);
+				float fThrustTarget = (1-(degOffset/threshold)) * (fAcceleration-0.5f);
 				//print (fThrustTarget);
 				float c = (Mathf.Exp(1) - 1) / (fAcceleration-0.5f);
 				if(fThrustTarget <= fThrustCurrent)
@@ -111,9 +109,10 @@ public class NPCController : MonoBehaviour {
 		}	
 
 		//Turn towards target
-		iAccelDir = y2 < y1 + 180.0f && y2 > y1 ? 1 : -1;
+		fAccelDir = Mathf.Acos(Vector3.Dot(tProj,gameObject.transform.right)/(Vector3.Magnitude(tProj)*Vector3.Magnitude(gameObject.transform.right))) < (Mathf.PI/2.0f) ? 1 : -1;
+        fAccelDir *= Mathf.Clamp(degOffset / (Mathf.PI/6f), 0.0f, 1.0f);
 		//Rotate character up to turnspeed
-		rb.AddTorque (transform.up * (fHandling+15.0f) * rb.angularDrag * iAccelDir * rb.mass);
+		rb.AddTorque (gameObject.transform.up * (fHandling+15.0f) * rb.angularDrag * fAccelDir * rb.mass);
 	}
 
 	public void nextPoint(){
