@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 	private int BoostType = 0;// 1 is good boost -1 is bad boost
 	private float rotationVelocityX = 0.0f;
 	private float rotationVelocityZ = 0.0f;
-	private float fAirborneDistance = 6.0f;
+	private float fAirborneDistance = 3.0f;
 	private float fRotationSeekSpeed = 0.6f;
 	private float fBoostTime = 0.5f;
 	private float fBoostTargetTime;
@@ -122,13 +122,12 @@ public class PlayerController : MonoBehaviour {
 		RaycastHit hit;		
 
 		//Apply torque, e.g. turn the ship left and right
-		print(fHandling + ":" + rb + ":");
 		rb.AddTorque(transform.up * fHandling * rb.angularDrag * Input.GetAxis("Horizontal") * rb.mass);
 
 		//If the player is close to the something, allow moving forward
-        if (Physics.Raycast(transform.position, -this.transform.up,out hit, fAirborneDistance)){
-            rb.drag = 1;
-            //Thrust Calculations
+    if (Physics.Raycast(transform.position, -this.transform.up,out hit, fAirborneDistance)){
+      rb.drag = 1;
+      //Thrust Calculations
 			float fThrustTarget = Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * fAcceleration;
 			float c = (Mathf.Exp(1) - 1) / fAcceleration;
 			if(fThrustTarget <= fThrustCurrent)
