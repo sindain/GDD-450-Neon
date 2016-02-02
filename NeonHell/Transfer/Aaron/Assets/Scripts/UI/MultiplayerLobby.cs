@@ -3,40 +3,91 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 
-public class MultiplayerLobby : MonoBehaviour {
+public class MultiplayerLobby : MonoBehaviour
+{
 
   public GameObject matchContent;
   private GameObject viewPort;
   private RectTransform baseRect;
+  private UnityEngine.Networking.Match.MatchDesc[] descriptions;
+  private UnityEngine.Networking.Match.MatchDesc SelectedMatch;
+  private UnityEngine.Networking.Match.CreateMatchRequest request;
+
   // Use this for initialization
-  void Start () {
-    viewPort = transform.FindChild("Lobbies").gameObject.transform.FindChild ("Viewport").gameObject;
-    baseRect = transform.FindChild("Lobbies").GetComponent<RectTransform>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-  public void matchResponse(UnityEngine.Networking.Match.ListMatchResponse matches) {
-    UnityEngine.Networking.Match.MatchDesc[] descriptions = matches.matches.ToArray();
-
-    for(int i = 0; i < descriptions.Length; i ++){
-      GameObject content = GameObject.Instantiate(matchContent);
-      content.transform.SetParent(viewPort.transform);
-      RectTransform rect = content.GetComponent<RectTransform>();
-      rect.offsetMin = new Vector2(0,-67 - 67 * i);
-      rect.offsetMax = new Vector2(1, -67*i);
-      content.transform.localScale = new Vector3(1,1,1);
-
-      content.transform.FindChild("Text").GetComponent<Text>().text = 
-        "Name: '" + descriptions[i].name + 
-        "' Size: " + descriptions[i].currentSize +'/'+ descriptions[i].maxSize;
-    }
-    //matches.matches.ToArray()
+  void Start (){
+    viewPort = transform.FindChild ("Lobbies").gameObject.transform.FindChild ("Viewport").gameObject;
+    baseRect = transform.FindChild ("Lobbies").GetComponent<RectTransform> ();
+    request = new UnityEngine.Networking.Match.CreateMatchRequest ();
   }
-  public void onMatchClicked(GameObject data) {
+  //End void Start()
+	
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:     matchResponse
+  //Description:  Called once server has returned a list of available matches then displays them in the lobbies viewport
+  //Parameters: UnityEngine.Networking.Match.ListmatchResponse matches
+  //Returns:    NA
+  //--------------------------------------------------------------------------------------------------------------------
+  public void matchResponse (UnityEngine.Networking.Match.ListMatchResponse matches){
+    descriptions = matches.matches.ToArray ();
 
+    //Remove any children currently present
+    for (int i = 0; i < viewPort.transform.childCount; i++)
+      Destroy (viewPort.transform.GetChild (i).gameObject);
+    
+    
+    //Populate new list with the match options.
+    for (int i = 0; i < descriptions.Length; i++) {
+      GameObject content = GameObject.Instantiate (matchContent);
+      content.transform.SetParent (viewPort.transform);
+      RectTransform rect = content.GetComponent<RectTransform> ();
+      rect.offsetMin = new Vector2 (0, -67 - 67 * i);
+      rect.offsetMax = new Vector2 (1, -67 * i);
+      content.transform.localScale = new Vector3 (1, 1, 1);
+
+      content.GetComponent<MatchContent> ().setText (descriptions [i]);
+
+      content.GetComponent<Button> ().onClick.AddListener (delegate {
+        SelectedMatch = content.GetComponent<MatchContent> ().getDesctription ();
+      });
+
+    } //End for(int i = 0; i < descriptions.Length; i ++)
+  }
+  //End public void matchResponse(UnityEngine.Networking.Match.ListMatchResponse matches)
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         getSelectedMatch
+  //Description:  Returns data about the match the user selected
+  //Parameters:   NA
+  //Returns:      UnityEngine.Networking.Match.MatchDesc
+  //--------------------------------------------------------------------------------------------------------------------
+  public UnityEngine.Networking.Match.MatchDesc getSelectedMatch (){
+    return SelectedMatch;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  public void changeScreen (bool pbActive){
+    transform.FindChild ("Lobbies").gameObject.SetActive (pbActive);
+    transform.FindChild ("ButtonPanel").gameObject.SetActive (pbActive);
+    transform.FindChild ("TopPanel").gameObject.SetActive (pbActive);
+    transform.FindChild ("CreateMatch").gameObject.SetActive (!pbActive);
+  }
+
+  public void setMatchName (Text pName){
+    request.name = pName.text;
+  }
+
+  public void setMatchPassword (Text pPassword){
+    request.password = pPassword.text;
+  }
+
+  public void onCreateClicked (){
+    if (request.name != "")
+      GameObject.Find ("GameManager").GetComponent<GameManager> ().StartMatchmakerGame (request);
   }
 }
+//End public class MultiplayerLobby : MonoBehaviour
