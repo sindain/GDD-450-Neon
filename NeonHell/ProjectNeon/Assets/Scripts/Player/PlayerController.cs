@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
 	private bool  bManuallyBoosting = false;
 	private GameObject currentPoint;
 	private GameObject trackWaypoints;
+	private GameObject weapon;
 	private Rigidbody rb;
 
 
@@ -221,6 +222,9 @@ public class PlayerController : MonoBehaviour {
 	public float getAirborneDistance(){
 		return fAirborneDistance;
 	}
+	public void ShutDown (){
+		
+	}
 	//-----------------------------------------------------------------------------------------------------------------
 	//Name: 		OnTriggerEnter
 	//Description:	Handles events that occure when entering a trigger
@@ -284,6 +288,64 @@ public class PlayerController : MonoBehaviour {
 				gameObject.GetComponent<ShipStats> ().Polarity = 1;
 			}
 			break;
+		case "PosGate":
+			if (Polarity == 0) {
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			} 
+			else if (Polarity == -1) 
+			{
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			}
+			else if (Polarity == 1) 
+			{
+				return;
+			}
+			break;
+			break;
+		case "NegGate":
+			if (Polarity == 0) {
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			} 
+			else if (Polarity == 1) 
+			{
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			}
+			else if (Polarity == -1) 
+			{
+				return;
+			}
+			break;
+		/*case "PosMine":
+			if (Polarity == 0) {
+				this.ShutDown ();
+			} 
+			else if (Polarity == 1) 
+			{
+				return;
+			}
+			else if (Polarity == -1) 
+			{
+				this.ShutDown ();
+			}
+			break;
+		case "NegMine":
+			if (Polarity == 0) {
+				this.ShutDown ();
+			} 
+			else if (Polarity == -1) 
+			{
+				return;
+			}
+			else if (Polarity == 1) 
+			{
+				this.ShutDown ();
+			}
+			break;*/
+
 		}
 		/*if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
 			nextPoint ();
