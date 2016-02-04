@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 	private int BoostType = 0;// 1 is good boost -1 is bad boost
 	private float rotationVelocityX = 0.0f;
 	private float rotationVelocityZ = 0.0f;
-	private float fAirborneDistance = 3.0f;
+	private float fAirborneDistance = 6.0f;
 	private float fRotationSeekSpeed = 0.6f;
 	private float fBoostTime = 0.5f;
 	private float fBoostTargetTime;
@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour {
 	private bool  bManuallyBoosting = false;
 	private GameObject currentPoint;
 	private GameObject trackWaypoints;
+	private GameObject weapon;
 	private Rigidbody rb;
 
 
@@ -64,9 +65,6 @@ public class PlayerController : MonoBehaviour {
         fThrustCurrent = 0.0f;
 		PlayerPrefs.SetInt ("laps", 0);
         trackWaypoints = GameObject.FindWithTag("WList");
-		if (trackWaypoints == null)
-			print ("ERROR- PlayerController.cs.68:  No trackwaypoints found in scene");
-		else
 		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
 		rb = GetComponent<Rigidbody> ();
 		rb.angularDrag = 3.0f;
@@ -111,8 +109,8 @@ public class PlayerController : MonoBehaviour {
     {
 		playerCamera.transform.position = Vector3.Slerp(playerCamera.transform.position, transform.position + transform.rotation * vCameraOffset, fSlerpTime);
 		playerCamera.transform.rotation = Quaternion.Slerp(playerCamera.transform.rotation, transform.rotation, fSlerpTime);
-		//if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
-		//	return;
+		if ((!(PlayerPrefs.GetFloat ("start") == 1) || lap >=2) && !bMasterCanMove)
+			return;
 		if (currentBoost < 100f && !bManuallyBoosting) {
 			currentBoost += 5.0f * Time.deltaTime;
 		}
@@ -125,9 +123,9 @@ public class PlayerController : MonoBehaviour {
 		rb.AddTorque(transform.up * fHandling * rb.angularDrag * Input.GetAxis("Horizontal") * rb.mass);
 
 		//If the player is close to the something, allow moving forward
-    if (Physics.Raycast(transform.position, -this.transform.up,out hit, fAirborneDistance)){
-      rb.drag = 1;
-      //Thrust Calculations
+        if (Physics.Raycast(transform.position, -this.transform.up,out hit, fAirborneDistance)){
+            rb.drag = 1;
+            //Thrust Calculations
 			float fThrustTarget = Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * fAcceleration;
 			float c = (Mathf.Exp(1) - 1) / fAcceleration;
 			if(fThrustTarget <= fThrustCurrent)
@@ -175,7 +173,7 @@ public class PlayerController : MonoBehaviour {
 
 		//If the player isn't close to something
 		else{
-            rb.drag = 0f;
+            rb.drag = 0.16f;
 			//The following 4 lines help keep the ship upright while in midair
 			newRotation = transform.eulerAngles;
 			newRotation.x = Mathf.SmoothDampAngle(newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
@@ -223,6 +221,9 @@ public class PlayerController : MonoBehaviour {
 
 	public float getAirborneDistance(){
 		return fAirborneDistance;
+	}
+	public void ShutDown (){
+		
 	}
 	//-----------------------------------------------------------------------------------------------------------------
 	//Name: 		OnTriggerEnter
@@ -287,6 +288,64 @@ public class PlayerController : MonoBehaviour {
 				gameObject.GetComponent<ShipStats> ().Polarity = 1;
 			}
 			break;
+		case "PosGate":
+			if (Polarity == 0) {
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			} 
+			else if (Polarity == -1) 
+			{
+				Polarity = 1;
+				gameObject.GetComponent<ShipStats> ().Polarity = 1;
+			}
+			else if (Polarity == 1) 
+			{
+				return;
+			}
+			break;
+			break;
+		case "NegGate":
+			if (Polarity == 0) {
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			} 
+			else if (Polarity == 1) 
+			{
+				Polarity = -1;
+				gameObject.GetComponent<ShipStats> ().Polarity = -1;
+			}
+			else if (Polarity == -1) 
+			{
+				return;
+			}
+			break;
+		/*case "PosMine":
+			if (Polarity == 0) {
+				this.ShutDown ();
+			} 
+			else if (Polarity == 1) 
+			{
+				return;
+			}
+			else if (Polarity == -1) 
+			{
+				this.ShutDown ();
+			}
+			break;
+		case "NegMine":
+			if (Polarity == 0) {
+				this.ShutDown ();
+			} 
+			else if (Polarity == -1) 
+			{
+				return;
+			}
+			else if (Polarity == 1) 
+			{
+				this.ShutDown ();
+			}
+			break;*/
+
 		}
 		/*if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
 			nextPoint ();

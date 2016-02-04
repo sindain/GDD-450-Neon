@@ -5,9 +5,8 @@ using UnityEngine.Networking.Match;
 
 public class GameManager : NetworkManager
 {
-
-  public ArrayList players;
-
+  public GameObject[] players;
+  private readonly int PLAYER_COUNT = 8;
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
   //Description:  Default start function, nothing special here
@@ -15,7 +14,7 @@ public class GameManager : NetworkManager
   //Returns:      NA
   //--------------------------------------------------------------------------------------------------------------------
   void Start (){
-    players = new ArrayList ();
+    players = new GameObject[PLAYER_COUNT];
   }
     
   //--------------------------------------------------------------------------------------------------------------------
@@ -26,19 +25,30 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId){
     GameObject player = (GameObject)Instantiate (base.playerPrefab, Vector3.zero, Quaternion.identity);
-    NetworkServer.AddPlayerForConnection (conn, player, playerControllerId);
 
-    if (players.Count == 0) {
-      players.Add (player);
-      player.GetComponent<NetPlayer> ().RpcSetSeat (0);
+    NetworkServer.AddPlayerForConnection (conn, player, playerControllerId);
+    print(players);
+    for(int i=0; i < PLAYER_COUNT; i++){
+      if(players[i] == null){
+        players[i] = player;
+        player.GetComponent<NetPlayer>().Setup(i);
+        break;
+      }
     }
-    else
-      for (int i = 0; i < players.Count; i++) {
-        if (players.ToArray () [i] == null) {
-          players.Insert (i, player);
-          player.GetComponent<NetPlayer> ().RpcSetSeat (i);
-        } //End if (players.ToArray () [i] == null) {
-      } //End for (int i = 0; i < players.Count; i++) {
+//    if (players.Count == 0) {
+//      players.Add (player);
+//      player.GetComponent<NetPlayer> ().RpcSetup (0);
+//    }
+//    else
+//      for (int i = 0; i < players.Count; i++) {
+//        if (players.ToArray () [i] == null) {
+//          players.Insert (i, player);
+//          player.GetComponent<NetPlayer> ().RpcSetup (i);
+//        } //End if (players.ToArray () [i] == null) {
+//      } //End for (int i = 0; i < players.Count; i++) {
+
+
+    //player.GetComponent<NetPlayer>().RpcUpdateCameraPosition();
   }
   //End public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId)
 
@@ -50,7 +60,8 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerRemovePlayer (NetworkConnection conn, UnityEngine.Networking.PlayerController player){
     base.OnServerRemovePlayer (conn, player);
-    players.Remove (player.gameObject);
+
+    //players.Remove (player.gameObject);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -107,8 +118,6 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnMatchCreate (CreateMatchResponse matchInfo){
     base.OnMatchCreate (matchInfo);
-    GameObject.Find ("MainMenu").transform.FindChild ("MultiplayerLobby").gameObject.SetActive (false);
-    GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive (true);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

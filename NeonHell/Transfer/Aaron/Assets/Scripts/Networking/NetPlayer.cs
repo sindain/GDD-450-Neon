@@ -7,7 +7,7 @@ public class NetPlayer : NetworkBehaviour
   [SyncVar]
   public int iShipChoice = -1;
   [SyncVar]
-  public int iSeat = -1;
+  public int iPlayerNum = -1;
   public GameObject ship;
 
   void Start (){
@@ -22,18 +22,25 @@ public class NetPlayer : NetworkBehaviour
     CmdChangeShip (piChoice);
   }
 
-  [ClientRpc]
-  public void RpcSetSeat (int piSeat){
-    iSeat = piSeat;
+  public void setPlayerNum (int piPlayerNum){iPlayerNum = piPlayerNum;}
+  public int getPlayerNum(){return iPlayerNum;}
 
-    Transform bayTransform = GameObject.Find ("Bays").transform.GetChild (iSeat).transform;
-    UpdateCameraPosition (bayTransform.position, bayTransform.rotation);
+  public void Setup(int piPlayerNum){
+    setPlayerNum(piPlayerNum);
+    RpcSetup(piPlayerNum);
   }
 
-  public void UpdateCameraPosition (Vector3 pos, Quaternion rot){
-    if (isLocalPlayer)
-      GameObject.Find ("MainMenu").GetComponent<MenuScript> ().setCameraTarget (pos, rot);
-    print ("test");
+  [ClientRpc]
+  public void RpcSetup (int iNum){
+    if (!isLocalPlayer)
+      return;
+
+    Transform target = GameObject.Find("Bays").transform.GetChild(iNum);
+    GameObject.Find("MainMenu").GetComponent<MenuScript>().setCameraTarget(target.position, target.rotation);
+    GameObject.Find ("MainMenu").transform.FindChild ("MultiplayerLobby").gameObject.SetActive (false);
+    GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive (true);
+    //GameObject.Find ("MainMenu").GetComponent<MenuScript> ().setCameraTarget (pos, rot);
+
   }
 
 
@@ -42,7 +49,7 @@ public class NetPlayer : NetworkBehaviour
     if (ship != null)
       Destroy (ship);
     GameObject[] shipArray = GameObject.Find ("GameManager").GetComponent<GameManager> ().spawnPrefabs.ToArray ();
-    Vector3 spawnPos = GameObject.Find ("Bays").transform.GetChild (iSeat).transform.FindChild ("ShipSpawn").transform.position;
+    Vector3 spawnPos = GameObject.Find ("Bays").transform.GetChild (iPlayerNum).transform.FindChild ("ShipSpawn").transform.position;
     GameObject newShip = (GameObject)Instantiate (
                            shipArray [piChoice],
                            spawnPos,
