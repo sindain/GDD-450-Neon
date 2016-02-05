@@ -5,10 +5,9 @@ using System.Collections;
 
 public class MultiplayerLobby : MonoBehaviour
 {
-
   public GameObject matchContent;
+
   private GameObject viewPort;
-  private RectTransform baseRect;
   private UnityEngine.Networking.Match.MatchDesc[] descriptions;
   private UnityEngine.Networking.Match.MatchDesc SelectedMatch;
   private UnityEngine.Networking.Match.CreateMatchRequest request;
@@ -16,7 +15,6 @@ public class MultiplayerLobby : MonoBehaviour
   // Use this for initialization
   void Start (){
     viewPort = transform.FindChild ("Lobbies").gameObject.transform.FindChild ("Viewport").gameObject;
-    baseRect = transform.FindChild ("Lobbies").GetComponent<RectTransform> ();
     request = new UnityEngine.Networking.Match.CreateMatchRequest ();
   }
   //End void Start()
@@ -77,14 +75,32 @@ public class MultiplayerLobby : MonoBehaviour
     transform.FindChild ("CreateMatch").gameObject.SetActive (!pbActive);
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public void setMatchName (Text pName){
     request.name = pName.text;
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public void setMatchPassword (Text pPassword){
     request.password = pPassword.text;
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public void onCreateClicked (){
     if (request.name != "")
       GameObject.Find ("GameManager").GetComponent<GameManager> ().StartMatchmakerGame (request);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections;
 using UnityEngine.Networking.Match;
+using System.Collections;
 
 public class GameManager : NetworkManager
 {
@@ -24,31 +24,16 @@ public class GameManager : NetworkManager
   //Returns:      none
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId){
-    GameObject player = (GameObject)Instantiate (base.playerPrefab, Vector3.zero, Quaternion.identity);
-
+    GameObject player = (GameObject)Instantiate (playerPrefab, Vector3.zero, Quaternion.identity);
+    player.GetComponent<NetPlayer> ().connection = conn;
     NetworkServer.AddPlayerForConnection (conn, player, playerControllerId);
-    print(players);
-    for(int i=0; i < PLAYER_COUNT; i++){
-      if(players[i] == null){
-        players[i] = player;
-        player.GetComponent<NetPlayer>().Setup(i);
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+      if (players [i] == null) {
+        players [i] = player;
+        player.GetComponent<NetPlayer> ().Setup (i);
         break;
       }
     }
-//    if (players.Count == 0) {
-//      players.Add (player);
-//      player.GetComponent<NetPlayer> ().RpcSetup (0);
-//    }
-//    else
-//      for (int i = 0; i < players.Count; i++) {
-//        if (players.ToArray () [i] == null) {
-//          players.Insert (i, player);
-//          player.GetComponent<NetPlayer> ().RpcSetup (i);
-//        } //End if (players.ToArray () [i] == null) {
-//      } //End for (int i = 0; i < players.Count; i++) {
-
-
-    //player.GetComponent<NetPlayer>().RpcUpdateCameraPosition();
   }
   //End public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId)
 
@@ -60,7 +45,6 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerRemovePlayer (NetworkConnection conn, UnityEngine.Networking.PlayerController player){
     base.OnServerRemovePlayer (conn, player);
-
     //players.Remove (player.gameObject);
   }
 
@@ -84,6 +68,22 @@ public class GameManager : NetworkManager
   public void StartMatchMaking (){
     StartMatchMaker ();
     matchMaker.ListMatches (0, 5, "", OnMatchList);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  public void StopMultiplayerServices (){
+//    if (matchMaker.isActiveAndEnabled)
+//      StopMatchMaker ();
+//    if (NetworkManager.singleton.isActiveAndEnabled) {
+//      NetworkManager.singleton.StopHost ();
+//      NetworkManager.singleton.StopClient ();
+//    }
+
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -148,5 +148,31 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public void JoinLocalGame (){
     NetworkManager.singleton.StartClient ();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  public void checkReady (){
+    bool allReady = true;
+    foreach (GameObject player in players)
+      if (player != null) {
+        if (!player.GetComponent<NetPlayer> ().getReady ())
+          allReady = false;
+      }
+
+    if (!allReady)
+      return;
+    
+    foreach (GameObject player in players)
+      if (player != null) {
+        NetPlayer playerScript = player.GetComponent<NetPlayer> ();
+        playerScript.RpcChangeScene ("TestScene02");
+        playerScript.RpcRaceSetup ("Track01");
+        playerScript.RpcGiveCarControl ();
+      }
   }
 }

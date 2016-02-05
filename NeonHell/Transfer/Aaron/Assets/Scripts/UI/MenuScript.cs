@@ -17,6 +17,7 @@ public class MenuScript : MonoBehaviour
   //private bool fadeToScreen;
   //private bool fadeToBlack;
   //private bool beingHandled = false;
+  private bool bCameraControl = true;
   private Vector3 cameraTargetPos;
   private Quaternion cameraTargetRot;
   private Vector3 vCamPosRef;
@@ -25,14 +26,15 @@ public class MenuScript : MonoBehaviour
   void Start (){
     //fadeToScreen=true;
     //fadeToBlack = false;
-    cameraTargetPos = Vector3.zero;
-    cameraTargetRot = Quaternion.identity;
+    cameraTargetPos = new Vector3 (13.0f, 11.0f, 44.0f);
+    cameraTargetRot.eulerAngles = new Vector3 (0.0f, 270.0f, 0.0f);
+    // DontDestroyOnLoad (Camera.main);
   }
 
   void Update (){
     //Update Camera Transform
     Camera.main.transform.position = Vector3.SmoothDamp (Camera.main.transform.position, cameraTargetPos, ref vCamPosRef, 1.0f);
-    Camera.main.transform.rotation = Quaternion.Slerp (Camera.main.transform.rotation, cameraTargetRot, Time.time * 1.0f);
+    Camera.main.transform.rotation = Quaternion.Slerp (Camera.main.transform.rotation, cameraTargetRot, Time.deltaTime * 1.0f);
 
 
 
@@ -77,5 +79,13 @@ public class MenuScript : MonoBehaviour
   public void setCameraTarget (Vector3 pos, Quaternion rot){
     cameraTargetPos = pos;
     cameraTargetRot = rot;
+  }
+
+  public bool getCameraControl (){
+    return bCameraControl;
+  }
+
+  public void setCameraControl (bool pbCameraControl){
+    bCameraControl = pbCameraControl;
   }
 }
