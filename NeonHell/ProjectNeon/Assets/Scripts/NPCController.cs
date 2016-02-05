@@ -10,6 +10,7 @@ public class NPCController : MonoBehaviour {
 	public float fMass = 5.0f;
 	public bool canMove;
 	public GameObject placeCounter; // The networked object holding the placing counter
+    public GameObject mainTrack;
 
 	private int 		lap = 0;
 	private float 		fAccelDir = 0;
@@ -30,12 +31,13 @@ public class NPCController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		trackWaypoints = GameObject.FindWithTag("WList");
+        mainTrack = GameObject.Find("8track");
 		placeCounter = GameObject.FindWithTag("placeCounter");
 		finished = false;
 		rb = GetComponent<Rigidbody> ();
 		rb.angularDrag = 3.0f;
-		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
+		currentPoint = mainTrack.transform.GetChild(0).GetChild(0).FindChild("Waypoints").GetChild(0).gameObject.GetComponent<WaypointController>().getPoint();
+        print(currentPoint.name);
 		direction = new GameObject();
 		//target = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint ().transform;
 	}
@@ -57,15 +59,21 @@ public class NPCController : MonoBehaviour {
 		//Update the direction that the NPC needs to go
 		direction.transform.position = transform.position;
 		direction.transform.eulerAngles = transform.eulerAngles;
-		direction.transform.LookAt(currentPoint.GetComponent<WaypointController>().getNextPoint().transform);
-
+        if (currentPoint.GetComponent<WaypointController>().bSplit)
+        {
+            direction.transform.LookAt(currentPoint.GetComponent<WaypointController>().getNextPoint()[1].transform);
+        }
+        else
+        {
+            direction.transform.LookAt(currentPoint.GetComponent<WaypointController>().getNextPoint()[0].transform);
+        }
 		//Rotation vector to help keep ships upright
 		Vector3 newRotation;
 
 		//Find the angle the ship is going and where it wants to go relative to eachother
 		Vector3 tProj = direction.transform.forward - (Vector3.Dot(direction.transform.forward, gameObject.transform.up)/Mathf.Pow(Vector3.Magnitude(gameObject.transform.up),2)) * gameObject.transform.up;
         degOffset = Mathf.Acos(Vector3.Dot(tProj, gameObject.transform.forward) / (Vector3.Magnitude(tProj) * Vector3.Magnitude(gameObject.transform.forward)));
-        print("degOff: " + degOffset);
+        //print("degOff: " + degOffset);
         //Is the ship hovering close enough to the ground?
 		if (Physics.Raycast (transform.position, - this.transform.up, 4.0f)) {
 			rb.drag = 1;
@@ -117,12 +125,20 @@ public class NPCController : MonoBehaviour {
 
 	public void nextPoint(){
 		//If we hit the finish line, increment laps and such
-		if (currentPoint.GetComponent<WaypointController> ().getNextPoint ().Equals (trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint ())) {
+		/*if (currentPoint.GetComponent<WaypointController> ().getNextPoint ().Equals (trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint ())) {
 			lap ++;
 			if(lap >= 2)
 				canMove = false;
-		} // End if (currentPoint.GetComponent ...
-		currentPoint = currentPoint.GetComponent<WaypointController> ().getNextPoint ();
+		} // End if (currentPoint.GetComponent ...*/
+        if (!currentPoint.GetComponent<WaypointController>().bSplit)
+        {
+            currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint()[0];
+        }
+        else
+        {
+            currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint()[1];
+        }
+        print("Next waypoint: " + currentPoint.GetComponent<WaypointController>().getNextPoint()[0].transform.gameObject.name);
 	} //End public void nextPoint()
 	
 	public int getLap(){
@@ -145,10 +161,14 @@ public class NPCController : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		switch(other.tag){
 		case "Waypoint":
-                if (other.gameObject.Equals(currentPoint.GetComponent<WaypointController>().getNextPoint()))
+                for (int i = 0; i < currentPoint.GetComponent<WaypointController>().getNextPoint().Length; i++)
                 {
-                    nextPoint();
-                    GetComponent<ThrusterController>().setbMagnetize(other.gameObject.GetComponent<WaypointController>().getbMagnetize());
+                    if (other.gameObject.Equals(currentPoint.GetComponent<WaypointController>().getNextPoint()[i]))
+                    {
+                        print("COLLIDED WITH NEXT WAYPOINT");
+                        nextPoint();
+                        GetComponent<ThrusterController>().setbMagnetize(other.gameObject.GetComponent<WaypointController>().getbMagnetize());
+                    }
                 }
 			break;
 		case "KillPlane":
