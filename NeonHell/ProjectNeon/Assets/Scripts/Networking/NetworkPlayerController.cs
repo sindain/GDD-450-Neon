@@ -138,7 +138,7 @@ public class NetworkPlayerController : NetworkBehaviour
             if (lap >= 2)
                 print("You win");
         } // End if (currentPoint.GetComponent ...
-        currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint();
+        //currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint();
     } //End public void nextPoint()
 
     //-----------------------------------------------------------------------------------------------------------------

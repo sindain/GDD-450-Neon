@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.Networking;
-public class ShipAnimator : NetworkBehaviour {
+public class ShipAnimator : MonoBehaviour {
 	private Animator anim;
 	private Rigidbody rb;
 	// Use this for initialization

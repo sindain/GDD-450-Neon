@@ -132,13 +132,13 @@ public class NPCController : MonoBehaviour {
 		} // End if (currentPoint.GetComponent ...*/
         if (!currentPoint.GetComponent<WaypointController>().bSplit)
         {
-            currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint()[0];
+            //currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint()[0];
         }
         else
         {
-            currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint()[1];
+            //currentPoint = currentPoint.GetComponent<WaypointController>().getNextPoint()[1];
         }
-        print("Next waypoint: " + currentPoint.GetComponent<WaypointController>().getNextPoint()[0].transform.gameObject.name);
+        //print("Next waypoint: " + currentPoint.GetComponent<WaypointController>().getNextPoint()[0].transform.gameObject.name);
 	} //End public void nextPoint()
 	
 	public int getLap(){

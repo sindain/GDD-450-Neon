@@ -64,8 +64,8 @@ public class PlayerController : MonoBehaviour {
 		currentBoost = maxBoost;
         fThrustCurrent = 0.0f;
 		PlayerPrefs.SetInt ("laps", 0);
-        trackWaypoints = GameObject.FindWithTag("WList");
-		currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
+        //trackWaypoints = GameObject.FindWithTag("WList");
+		//currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint();
 		rb = GetComponent<Rigidbody> ();
 		rb.angularDrag = 3.0f;
         canMove = false;
@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour {
 			if(lap >= 2)
 				print ("You win");
 		} // End if (currentPoint.GetComponent ...
-		currentPoint = currentPoint.GetComponent<WaypointController> ().getNextPoint ();
+		//currentPoint = currentPoint.GetComponent<WaypointController> ().getNextPoint ();
 	} //End public void nextPoint()
 
 	//-----------------------------------------------------------------------------------------------------------------
