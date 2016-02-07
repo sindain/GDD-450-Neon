@@ -6,7 +6,12 @@ using System.Collections;
 public class GameManager : NetworkManager
 {
   public GameObject[] players;
+
   private readonly int PLAYER_COUNT = 8;
+  private int iRaceCounter;
+  private string[] circuitScenes = new string[3]{"CitySmall", "CitySmall", "CityMed"};
+  private string[] trackNames = new string[3]{"InfTrack", "T-Track", "OverUnder"};
+
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
   //Description:  Default start function, nothing special here
@@ -14,6 +19,7 @@ public class GameManager : NetworkManager
   //Returns:      NA
   //--------------------------------------------------------------------------------------------------------------------
   void Start (){
+    iRaceCounter = 0;
     players = new GameObject[PLAYER_COUNT];
   }
     
@@ -77,11 +83,14 @@ public class GameManager : NetworkManager
   //Returns:
   //--------------------------------------------------------------------------------------------------------------------
   public void StopMultiplayerServices (){
+    NetworkServer.DisconnectAll ();
+    NetworkServer.Reset ();
+
 //    if (matchMaker.isActiveAndEnabled)
 //      StopMatchMaker ();
 //    if (NetworkManager.singleton.isActiveAndEnabled) {
-//      NetworkManager.singleton.StopHost ();
-//      NetworkManager.singleton.StopClient ();
+//      //NetworkManager.singleton.StopHost ();
+//      //NetworkManager.singleton.StopClient ();
 //    }
 
   }
@@ -167,12 +176,99 @@ public class GameManager : NetworkManager
     if (!allReady)
       return;
     
+    changeScene ();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  public void checkRaceDone(){
+    bool bDone = true; //Start pessimistic
+    foreach(GameObject p in players)
+      if(p != null){
+        if (!p.GetComponent<NetPlayer> ().bDoneRacing)
+          bDone = false;          
+      }
+
+    if (!bDone)
+      return;
+
+    //TODO:  Insert end race screen and transition phase
+
+    //Move to next scene
+    iRaceCounter++;
+    if(iRaceCounter >= 3){
+      foreach (GameObject player in players)
+        if (player != null) {
+          NetPlayer playerScript = player.GetComponent<NetPlayer> ();
+          NetworkManager.singleton.StopClient ();
+          playerScript.RpcChangeScene ("_Main");
+        } // End if (player != null)
+    } //End if(iRaceCounter >= 3)
+      
+    changeScene ();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  private void changeScene(){
     foreach (GameObject player in players)
       if (player != null) {
         NetPlayer playerScript = player.GetComponent<NetPlayer> ();
-        playerScript.RpcChangeScene ("TestScene02");
-        playerScript.RpcRaceSetup ("Track01");
+        playerScript.RpcChangeSceneSetTrack (circuitScenes[iRaceCounter], trackNames[iRaceCounter]);
         playerScript.RpcGiveCarControl ();
-      }
-  }
+        playerScript.ship.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+      } // End if (player != null)
+  } //End private void changeScene()
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  public void UpdatePlaces(){
+    for (int i = 0; i < players.Length; i++) {
+      //Don't process a player that doesn't exist
+      if (players [i] == null)
+        continue;
+      NetPlayer _NetPlayeri = players [i].GetComponent<NetPlayer> ();
+
+      //Don't change the place unless the player is actually racing
+      if (!_NetPlayeri.bIsRacing)
+        continue;
+
+      //loop through each other player and compare their number of waypoint hits.
+      int liNewPlace = 1;
+      for(int j = 0; j < players.Length; j++){
+        if (players [j] == null || j == i)
+          continue;
+        NetPlayer _NetPlayerj = players [j].GetComponent<NetPlayer> ();
+        int iDiff = _NetPlayerj.getNumWaypointsHit () - _NetPlayeri.getNumWaypointsHit ();
+
+        //If tied
+        if(iDiff == 0){
+          //Compare distance from the ships current waypoint
+          float iDistance = (_NetPlayeri.ship.transform.position - _NetPlayeri.ship.GetComponent<PlayerController> ().getCurrentPoint ().transform.position).magnitude;
+          float jDistance = (_NetPlayerj.ship.transform.position - _NetPlayerj.ship.GetComponent<PlayerController> ().getCurrentPoint ().transform.position).magnitude;
+          //If other is further from their waypoint
+          if (iDistance < jDistance)
+            liNewPlace++;
+        }
+        //If other is ahead
+        else if(iDiff > 0){
+          liNewPlace++;
+        } // End else if(iDiff > 0){
+      } //End for(int j = i; j < players.Length; j++)
+      _NetPlayeri.setPlace (liNewPlace);
+    } //End for (int i = 0; i < players.Length; i++) 
+  } // End public void UpdatePlaces()
+
 }

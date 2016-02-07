@@ -46,7 +46,7 @@ public class NPCController : MonoBehaviour {
 	void Update () {
 		if (lap >= 2&& !finished) {
 			//Incrementing the server place counter variable
-			placeCounter.GetComponent<PlaceCounter>().placeCounter = placeCounter.GetComponent<PlaceCounter>().placeCounter + 1;
+			//placeCounter.GetComponent<PlaceCounter>().placeCounter = placeCounter.GetComponent<PlaceCounter>().placeCounter + 1;
 			//finishing the player
 			finished = true;
 		}

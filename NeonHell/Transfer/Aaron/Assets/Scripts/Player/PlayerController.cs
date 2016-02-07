@@ -14,10 +14,8 @@ public class PlayerController : NetworkBehaviour
 {
 
   //Public variables
-  public float DispBoost = 100.0f;
-  public Camera playerCamera;
-  public float currentBoost;
   public int Polarity = 0;
+  public float DispBoost = 100.0f;
 
   //Private variables
   private int lap = 0;
@@ -27,47 +25,44 @@ public class PlayerController : NetworkBehaviour
   private float fAcceleration = 1.0f;
   private float fHandling = 1.0f;
   private float fMass = 1.0f;
-  private float maxBoost = 1.0f;
+  private float fCurrentEnergy;
+  private float fMaxEnergy = 1.0f;
   private float fSlerpTime = 0.0f;
   private float rotationVelocityX = 0.0f;
   private float rotationVelocityZ = 0.0f;
   private float fAirborneDistance = 3.0f;
   private float fRotationSeekSpeed = 0.6f;
-  private float fBoostTime = 0.5f;
+  private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
   private float fThrustCurrent;
+  private float fLastUpdTime;
+  private float fUpdTime = 333.33f;
   private bool bCameraControl = false;
-  public bool bCanMove = false;
+  private bool bIsRacing = false;
+  public  bool bCanMove = false;
   private bool bManuallyBoosting = false;
-  private GameObject currentPoint;
-  private GameObject trackWaypoints;
-  private GameObject weapon;
+  public GameObject currentPoint;
   private Vector3 vCameraOffset;
   private Rigidbody rb;
+  private NetPlayer _NetPlayer;
 
 
   // Use this for initialization
   void Start (){
     DontDestroyOnLoad (transform.gameObject);
+    fLastUpdTime = Time.time;
     Polarity = gameObject.GetComponent<ShipStats> ().Polarity;
     fMaxVelocity = gameObject.GetComponent<ShipStats> ().fMaxVelocity;
     fAcceleration = gameObject.GetComponent<ShipStats> ().fAcceleration;
     fHandling = gameObject.GetComponent<ShipStats> ().fHandling;
     fMass = gameObject.GetComponent<ShipStats> ().fMass;
-    maxBoost = gameObject.GetComponent<ShipStats> ().maxBoost;
+    fMaxEnergy = gameObject.GetComponent<ShipStats> ().fMaxEnergy;
     fSlerpTime = gameObject.GetComponent<ShipStats> ().fSlerpTime;
     vCameraOffset = gameObject.GetComponent<ShipStats> ().vCameraOffset;
-    playerCamera = Camera.main;
     lap = 0; 
-    currentBoost = maxBoost;
+    fCurrentEnergy = fMaxEnergy;
     fThrustCurrent = 0.0f;
     PlayerPrefs.SetInt ("laps", 0);
-    if (GameObject.FindWithTag ("WList") != null) {
-      trackWaypoints = GameObject.FindWithTag ("WList");
-      currentPoint = trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint ();
-    }
-    else
-      print ("Error PlayerController.cs-71: No track waypoints in scene were found");
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += fMass * 250.0f;
@@ -76,37 +71,22 @@ public class PlayerController : NetworkBehaviour
 	
   // Update is called once per frame
   void Update (){
-    if (!bCanMove)
+    if (!hasAuthority)
       return;
+    
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
-    if (Input.GetKeyDown (KeyCode.Alpha9)) {
-      if (Polarity == 0) {
-        return;
-      }
-      else if (Polarity == 1) {
-        Polarity = -1;
-        gameObject.GetComponent<ShipStats> ().Polarity = -1;
-      }
-      else if (Polarity == -1) {
-        Polarity = 1;
-        gameObject.GetComponent<ShipStats> ().Polarity = 1;
-      }
-    }
-    if (Input.GetKeyDown (KeyCode.Alpha1)) {
-      Polarity = -1;
-      gameObject.GetComponent<ShipStats> ().Polarity = -1;
-    }
-    if (Input.GetKeyDown (KeyCode.Alpha2)) {
-      Polarity = 1;
-      gameObject.GetComponent<ShipStats> ().Polarity = 1;
+
+    //Player 1 needs to update places every 1/3 of a second
+    if(bIsRacing && Time.time - fLastUpdTime < fUpdTime){
+        fLastUpdTime = Time.time;
+        CmdUpdPlaces ();
     }
 
-  }
-  //End void Update()
+  } //End void Update()
 
   //FixedUpdate is called every frame
   void FixedUpdate (){
-    if (!bCanMove)
+    if (!hasAuthority)
       return;
     if (bCameraControl) {
       Camera cam = Camera.main;
@@ -114,9 +94,10 @@ public class PlayerController : NetworkBehaviour
       cam.transform.rotation = Quaternion.Slerp (cam.transform.rotation, transform.rotation, fSlerpTime);
     }
 
-
-    if (currentBoost < 100f && !bManuallyBoosting) {
-      currentBoost += 5.0f * Time.deltaTime;
+    if (!bCanMove)
+      return;
+    if (fCurrentEnergy < 100f && !bManuallyBoosting) {
+      fCurrentEnergy += 5.0f * Time.deltaTime;
     }
     //Polarity=gameObject.GetComponent<ShipStats>().Polarity;
     //Vector help keep the ship upright
@@ -142,29 +123,31 @@ public class PlayerController : NetworkBehaviour
       fThrustCurrent = Mathf.Clamp (fThrustCurrent, 0, fAcceleration);
       float fPercThrustPower = Mathf.Log (c * fThrustCurrent + 1);
 
-      float flTotalThrust = fMaxVelocity;
+      float lfTotalThrust = fMaxVelocity;
 
-      if ((bManuallyBoosting && currentBoost >= 1f)) {
-        flTotalThrust = fMaxVelocity + 10.0f;
+      if ((bManuallyBoosting && fCurrentEnergy >= 0.0f)) {
+        lfTotalThrust = fMaxVelocity + 10.0f;
         fPercThrustPower = 1.0f;
         if (bManuallyBoosting) {
-          currentBoost -= 20.0f * Time.deltaTime;
+          fCurrentEnergy -= 20.0f * Time.deltaTime;
+          if (fCurrentEnergy < 0)
+            fCurrentEnergy = 0;
         }
 
       }
       if (Time.time <= fBoostTargetTime) {
         if (BoostType == 1) {
-          flTotalThrust = fMaxVelocity + 20.0f;
-          fPercThrustPower = 3.0f;
+          lfTotalThrust = fMaxVelocity + 100.0f;
+          fPercThrustPower = 1.0f;
         }
         else if (BoostType == -1) {
-          flTotalThrust = fMaxVelocity - 100.0f;
-          fPercThrustPower = .10f;
+          lfTotalThrust = fMaxVelocity - 100.0f;
+          //fPercThrustPower = .5f;
         }
       }
 
       //More force calculations
-      Vector3 forwardForce = transform.forward * flTotalThrust * fPercThrustPower * rb.mass;
+      Vector3 forwardForce = transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
       rb.AddForce (forwardForce);
 
       //Brake force
@@ -187,67 +170,6 @@ public class PlayerController : NetworkBehaviour
   // End void FixedUpdate()
 
   //-----------------------------------------------------------------------------------------------------------------
-  //Name:			nextPoint
-  //Description:	Sets the current point to the next point in the sequence.  Also checks for a lap
-  //Parameters:	NA
-  //Returns:		NA
-  //-----------------------------------------------------------------------------------------------------------------
-  public void nextPoint (){
-    //If we hit the finish line, increment laps and such
-    if (currentPoint.GetComponent<WaypointController> ().getNextPoint ().Equals (trackWaypoints.transform.GetChild (0).GetComponent<WaypointController> ().getPoint ())) {
-      lap++;
-      if (lap >= 2)
-        print ("You win");
-    } // End if (currentPoint.GetComponent ...
-    currentPoint = currentPoint.GetComponent<WaypointController> ().getNextPoint ();
-  }
-  //End public void nextPoint()
-
-  //-----------------------------------------------------------------------------------------------------------------
-  //Name:			getLap
-  //Description:  Gets the current lap
-  //Parameters:   NA
-  //Returns:      Int lap
-  //-----------------------------------------------------------------------------------------------------------------
-  public int getLap (){
-    return lap;
-  }
-  //End public int getLap()
-  //-----------------------------------------------------------------------------------------------------------------
-  //Name: 		SetLap
-  //Description:	Sets the lap variable to given parameter
-  //Parameters:	int pLap
-  //Return:		NA
-  //-----------------------------------------------------------------------------------------------------------------
-  public void setLap (int pLap){
-    lap = pLap;
-  }
-  // End public void setLap(int pLap)
-
-  public float getAirborneDistance (){
-    return fAirborneDistance;
-  }
-
-  public bool getCameraControl (){
-    return bCameraControl;
-  }
-
-  public void setCameraControl (bool pbCameraControl){
-    bCameraControl = pbCameraControl;
-  }
-
-  public bool getCanMove (){
-    return bCanMove;
-  }
-
-  public void setCanMove (bool pbCanMove){
-    bCanMove = pbCanMove;
-  }
-
-  public void ShutDown (){
-		
-  }
-  //-----------------------------------------------------------------------------------------------------------------
   //Name: 		OnTriggerEnter
   //Description:	Handles events that occure when entering a trigger
   //Parameters:   Collider other - What the object has collided with
@@ -255,9 +177,19 @@ public class PlayerController : NetworkBehaviour
   void OnTriggerEnter (Collider other){
     switch (other.tag) {
     case "Waypoint":
-      if (other.gameObject.Equals (currentPoint.GetComponent<WaypointController> ().getNextPoint ())) {
-        nextPoint ();
-        GetComponent<ThrusterController> ().setbMagnetize (other.gameObject.GetComponent<WaypointController> ().getbMagnetize ());
+      GameObject[] possiblePoints = currentPoint.GetComponent<WaypointController> ().nextPoint;
+      for(int i = 0; i < possiblePoints.Length; i++){
+        if(other.gameObject.Equals(possiblePoints[i])){
+          //Reassign current point
+          currentPoint = possiblePoints [i];
+          GetComponent<ThrusterController> ().setbMagnetize (currentPoint.GetComponent<WaypointController> ().getbMagnetize ());
+          //Increment waypoint count
+          WaypointController _WaypointController = currentPoint.GetComponent<WaypointController> ();
+          _NetPlayer.incNumWaypointsHit (_WaypointController.iWeight);
+          //If just hit the finish line, increment the lap counter.
+          if (_WaypointController.bFinishLine)
+            _NetPlayer.incLap ();
+        }
       }
       break;
     case "KillPlane":
@@ -267,65 +199,26 @@ public class PlayerController : NetworkBehaviour
       gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
       break;
     case "+Booster":
-			//fBoostTargetTime = Time.time + fBoostTime;
-      if (Polarity == 1) {
-        fBoostTargetTime = Time.time + fBoostTime;
-        BoostType = 1;
-      }
-      else if (Polarity == -1) {
-        fBoostTargetTime = Time.time + fBoostTime;
-        BoostType = -1;
-      }
-
+      fBoostTargetTime = Time.time + fBoostTime;
+      BoostType = Polarity == 1 ? 1 : -1;
       break;
     case "-Booster":
-      if (Polarity == -1) {
-        fBoostTargetTime = Time.time + fBoostTime;
-        BoostType = 1;
-      }
-      else if (Polarity == 1) {
-        fBoostTargetTime = Time.time + fBoostTime;
-        BoostType = -1;
-      }
+      fBoostTargetTime = Time.time + fBoostTime;
+      BoostType = Polarity == -1 ? 1 : -1;
       break;
     case "SwitchGate":
-      if (Polarity == 0) {
+      if (Polarity == 0)
         return;
-      }
-      else if (Polarity == 1) {
-        Polarity = -1;
-        gameObject.GetComponent<ShipStats> ().Polarity = -1;
-      }
-      else if (Polarity == -1) {
-        Polarity = 1;
-        gameObject.GetComponent<ShipStats> ().Polarity = 1;
-      }
+      Polarity = Polarity * -1;
+      gameObject.GetComponent<ShipStats> ().Polarity = Polarity;
       break;
     case "PosGate":
-      if (Polarity == 0) {
-        Polarity = 1;
-        gameObject.GetComponent<ShipStats> ().Polarity = 1;
-      }
-      else if (Polarity == -1) {
-        Polarity = 1;
-        gameObject.GetComponent<ShipStats> ().Polarity = 1;
-      }
-      else if (Polarity == 1) {
-        return;
-      }
+      Polarity = 1;
+      gameObject.GetComponent<ShipStats> ().Polarity = 1;
       break;
     case "NegGate":
-      if (Polarity == 0) {
-        Polarity = -1;
-        gameObject.GetComponent<ShipStats> ().Polarity = -1;
-      }
-      else if (Polarity == 1) {
-        Polarity = -1;
-        gameObject.GetComponent<ShipStats> ().Polarity = -1;
-      }
-      else if (Polarity == -1) {
-        return;
-      }
+      Polarity = -1;
+      gameObject.GetComponent<ShipStats> ().Polarity = -1;
       break;
     /*case "PosMine":
 			if (Polarity == 0) {
@@ -355,15 +248,6 @@ public class PlayerController : NetworkBehaviour
 			break;*/
 
     }
-    /*if (other.tag == "Waypoint" && other.gameObject.Equals(currentPoint.GetComponent<WaypointController> ().getNextPoint ()))
-			nextPoint ();
-		if (other.tag == "KillPlane") {
-			transform.position= new Vector3(currentPoint.transform.position.x,currentPoint.transform.position.y,currentPoint.transform.position.z);
-			transform.rotation= new Quaternion(currentPoint.transform.rotation.x,currentPoint.transform.rotation.y,currentPoint.transform.rotation.z,currentPoint.transform.rotation.w);
-			gameObject.GetComponent<Rigidbody>().velocity=Vector3.zero;
-			gameObject.GetComponent<Rigidbody>().angularVelocity=Vector3.zero;
-		}*/
-
   }
   // End void OnTriggerEnter(Collider other)
 
@@ -375,9 +259,7 @@ public class PlayerController : NetworkBehaviour
   //                                        Note: The current points NextPoint variable is the object the player
   //												should be moving towards.
   //-----------------------------------------------------------------------------------------------------------------
-  public GameObject getCurrentPoint (){
-    return currentPoint;
-  }
+
   //End public GameObject getCurrentPoint
 
   [ClientRpc]
@@ -385,4 +267,33 @@ public class PlayerController : NetworkBehaviour
     DontDestroyOnLoad (transform.gameObject);
   }
 
+  [Command]
+  public void CmdUpdPlaces(){
+    GameObject.Find ("GameManager").GetComponent<GameManager> ().UpdatePlaces ();
+  }
+
+//-------------------------------------Getters and Setters--------------------------------------------------------------
+
+  public int getLap (){return lap;}
+  public void setLap (int pLap){lap = pLap;}
+
+  public float getAirborneDistance (){return fAirborneDistance;}
+
+  public float getDisplayEnergy(){return fCurrentEnergy / fMaxEnergy * 100;}
+
+  public bool getCameraControl (){return bCameraControl;}
+  public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
+
+  public bool getCanMove (){return bCanMove;}
+  public void setCanMove (bool pbCanMove){bCanMove = pbCanMove;}
+
+  public bool getIsRacing(){return bIsRacing;}
+  public void setIsRacing(bool pbIsRacing){bIsRacing = pbIsRacing;}
+
+  public GameObject getCurrentPoint (){return currentPoint;}  
+  public void setCurrentPoint(GameObject point){currentPoint = point;}
+
+  public NetPlayer getNetPlayer(){return _NetPlayer;}
+  public void setNetPlayer(NetPlayer pNetPlayer){_NetPlayer = pNetPlayer;}
+ 
 }
