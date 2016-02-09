@@ -39,12 +39,12 @@ public class PlayerController : NetworkBehaviour
   private float fUpdTime = 333.33f;
   private bool bCameraControl = false;
   private bool bIsRacing = false;
-  public  bool bCanMove = false;
+  [SyncVar] public bool bCanMove = false;
   private bool bManuallyBoosting = false;
   public GameObject currentPoint;
   private Vector3 vCameraOffset;
   private Rigidbody rb;
-  private NetPlayer _NetPlayer;
+  public NetPlayer _NetPlayer;
 
 
   // Use this for initialization
@@ -285,7 +285,8 @@ public class PlayerController : NetworkBehaviour
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
 
   public bool getCanMove (){return bCanMove;}
-  public void setCanMove (bool pbCanMove){bCanMove = pbCanMove;}
+  public void setCanMove (bool pbCanMove){bCanMove = pbCanMove; RpcSetCanMove(pbCanMove);}
+  [ClientRpc] public void RpcSetCanMove(bool pbCanMove){bCanMove = pbCanMove;}
 
   public bool getIsRacing(){return bIsRacing;}
   public void setIsRacing(bool pbIsRacing){bIsRacing = pbIsRacing;}

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : NetworkManager
@@ -204,12 +205,23 @@ public class GameManager : NetworkManager
       foreach (GameObject player in players)
         if (player != null) {
           NetPlayer playerScript = player.GetComponent<NetPlayer> ();
-          NetworkManager.singleton.StopClient ();
-          playerScript.RpcChangeScene ("_Main");
+          foreach(GameObject p in players){
+            if(p == null)
+              continue;
+            NetworkServer.Destroy(p.GetComponent<NetPlayer>().ship);
+            NetworkServer.DestroyPlayersForConnection(p.GetComponent<NetworkIdentity>().connectionToClient);
+          }
+          //Network.Disconnect();
+          NetworkServer.DisconnectAll();
+          StopMatchMaker();
+          NetworkManager.singleton.StopHost();
+          SceneManager.LoadScene("_Main");
+          //NetworkManager.singleton.StopClient ();
+          //playerScript.RpcChangeScene ("_Main");
         } // End if (player != null)
     } //End if(iRaceCounter >= 3)
-      
-    changeScene ();
+    else
+      changeScene ();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -267,7 +279,8 @@ public class GameManager : NetworkManager
           liNewPlace++;
         } // End else if(iDiff > 0){
       } //End for(int j = i; j < players.Length; j++)
-      _NetPlayeri.setPlace (liNewPlace);
+      if(!_NetPlayeri.bDoneRacing)
+        _NetPlayeri.setPlace (liNewPlace);
     } //End for (int i = 0; i < players.Length; i++) 
   } // End public void UpdatePlaces()
 

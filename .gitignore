@@ -6,3 +6,6 @@ NeonHell/ProjectNeon/*.sln
 NeonHell/ProjectNeon/*.userprefs
 NeonHell/ProjectNeon/*.csproj
 NeonHell/ProjectNeon/Temp
+NeonHell/ProjectNeon/testBuild_Data
+NeonHell/ProjectNeon/testBuild.exe
+*.pdb
