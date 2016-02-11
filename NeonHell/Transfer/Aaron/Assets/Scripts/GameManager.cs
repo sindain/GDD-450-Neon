@@ -1,14 +1,18 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.Networking.Match;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : NetworkManager
 {
+  public enum GAME_MODE {None=0, Singleplayer, Multiplayer};
+
   public GameObject[] players;
 
   private readonly int PLAYER_COUNT = 8;
   private int iRaceCounter;
+  public GAME_MODE GameMode;
   private string[] circuitScenes = new string[3]{"CitySmall", "CitySmall", "CityMed"};
   private string[] trackNames = new string[3]{"InfTrack", "T-Track", "OverUnder"};
 
@@ -20,7 +24,9 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   void Start (){
     iRaceCounter = 0;
+    GameMode = GAME_MODE.None;
     players = new GameObject[PLAYER_COUNT];
+    //returnToMain ();
   }
     
   //--------------------------------------------------------------------------------------------------------------------
@@ -36,12 +42,23 @@ public class GameManager : NetworkManager
     for (int i = 0; i < PLAYER_COUNT; i++) {
       if (players [i] == null) {
         players [i] = player;
-        player.GetComponent<NetPlayer> ().Setup (i);
+        player.GetComponent<NetPlayer> ().Setup (i, true);
         break;
-      }
-    }
-  }
-  //End public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId)
+      } //End if (players [i] == null)
+    } // End for (int i = 0; i < PLAYER_COUNT; i++)
+
+    //If Single player, populate other seats with NPC's
+    if(GameMode == GAME_MODE.Singleplayer){
+      for(int i = 1; i<PLAYER_COUNT; i++){
+        GameObject NpcPlayer = (GameObject)Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        NetPlayer _NetPlayer = NpcPlayer.GetComponent<NetPlayer> ();
+        _NetPlayer.connection = conn;
+        NetworkServer.SpawnWithClientAuthority (NpcPlayer, conn);
+        players [i] = NpcPlayer;
+        _NetPlayer.Setup (i, false);
+      } //End for(int i = 1; i<PLAYER_COUNT; i++)
+    } //End if(GameMode == GAME_MODE.Singleplayer)
+  }//End public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId)
 
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         OnServerRemovePlayer
@@ -62,7 +79,6 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnMatchList (ListMatchResponse matchList){
     GameObject.Find ("MainMenu").transform.FindChild ("MultiplayerLobby").GetComponent<MultiplayerLobby> ().matchResponse (matchList);
-    //base.OnMatchList(matchList);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -76,23 +92,8 @@ public class GameManager : NetworkManager
     matchMaker.ListMatches (0, 5, "", OnMatchList);
   }
 
-  //--------------------------------------------------------------------------------------------------------------------
-  //Name:
-  //Description:
-  //Parameters:
-  //Returns:
-  //--------------------------------------------------------------------------------------------------------------------
-  public void StopMultiplayerServices (){
-    NetworkServer.DisconnectAll ();
-    NetworkServer.Reset ();
-
-//    if (matchMaker.isActiveAndEnabled)
-//      StopMatchMaker ();
-//    if (NetworkManager.singleton.isActiveAndEnabled) {
-//      //NetworkManager.singleton.StopHost ();
-//      //NetworkManager.singleton.StopClient ();
-//    }
-
+  public void StopMatchmaking(){
+    StopMatchMaker ();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -146,7 +147,18 @@ public class GameManager : NetworkManager
   //Returns:
   //--------------------------------------------------------------------------------------------------------------------
   public void StartLocalGame (){
+    GameMode = GAME_MODE.Singleplayer;
     NetworkManager.singleton.StartHost ();
+  }
+
+  public void StopLocalGame(){
+    NetworkManager.singleton.StopHost ();
+  }
+
+  public void returnToMain(){
+    if (NetworkManager.singleton.isNetworkActive)
+      StopLocalGame ();
+    GameMode = GAME_MODE.None;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -203,13 +215,24 @@ public class GameManager : NetworkManager
     if(iRaceCounter >= 3){
       foreach (GameObject player in players)
         if (player != null) {
-          NetPlayer playerScript = player.GetComponent<NetPlayer> ();
-          NetworkManager.singleton.StopClient ();
-          playerScript.RpcChangeScene ("_Main");
+//          NetPlayer playerScript = player.GetComponent<NetPlayer> ();
+          foreach(GameObject p in players){
+            if(p == null)
+              continue;
+            NetworkServer.Destroy(p.GetComponent<NetPlayer>().ship);
+            NetworkServer.DestroyPlayersForConnection(p.GetComponent<NetworkIdentity>().connectionToClient);
+          }
+          //Network.Disconnect();
+//          NetworkServer.DisconnectAll();
+//          StopMatchMaker();
+//          NetworkManager.singleton.StopHost();
+//          SceneManager.LoadScene("_Main");
+//          NetworkManager.singleton.StopClient ();
+//          playerScript.RpcChangeScene ("_Main");
         } // End if (player != null)
     } //End if(iRaceCounter >= 3)
-      
-    changeScene ();
+    else
+      changeScene ();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -267,8 +290,13 @@ public class GameManager : NetworkManager
           liNewPlace++;
         } // End else if(iDiff > 0){
       } //End for(int j = i; j < players.Length; j++)
-      _NetPlayeri.setPlace (liNewPlace);
+      if(!_NetPlayeri.bDoneRacing)
+        _NetPlayeri.setPlace (liNewPlace);
     } //End for (int i = 0; i < players.Length; i++) 
   } // End public void UpdatePlaces()
+
+  //-------------------------------------------------------------------------------------------------------------------
+  public GAME_MODE getGameMode(){return GameMode;}
+  public void setGameMode(GAME_MODE piGameMode){GameMode = piGameMode;}
 
 }

@@ -18,17 +18,14 @@ public class MenuScript : MonoBehaviour
   //private bool fadeToBlack;
   //private bool beingHandled = false;
   private bool bCameraControl = true;
-  private Vector3 cameraTargetPos;
-  private Quaternion cameraTargetRot;
+  public Vector3 cameraTargetPos;
+  public Quaternion cameraTargetRot;
   private Vector3 vCamPosRef;
 
     
   void Start (){
-    //fadeToScreen=true;
-    //fadeToBlack = false;
     cameraTargetPos = new Vector3 (13.0f, 11.0f, 44.0f);
     cameraTargetRot.eulerAngles = new Vector3 (0.0f, 270.0f, 0.0f);
-    // DontDestroyOnLoad (Camera.main);
   }
 
   void Update (){
@@ -79,6 +76,11 @@ public class MenuScript : MonoBehaviour
   public void setCameraTarget (Vector3 pos, Quaternion rot){
     cameraTargetPos = pos;
     cameraTargetRot = rot;
+  }
+
+  public void resetCameraTarget(){
+    cameraTargetPos = new Vector3 (13.0f, 11.0f, 44.0f);
+    cameraTargetRot.eulerAngles = new Vector3 (0.0f, 270.0f, 0.0f);
   }
 
   public bool getCameraControl (){

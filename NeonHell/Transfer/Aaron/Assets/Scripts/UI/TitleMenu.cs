@@ -6,7 +6,6 @@ public class TitleMenu : MonoBehaviour
 
   // Use this for initialization
   void Start (){
-	
   }
 
   // Update is called once per frame
@@ -15,14 +14,13 @@ public class TitleMenu : MonoBehaviour
   }
 
   public void onSinglePlayerClicked (){
-    //transform.parent.GetComponent<MenuScript>().setCameraTarget(GameObject.Find("Bays").transform.GetChild(0).transform.FindChild("CameraPosition").transform);
+    GameObject.Find ("GameManager").GetComponent<GameManager> ().StartLocalGame ();
     transform.parent.FindChild ("VehicleSelection").gameObject.SetActive (true);
-    //Update camera target transform
     gameObject.SetActive (false);
-
   }
 
   public void onMultiPlayerClicked (){
+    GameObject.Find ("GameManager").GetComponent<GameManager> ().StartMatchMaking ();
     transform.parent.FindChild ("MultiplayerLobby").gameObject.SetActive (true);
     gameObject.SetActive (false);
   }
@@ -33,7 +31,7 @@ public class TitleMenu : MonoBehaviour
   }
 
   public void onCreditsClicked (){
-    transform.parent.FindChild ("Controls").gameObject.SetActive (true);
+    transform.parent.FindChild ("Credits").gameObject.SetActive (true);
     gameObject.SetActive (false);
   }
 

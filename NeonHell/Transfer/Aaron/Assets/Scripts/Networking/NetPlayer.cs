@@ -7,20 +7,20 @@ public class NetPlayer : NetworkBehaviour
 {
   [SyncVar] public int iShipChoice = -1;
   [SyncVar] public int iPlayerNum = -1;
-  [SyncVar (hook="CmdUpdNumWaypointsHit")] public int iNumWaypointsHit = 0;
-  [SyncVar(hook="CmdUpdLap")] public int iLap = 0;
+  [SyncVar] public int iNumWaypointsHit = 0;
+  [SyncVar] public int iLap = 0;
   [SyncVar] public int iPlace = 0;
   [SyncVar] public int iPoints = 0;
   [SyncVar] public bool bReady = false;
   [SyncVar] public bool bIsRacing = false;
-
-  public bool bDoneRacing = false;
+  [SyncVar] public bool bDoneRacing = false;
+  [SyncVar] public bool bIsHuman = false;
   public NetworkConnection connection;
-  public GameObject ship;
+  [SyncVar] public GameObject ship;
 
   private string trackName;
 
-  void Start (){ print ("test");
+  void Start (){
     DontDestroyOnLoad (transform.gameObject);
   }
 
@@ -33,24 +33,40 @@ public class NetPlayer : NetworkBehaviour
   public void setPlayerNum (int piPlayerNum){iPlayerNum = piPlayerNum;}
 
   public int getLap (){return iLap;}
-  public void incLap(){iLap++;}
+  public void incLap(){
+    if(!isLocalPlayer)
+      return;
+    iLap++;
+    CmdUpdLap(iLap);
+  }
   public void setLap (int piLap){iLap = piLap;}
 
   public int getPlace (){return iPlace;}
   public void setPlace (int piPlace){iPlace = piPlace;}
 
   public int getNumWaypointsHit(){return iNumWaypointsHit;}
-  public void incNumWaypointsHit(int piVal){iNumWaypointsHit += piVal;}
-  public void setNumWaypointsHit(int piNumWaypointsHit){iNumWaypointsHit = piNumWaypointsHit;}
-
-  void Update(){
-    
+  public void incNumWaypointsHit(int piVal){
+    if(!isLocalPlayer)
+      return;
+    iNumWaypointsHit += piVal;
+    CmdUpdNumWaypointsHit(iNumWaypointsHit);
+  }
+  public void setNumWaypointsHit(int piNumWaypointsHit){
+    if(!isLocalPlayer)
+      return;
+    iNumWaypointsHit = piNumWaypointsHit;
+    CmdUpdNumWaypointsHit(iNumWaypointsHit);
   }
 
-  public void Setup (int piPlayerNum){
+  public bool getIsHuman(){return bIsHuman;}
+  public void setIsHuman(bool pbIsHuman){bIsHuman = pbIsHuman;}
+
+  public void Setup (int piPlayerNum, bool pbIsHuman){
     setPlayerNum (piPlayerNum);
     setPlace (piPlayerNum+1);
+    setIsHuman (pbIsHuman);
     RpcSetup (piPlayerNum);
+    CmdChangeShip (Random.Range (0, 7));
   }
 
   public void setupRace(){
@@ -64,10 +80,12 @@ public class NetPlayer : NetworkBehaviour
     //Set our ship in its correct spawn location
     ship.transform.position = spawnPosition.position;
     ship.transform.rotation = spawnPosition.rotation;
+    ship.GetComponent<Rigidbody>().velocity = Vector3.zero;
     //Find and set first waypoint
     ship.GetComponent<PlayerController> ().setCurrentPoint (track.transform.GetChild (0).FindChild ("start_finish").FindChild ("Waypoints").GetChild (0).gameObject);
     //TODO: Move this to its appropriate place later.
     bIsRacing = true;
+    bDoneRacing = false;
     ship.GetComponent<PlayerController> ().setIsRacing (bIsRacing);
     iLap = 0;
     iNumWaypointsHit = 0;
@@ -99,8 +117,9 @@ public class NetPlayer : NetworkBehaviour
                            selectedShip,
                            spawnTrans.position,
                            spawnTrans.rotation);
-    newShip.GetComponent<PlayerController> ().setNetPlayer (this);
+    //newShip.GetComponent<PlayerController> ().setNetPlayer (this);
     NetworkServer.SpawnWithClientAuthority (newShip, connectionToClient);
+    ship = newShip;
     RpcSetShip (newShip);
     RpcChangePortrait (iPlayerNum, piChoice);
   }
@@ -118,7 +137,7 @@ public class NetPlayer : NetworkBehaviour
   [Command] public void CmdUpdLap(int piLaps){
     iLap = piLaps;
     //Check if player finished the race
-    if(iLap >= 2){
+    if(iLap >= GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps){
       ship.GetComponent<PlayerController> ().setCanMove (false);
       bDoneRacing = true;
       iPoints = iPlace;
@@ -160,7 +179,8 @@ public class NetPlayer : NetworkBehaviour
 
   [ClientRpc]
   public void RpcSetShip (GameObject pNewShip){
-    ship = pNewShip;
+    //ship = pNewShip;
+    pNewShip.GetComponent<PlayerController>()._NetPlayer = this;
   }
 
   [ClientRpc]

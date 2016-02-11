@@ -24,27 +24,21 @@ public class VehicleSelection : MonoBehaviour
     }	
   }
 
+  public void onBackClicked(){
+    GameObject.Find ("GameManager").GetComponent<GameManager> ().returnToMain ();
+    transform.parent.FindChild ("Title").gameObject.SetActive (true);
+    gameObject.SetActive (false);
+  }
+
   //--------------------------------------------------------------------------------------------------------------------
   //Name:
   //Description:
   //Parameters:
   //Returns:
   //--------------------------------------------------------------------------------------------------------------------
-  public void changePlayerPortrait (int piPlayer, int piChoice){
-    Color[] colors = new Color[11] {
-      Color.red, 
-      Color.green, 
-      Color.blue, 
-      Color.cyan, 
-      Color.yellow, 
-      Color.magenta, 
-      new Color (1, 113.0f / 255.0f, 0), 
-      Color.grey, 
-      Color.grey,
-      Color.grey,
-      Color.grey
-    };
-    transform.FindChild ("Players").GetChild (piPlayer).GetComponent<Image> ().color = colors [piChoice];
+  public void changePlayerPortrait (int piPlayer, int piChoice){    
+    transform.FindChild("Players").GetChild(piPlayer).GetComponent<Image>().sprite = 
+      transform.FindChild("Vehicles").GetChild(piChoice).GetComponent<Image>().sprite;
   }
 
   public void onReadyClicked (){
