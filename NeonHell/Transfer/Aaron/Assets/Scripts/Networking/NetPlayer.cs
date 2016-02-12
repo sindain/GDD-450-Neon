@@ -5,6 +5,9 @@ using System.Collections;
 
 public class NetPlayer : NetworkBehaviour
 {
+  public enum PLAYER_STATE {None = 0, Testing, VehicleSelection, VehicleReady, LevelSelection,
+                            LevelReady, LoadingScene, SceneLoaded, RaceReady, Racing, RaceFinished};
+
   [SyncVar] public int iShipChoice = -1;
   [SyncVar] public int iPlayerNum = -1;
   [SyncVar] public int iNumWaypointsHit = 0;
@@ -18,10 +21,12 @@ public class NetPlayer : NetworkBehaviour
   public NetworkConnection connection;
   [SyncVar] public GameObject ship;
 
+  [SyncVar] public PLAYER_STATE PlayerState;
   private string trackName;
 
   void Start (){
     DontDestroyOnLoad (transform.gameObject);
+    PlayerState = PLAYER_STATE.None;
   }
 
   public void setShipChoice (int piChoice){CmdChangeShip (piChoice);}
@@ -65,8 +70,10 @@ public class NetPlayer : NetworkBehaviour
     setPlayerNum (piPlayerNum);
     setPlace (piPlayerNum+1);
     setIsHuman (pbIsHuman);
-    RpcSetup (piPlayerNum);
-    CmdChangeShip (Random.Range (0, 7));
+    if (pbIsHuman)
+      RpcSetup (piPlayerNum);
+    else
+      ChangeShip (Random.Range (0, 7));
   }
 
   public void setupRace(){
@@ -104,30 +111,42 @@ public class NetPlayer : NetworkBehaviour
 
   void OnLevelWasLoaded(int level) {
     setupRace ();
+    CmdChangeState (PLAYER_STATE.Racing);
   }
 
   [Command]
   private void CmdChangeShip (int piChoice){
+    ChangeShip (piChoice);
+  }
+
+  private void ChangeShip(int piChoice){
     iShipChoice = piChoice;
     if (ship != null)
       NetworkServer.Destroy (ship);
     GameObject selectedShip = GameObject.Find ("GameManager").GetComponent<GameManager> ().spawnPrefabs.ToArray () [piChoice];
     Transform spawnTrans = GameObject.Find ("Garage").transform.FindChild ("VehicleSpawnLocations").transform.GetChild (iPlayerNum).transform;
     GameObject newShip = (GameObject)Instantiate (
-                           selectedShip,
-                           spawnTrans.position,
-                           spawnTrans.rotation);
-    //newShip.GetComponent<PlayerController> ().setNetPlayer (this);
-    NetworkServer.SpawnWithClientAuthority (newShip, connectionToClient);
+      selectedShip,
+      spawnTrans.position,
+      spawnTrans.rotation);
+    NetworkServer.SpawnWithClientAuthority (newShip, bIsHuman ? connectionToClient : connection);
     ship = newShip;
     RpcSetShip (newShip);
     RpcChangePortrait (iPlayerNum, piChoice);
+    if (!bIsHuman)
+      PlayerState = PLAYER_STATE.VehicleReady;
   }
 
   [Command]
   private void CmdChangeReady (bool pbReady){
-    bReady = pbReady;
+    //bReady = pbReady;
+    PlayerState = PLAYER_STATE.VehicleReady;
     GameObject.Find ("GameManager").GetComponent<GameManager> ().checkReady ();
+  }
+
+  [Command]
+  private void CmdChangeState(PLAYER_STATE state){
+    PlayerState = state;
   }
 
   [Command] public void CmdUpdNumWaypointsHit(int iNum){
@@ -180,7 +199,7 @@ public class NetPlayer : NetworkBehaviour
   [ClientRpc]
   public void RpcSetShip (GameObject pNewShip){
     //ship = pNewShip;
-    pNewShip.GetComponent<PlayerController>()._NetPlayer = this;
+    pNewShip.GetComponent<PlayerController>().setNetPlayer(this);
   }
 
   [ClientRpc]

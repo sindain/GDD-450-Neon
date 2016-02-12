@@ -39,7 +39,7 @@ public class SpHUD : MonoBehaviour
     PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
 
     velocityText.text = "Velocity: " + Mathf.Floor(shipVel) + " km/h";
-    PolarityText.text = _PlayerController.Polarity.ToString();
+    PolarityText.text = _PlayerController.getShipStats().Polarity == 1 ? "Blue" : "Red";
     EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
     lapsText.text = "Lap: " + _NetPlayer.getLap ().ToString();

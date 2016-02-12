@@ -181,7 +181,7 @@ public class GameManager : NetworkManager
     bool allReady = true;
     foreach (GameObject player in players)
       if (player != null) {
-        if (!player.GetComponent<NetPlayer> ().getReady ())
+        if (player.GetComponent<NetPlayer> ().PlayerState != NetPlayer.PLAYER_STATE.VehicleReady)
           allReady = false;
       }
 

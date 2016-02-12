@@ -62,8 +62,13 @@ public class ThrusterController : MonoBehaviour {
 				float fAPoint = 0.0f;
 				
 				//Ensure object hit wasn't a trigger or wall
-				if(hit.collider.isTrigger || hit.transform.tag == "Wall")
+				//if(hit.collider.isTrigger || hit.transform.tag == "Wall")
+					//return;
+				if((hit.transform.tag == "NegLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== 1))
 					return;
+				if((hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
+					return;
+
 
 				//Update velocity of point relative to what it's hitting
 				fDThrusters[2*i] = fDThrusters[2*i + 1];
