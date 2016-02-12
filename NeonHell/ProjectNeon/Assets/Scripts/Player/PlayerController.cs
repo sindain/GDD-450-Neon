@@ -16,7 +16,7 @@ public class PlayerController : NetworkBehaviour
   //Public variables
   public int Polarity = 0;
   public float DispBoost = 100.0f;
-
+  public int health;
   //Private variables
   private int lap = 0;
   private int BoostType = 0;
@@ -37,7 +37,7 @@ public class PlayerController : NetworkBehaviour
   private float fThrustCurrent;
   private float fLastUpdTime;
   private float fUpdTime = 333.33f;
-  private bool bCameraControl = false;
+  public bool bCameraControl = false;
   private bool bIsRacing = false;
   [SyncVar] public bool bCanMove = false;
   private bool bManuallyBoosting = false;
@@ -49,6 +49,7 @@ public class PlayerController : NetworkBehaviour
 
   // Use this for initialization
   void Start (){
+      health = 100;
     DontDestroyOnLoad (transform.gameObject);
     fLastUpdTime = Time.time;
     Polarity = gameObject.GetComponent<ShipStats> ().Polarity;
@@ -71,8 +72,8 @@ public class PlayerController : NetworkBehaviour
 	
   // Update is called once per frame
   void Update (){
-    if (!hasAuthority)
-      return;
+    //if (!hasAuthority)
+      //return;
     
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
@@ -86,8 +87,8 @@ public class PlayerController : NetworkBehaviour
 
   //FixedUpdate is called every frame
   void FixedUpdate (){
-    if (!hasAuthority)
-      return;
+    //if (!hasAuthority)
+      //return;
     if (bCameraControl) {
       Camera cam = Camera.main;
       cam.transform.position = Vector3.Slerp (cam.transform.position, transform.position + transform.rotation * vCameraOffset, fSlerpTime);
@@ -248,6 +249,23 @@ public class PlayerController : NetworkBehaviour
 			break;*/
 
     }
+  }
+
+  public Mesh[] healthM = new Mesh[4];
+  public GameObject[] pieces = new GameObject[4];
+  void OnCollisionEnter(Collision collision)
+  {
+      if (health == 0)
+          return;
+      bool spawn = (int)health/25 > (int)(health-10)/25;
+      health -= 10;
+      if (spawn)
+      {
+          GameObject.Instantiate(pieces[(int)health / 25], gameObject.transform.position, gameObject.transform.rotation);
+      }
+      print(health);
+      gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)health/25];
+      
   }
   // End void OnTriggerEnter(Collider other)
 
