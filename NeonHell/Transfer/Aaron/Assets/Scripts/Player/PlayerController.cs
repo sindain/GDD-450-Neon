@@ -29,11 +29,11 @@ public class PlayerController : NetworkBehaviour
   private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
   private float fThrustCurrent;
+  private float fTurnThreshold;
   private float fLastUpdTime;
   private float fUpdTime = 333.33f;
   public bool bCameraControl = false;
   private bool bIsRacing = false;
-  [SyncVar] public bool bCanMove = false;
   private bool bManuallyBoosting = false;
   private GameObject currentPoint;
   private GameObject direction;
@@ -52,6 +52,7 @@ public class PlayerController : NetworkBehaviour
     fCurrentHealth = _ShipStats.fMaxHealth;
     fCurrentEnergy = _ShipStats.fMaxEnergy;
     fThrustCurrent = 0.0f;
+    fTurnThreshold = Mathf.PI / 4.0f;
     PlayerPrefs.SetInt ("laps", 0);
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
@@ -81,8 +82,10 @@ public class PlayerController : NetworkBehaviour
 
   //FixedUpdate is called every frame
   void FixedUpdate (){
+    if (_NetPlayer == null)
+      return;
     //Only continue if the player has authority of this ship or testing
-    if (!hasAuthority || _NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Testing)
+    if (!hasAuthority && _NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Testing)
       return;
     
     if (bCameraControl) {
@@ -96,6 +99,7 @@ public class PlayerController : NetworkBehaviour
 
     //Vector help keep the ship upright
     float fTorque = 0.0f;
+    float fDegOffset = 0.0f;
     Vector3 newRotation;
     RaycastHit hit;		
 
@@ -103,27 +107,29 @@ public class PlayerController : NetworkBehaviour
     if (_NetPlayer.bIsHuman)
       fTorque = Input.GetAxis ("Horizontal");
     else{
-      float fDegOffset = 0.0f;
       direction.transform.position = transform.position;
       WaypointController _WaypointController = currentPoint.GetComponent<WaypointController> ();
       direction.transform.LookAt (_WaypointController.nextPoint [Random.Range (0, _WaypointController.nextPoint.Length - 1)].transform);
 
       //Find the angle the ship is going and where it wants to go relative to eachother
       Vector3 tProj = direction.transform.forward - (Vector3.Dot(direction.transform.forward, gameObject.transform.up)/Mathf.Pow(Vector3.Magnitude(gameObject.transform.up),2)) * gameObject.transform.up;
-      fDegOffset = Mathf.Acos(Vector3.Dot(tProj, gameObject.transform.forward) / (Vector3.Magnitude(tProj) * Vector3.Magnitude(gameObject.transform.forward)));
-
+      fDegOffset = Mathf.Acos(Mathf.Clamp(Vector3.Dot(tProj, gameObject.transform.forward) / (Vector3.Magnitude(tProj) * Vector3.Magnitude(gameObject.transform.forward)), -1.0f, 1.0f));
       //Turn towards target
       fTorque = Mathf.Acos(Vector3.Dot(tProj,gameObject.transform.right)/(Vector3.Magnitude(tProj)*Vector3.Magnitude(gameObject.transform.right))) < (Mathf.PI/2.0f) ? 1 : -1;
       fTorque *= Mathf.Clamp(fDegOffset / (Mathf.PI/6f), 0.0f, 1.0f);
     }
-
     rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque * rb.mass);
 
     //If the player is close to the something, allow moving forward
     if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance)) {
       rb.drag = 1;
       //Thrust Calculations
-      float fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
+      float fThrustTarget = 0.0f;
+      if(_NetPlayer.bIsHuman)
+        fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
+      else
+        fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration;
+      
       float c = (Mathf.Exp (1) - 1) / _ShipStats.fAcceleration;
       if (fThrustTarget <= fThrustCurrent)
         fThrustCurrent = fThrustTarget;
@@ -184,6 +190,8 @@ public class PlayerController : NetworkBehaviour
   //Parameters:   Collider other - What the object has collided with
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
+    if (!hasAuthority)
+      return;
     switch (other.tag) {
     case "Waypoint":
       GameObject[] possiblePoints = currentPoint.GetComponent<WaypointController> ().nextPoint;
@@ -295,10 +303,6 @@ public class PlayerController : NetworkBehaviour
 
   public bool getCameraControl (){return bCameraControl;}
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
-
-  public bool getCanMove (){return bCanMove;}
-  public void setCanMove (bool pbCanMove){bCanMove = pbCanMove; RpcSetCanMove(pbCanMove);}
-  [ClientRpc] public void RpcSetCanMove(bool pbCanMove){bCanMove = pbCanMove;}
 
   public bool getIsRacing(){return bIsRacing;}
   public void setIsRacing(bool pbIsRacing){bIsRacing = pbIsRacing;}

@@ -5,8 +5,8 @@ using System.Collections;
 
 public class NetPlayer : NetworkBehaviour
 {
-  public enum PLAYER_STATE {None = 0, Testing, VehicleSelection, VehicleReady, LevelSelection,
-                            LevelReady, LoadingScene, SceneLoaded, RaceReady, Racing, RaceFinished};
+  public enum PLAYER_STATE {None = 0, Testing, VehicleSelect, VehicleSelectReady, LevelSelect, LevelSelectReady, 
+                            SceneChangeReady, LoadingScene, SceneLoaded, RaceReady, Racing, RaceFinished};
 
   [SyncVar] public int iShipChoice = -1;
   [SyncVar] public int iPlayerNum = -1;
@@ -14,57 +14,17 @@ public class NetPlayer : NetworkBehaviour
   [SyncVar] public int iLap = 0;
   [SyncVar] public int iPlace = 0;
   [SyncVar] public int iPoints = 0;
-  [SyncVar] public bool bReady = false;
-  [SyncVar] public bool bIsRacing = false;
-  [SyncVar] public bool bDoneRacing = false;
   [SyncVar] public bool bIsHuman = false;
   public NetworkConnection connection;
   [SyncVar] public GameObject ship;
 
   [SyncVar] public PLAYER_STATE PlayerState;
-  private string trackName;
+  public string trackName;
 
   void Start (){
     DontDestroyOnLoad (transform.gameObject);
-    PlayerState = PLAYER_STATE.None;
+    //PlayerState = PLAYER_STATE.None;
   }
-
-  public void setShipChoice (int piChoice){CmdChangeShip (piChoice);}
-
-  public bool getReady (){return bReady;}
-  public void setReady (bool pbReady){CmdChangeReady (true);}
-
-  public int getPlayerNum (){return iPlayerNum;}
-  public void setPlayerNum (int piPlayerNum){iPlayerNum = piPlayerNum;}
-
-  public int getLap (){return iLap;}
-  public void incLap(){
-    if(!isLocalPlayer)
-      return;
-    iLap++;
-    CmdUpdLap(iLap);
-  }
-  public void setLap (int piLap){iLap = piLap;}
-
-  public int getPlace (){return iPlace;}
-  public void setPlace (int piPlace){iPlace = piPlace;}
-
-  public int getNumWaypointsHit(){return iNumWaypointsHit;}
-  public void incNumWaypointsHit(int piVal){
-    if(!isLocalPlayer)
-      return;
-    iNumWaypointsHit += piVal;
-    CmdUpdNumWaypointsHit(iNumWaypointsHit);
-  }
-  public void setNumWaypointsHit(int piNumWaypointsHit){
-    if(!isLocalPlayer)
-      return;
-    iNumWaypointsHit = piNumWaypointsHit;
-    CmdUpdNumWaypointsHit(iNumWaypointsHit);
-  }
-
-  public bool getIsHuman(){return bIsHuman;}
-  public void setIsHuman(bool pbIsHuman){bIsHuman = pbIsHuman;}
 
   public void Setup (int piPlayerNum, bool pbIsHuman){
     setPlayerNum (piPlayerNum);
@@ -91,9 +51,6 @@ public class NetPlayer : NetworkBehaviour
     //Find and set first waypoint
     ship.GetComponent<PlayerController> ().setCurrentPoint (track.transform.GetChild (0).FindChild ("start_finish").FindChild ("Waypoints").GetChild (0).gameObject);
     //TODO: Move this to its appropriate place later.
-    bIsRacing = true;
-    bDoneRacing = false;
-    ship.GetComponent<PlayerController> ().setIsRacing (bIsRacing);
     iLap = 0;
     iNumWaypointsHit = 0;
 
@@ -109,10 +66,10 @@ public class NetPlayer : NetworkBehaviour
     _Hud._NetPlayer = this;
   }
 
-  void OnLevelWasLoaded(int level) {
-    setupRace ();
-    CmdChangeState (PLAYER_STATE.Racing);
-  }
+//  void OnLevelWasLoaded(int level) {
+//    setupRace ();
+//    CmdChangeState (PLAYER_STATE.Racing);
+//  }
 
   [Command]
   private void CmdChangeShip (int piChoice){
@@ -133,20 +90,14 @@ public class NetPlayer : NetworkBehaviour
     ship = newShip;
     RpcSetShip (newShip);
     RpcChangePortrait (iPlayerNum, piChoice);
-    if (!bIsHuman)
-      PlayerState = PLAYER_STATE.VehicleReady;
-  }
-
-  [Command]
-  private void CmdChangeReady (bool pbReady){
-    //bReady = pbReady;
-    PlayerState = PLAYER_STATE.VehicleReady;
-    GameObject.Find ("GameManager").GetComponent<GameManager> ().checkReady ();
+    if (!bIsHuman && isServer)
+      PlayerState = PLAYER_STATE.VehicleSelectReady;
   }
 
   [Command]
   private void CmdChangeState(PLAYER_STATE state){
     PlayerState = state;
+    GameObject.Find ("GameObject").GetComponent<GameManager> ().checkPlayerStates ();
   }
 
   [Command] public void CmdUpdNumWaypointsHit(int iNum){
@@ -157,10 +108,8 @@ public class NetPlayer : NetworkBehaviour
     iLap = piLaps;
     //Check if player finished the race
     if(iLap >= GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps){
-      ship.GetComponent<PlayerController> ().setCanMove (false);
-      bDoneRacing = true;
+      PlayerState = PLAYER_STATE.RaceFinished;
       iPoints = iPlace;
-      GameObject.Find ("GameManager").GetComponent<GameManager> ().checkRaceDone ();
     }
   }
 
@@ -175,6 +124,23 @@ public class NetPlayer : NetworkBehaviour
     GameObject.Find ("MainMenu").transform.FindChild ("MultiplayerLobby").gameObject.SetActive (false);
     GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive (true);
     //GameObject.Find ("MainMenu").GetComponent<MenuScript> ().setCameraTarget (pos, rot);
+  }  
+
+  [ClientRpc]
+  public void RpcSetTrack(string pTrack){
+    trackName = pTrack;
+    setupRace ();
+    CmdChangeState (PLAYER_STATE.RaceReady);
+  }
+
+  [ClientRpc]
+  public void RpcStartRaceCountdown(){
+    GameObject.Find ("HUD").GetComponent<SpHUD> ().startCountdown ();
+  }
+
+  [ClientRpc]
+  public void RpcShowPostgameScreen(){
+    
   }
 
   [ClientRpc]
@@ -183,30 +149,54 @@ public class NetPlayer : NetworkBehaviour
   }
 
   [ClientRpc]
-  public void RpcChangeScene (string pSceneName){
-    SceneManager.LoadScene (pSceneName);
-  }
-
-  [ClientRpc]
-  public void RpcChangeSceneSetTrack (string pSceneName, string pTrackName){
-    SceneManager.LoadScene (pSceneName);
-    trackName = pTrackName;
-  }
-
-  [ClientRpc]
-  public void RpcSetTrackName(string pTrackName){trackName = pTrackName;}
-
-  [ClientRpc]
   public void RpcSetShip (GameObject pNewShip){
     //ship = pNewShip;
     pNewShip.GetComponent<PlayerController>().setNetPlayer(this);
   }
 
   [ClientRpc]
-  public void RpcGiveCarControl (){
+  public void RpcGiveCarCameraControl (){
     if (!isLocalPlayer)
       return;
-    ship.GetComponent<PlayerController> ().setCanMove (true);
     ship.GetComponent<PlayerController> ().setCameraControl (true);
   }
+
+//----------------------------------------------Getters and Setters-----------------------------------------------------
+
+  public void setShipChoice (int piChoice){CmdChangeShip (piChoice);}
+
+  public int getPlayerNum (){return iPlayerNum;}
+  public void setPlayerNum (int piPlayerNum){iPlayerNum = piPlayerNum;}
+
+  public int getLap (){return iLap;}
+  public void incLap(){
+    if(!isLocalPlayer && !isServer)
+      return;
+    iLap++;
+    CmdUpdLap(iLap);
+  }
+  public void setLap (int piLap){iLap = piLap;}
+
+  public int getPlace (){return iPlace;}
+  public void setPlace (int piPlace){iPlace = piPlace;}
+
+  public int getNumWaypointsHit(){return iNumWaypointsHit;}
+  public void incNumWaypointsHit(int piVal){
+    if(!isLocalPlayer && !isServer)
+      return;
+    iNumWaypointsHit += piVal;
+    CmdUpdNumWaypointsHit(iNumWaypointsHit);
+  }
+  public void setNumWaypointsHit(int piNumWaypointsHit){
+    if(!isLocalPlayer && !isServer)
+      return;
+    iNumWaypointsHit = piNumWaypointsHit;
+    CmdUpdNumWaypointsHit(iNumWaypointsHit);
+  }
+
+  public bool isHuman(){return bIsHuman;}
+  public void setIsHuman(bool pbIsHuman){bIsHuman = pbIsHuman;}
+
+  public PLAYER_STATE getPlayerState(){return PlayerState;}
+  public void setPlayerState(PLAYER_STATE pState){CmdChangeState (pState);}
 }

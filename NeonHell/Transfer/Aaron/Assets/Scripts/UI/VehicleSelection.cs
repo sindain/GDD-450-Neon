@@ -19,9 +19,11 @@ public class VehicleSelection : MonoBehaviour
     
     foreach (GameObject i in players) {
       NetPlayer netPlayer = i.GetComponent<NetPlayer> ();
-      if (netPlayer.isLocalPlayer)
+      if (netPlayer.isLocalPlayer){
         netPlayer.setShipChoice (piChoice);
-    }	
+        netPlayer.setPlayerState (NetPlayer.PLAYER_STATE.VehicleSelect);
+      } //End if (netPlayer.isLocalPlayer)
+    }	//End foreach (GameObject i in players)
   }
 
   public void onBackClicked(){
@@ -47,7 +49,7 @@ public class VehicleSelection : MonoBehaviour
     foreach (GameObject i in players) {
       NetPlayer netPlayer = i.GetComponent<NetPlayer> ();
       if (netPlayer.isLocalPlayer)
-        netPlayer.setReady (true);
+        netPlayer.setPlayerState(NetPlayer.PLAYER_STATE.VehicleSelectReady);
     } 
   }
 }

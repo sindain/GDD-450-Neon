@@ -1,0 +1,137 @@
+fileFormatVersion: 2
+guid: 32e9cc2403152d44abc43b679779773a
+timeCreated: 1455747567
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Banner
+    100002: banner
+    100004: barrier
+    100006: barrier 1
+    100008: long_straight
+    100010: long_straight_railing
+    100012: long_straight_road
+    100014: Poles
+    100016: Regular_to_halfed1:barrier
+    100018: Regular_to_halfed1:thinner_railing
+    100020: Regular_to_halfed1:thinner_road
+    100022: //RootNode
+    100024: thinner
+    100026: thinner1
+    100028: thinner_railing
+    100030: thinner_road
+    400000: Banner
+    400002: banner
+    400004: barrier
+    400006: barrier 1
+    400008: long_straight
+    400010: long_straight_railing
+    400012: long_straight_road
+    400014: Poles
+    400016: Regular_to_halfed1:barrier
+    400018: Regular_to_halfed1:thinner_railing
+    400020: Regular_to_halfed1:thinner_road
+    400022: //RootNode
+    400024: thinner
+    400026: thinner1
+    400028: thinner_railing
+    400030: thinner_road
+    2300000: Banner
+    2300002: barrier
+    2300004: barrier 1
+    2300006: long_straight_railing
+    2300008: long_straight_road
+    2300010: Poles
+    2300012: Regular_to_halfed1:barrier
+    2300014: Regular_to_halfed1:thinner_railing
+    2300016: Regular_to_halfed1:thinner_road
+    2300018: thinner_railing
+    2300020: thinner_road
+    3300000: Banner
+    3300002: barrier
+    3300004: barrier 1
+    3300006: long_straight_railing
+    3300008: long_straight_road
+    3300010: Poles
+    3300012: Regular_to_halfed1:barrier
+    3300014: Regular_to_halfed1:thinner_railing
+    3300016: Regular_to_halfed1:thinner_road
+    3300018: thinner_railing
+    3300020: thinner_road
+    4300000: thinner_road
+    4300002: thinner_railing
+    4300004: barrier
+    4300006: Regular_to_halfed1:thinner_road
+    4300008: Regular_to_halfed1:thinner_railing
+    4300010: Regular_to_halfed1:barrier
+    4300012: Banner
+    4300014: Poles
+    4300016: long_straight_road
+    4300018: long_straight_railing
+    4300020: barrier
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
