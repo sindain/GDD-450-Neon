@@ -17,6 +17,7 @@ public class PlayerController : NetworkBehaviour
   public int Polarity = 0;
   public float DispBoost = 100.0f;
   public int health;
+  public float damageTimer;
   //Private variables
   private int lap = 0;
   private int BoostType = 0;
@@ -74,7 +75,7 @@ public class PlayerController : NetworkBehaviour
   void Update (){
     //if (!hasAuthority)
       //return;
-    
+    gameObject.GetComponent<AudioSource>().pitch = -(rb.velocity.magnitude / fMaxVelocity) - .65f;
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
     //Player 1 needs to update places every 1/3 of a second
@@ -87,6 +88,7 @@ public class PlayerController : NetworkBehaviour
 
   //FixedUpdate is called every frame
   void FixedUpdate (){
+      damageTimer += Time.deltaTime;
     //if (!hasAuthority)
       //return;
     if (bCameraControl) {
@@ -253,15 +255,32 @@ public class PlayerController : NetworkBehaviour
 
   public Mesh[] healthM = new Mesh[4];
   public GameObject[] pieces = new GameObject[4];
+  public Vector3[] wingPos = new Vector3[4];
+  public GameObject explosion;
+  public Vector3[] exploPos = new Vector3[4];
   void OnCollisionEnter(Collision collision)
   {
-      if (health == 0)
+      exploPos[0] = new Vector3(1, .5f, 0);
+      exploPos[1] = new Vector3(-1, .5f, 0);
+      exploPos[2] = new Vector3(1, -.5f, 0);
+      exploPos[3] = new Vector3(-1, -.5f, 0);
+
+      if (health == 0 || damageTimer<= 1.5 || healthM[0] == null)
           return;
+      damageTimer = 0;
       bool spawn = (int)health/25 > (int)(health-10)/25;
       health -= 10;
       if (spawn)
       {
-          GameObject.Instantiate(pieces[(int)health / 25], gameObject.transform.position, gameObject.transform.rotation);
+          fMaxVelocity -= 5;
+          for (int i = 0; i < 4; i++)
+          {
+              GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+              piece1.transform.localScale = new Vector3(40, 40, 40);
+              GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
+          }
+          
+          //CmdSpawnPieces();
       }
       print(health);
       gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)health/25];
@@ -288,6 +307,17 @@ public class PlayerController : NetworkBehaviour
   [Command]
   public void CmdUpdPlaces(){
     GameObject.Find ("GameManager").GetComponent<GameManager> ().UpdatePlaces ();
+  }
+
+  [Command]
+  public void CmdSpawnPieces()
+  {
+      for (int i = 0; i < 4; i++)
+      {
+          GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+          piece1.transform.localScale = new Vector3(40, 40, 40);
+          NetworkServer.Spawn(piece1);  
+      }
   }
 
 //-------------------------------------Getters and Setters--------------------------------------------------------------
