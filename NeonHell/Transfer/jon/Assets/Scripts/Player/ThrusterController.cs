@@ -64,9 +64,9 @@ public class ThrusterController : MonoBehaviour {
 				//Ensure object hit wasn't a trigger or wall
 				//if(hit.collider.isTrigger || hit.transform.tag == "Wall")
 					//return;
-				if(hit.collider.isTrigger&&(hit.transform.tag == "NegLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== 1))
+				if((hit.transform.tag == "NegLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== 1))
 					return;
-				else if(hit.collider.isTrigger&&(hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
+				if((hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
 					return;
 
 
