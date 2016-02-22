@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 9d07490ddfe40a145ae0d5d6d6cef8e7
-timeCreated: 1455747568
+timeCreated: 1455910874
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -18,6 +18,20 @@ ModelImporter:
     100020: thinner_railing 1
     100022: thinner_railing1
     100024: thinner_road
+    100026: switch:barrier
+    100028: switch:barrier 1
+    100030: switch:barrier1
+    100032: switch:barrier1 1
+    100034: switch:side2
+    100036: switch:side2 1
+    100038: switch:switcher 1
+    100040: switch:switcher1
+    100042: switch:thinner_railing
+    100044: switch:thinner_railing 1
+    100046: switch:thinner_railing1
+    100048: switch:thinner_railing1 1
+    100050: switch:thinner_road
+    100052: switch:thinner_road 1
     400000: barrier
     400002: barrier 1
     400004: barrier1
@@ -31,6 +45,20 @@ ModelImporter:
     400020: thinner_railing 1
     400022: thinner_railing1
     400024: thinner_road
+    400026: switch:barrier
+    400028: switch:barrier 1
+    400030: switch:barrier1
+    400032: switch:barrier1 1
+    400034: switch:side2
+    400036: switch:side2 1
+    400038: switch:switcher 1
+    400040: switch:switcher1
+    400042: switch:thinner_railing
+    400044: switch:thinner_railing 1
+    400046: switch:thinner_railing1
+    400048: switch:thinner_railing1 1
+    400050: switch:thinner_road
+    400052: switch:thinner_road 1
     2300000: barrier
     2300002: barrier 1
     2300004: barrier1
@@ -41,6 +69,16 @@ ModelImporter:
     2300014: thinner_railing 1
     2300016: thinner_railing1
     2300018: thinner_road
+    2300020: switch:barrier
+    2300022: switch:barrier 1
+    2300024: switch:barrier1
+    2300026: switch:barrier1 1
+    2300028: switch:thinner_railing
+    2300030: switch:thinner_railing 1
+    2300032: switch:thinner_railing1
+    2300034: switch:thinner_railing1 1
+    2300036: switch:thinner_road
+    2300038: switch:thinner_road 1
     3300000: barrier
     3300002: barrier 1
     3300004: barrier1
@@ -51,6 +89,16 @@ ModelImporter:
     3300014: thinner_railing 1
     3300016: thinner_railing1
     3300018: thinner_road
+    3300020: switch:barrier
+    3300022: switch:barrier 1
+    3300024: switch:barrier1
+    3300026: switch:barrier1 1
+    3300028: switch:thinner_railing
+    3300030: switch:thinner_railing 1
+    3300032: switch:thinner_railing1
+    3300034: switch:thinner_railing1 1
+    3300036: switch:thinner_road
+    3300038: switch:thinner_road 1
     4300000: Regular_to_halfed1:thinner_road
     4300002: Regular_to_halfed1:thinner_railing
     4300004: Regular_to_halfed1:barrier
@@ -61,6 +109,16 @@ ModelImporter:
     4300014: barrier
     4300016: thinner_railing1
     4300018: barrier1
+    4300020: switch:thinner_road
+    4300022: switch:thinner_railing
+    4300024: switch:barrier
+    4300026: switch:thinner_railing1
+    4300028: switch:barrier1
+    4300030: switch:thinner_road
+    4300032: switch:thinner_railing
+    4300034: switch:barrier
+    4300036: switch:thinner_railing1
+    4300038: switch:barrier1
     9500000: //RootNode
   materials:
     importMaterials: 1
