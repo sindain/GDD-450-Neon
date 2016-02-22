@@ -8,6 +8,7 @@ public class GameManager : NetworkManager
 {
   public enum GAME_MODE {None=0, Singleplayer, Multiplayer};
   public enum GAME_STATE {None=0, VehicleSelection, LevelSelection, SceneChange, RacePrep, Racing, RaceFinished}
+  public enum TRANSITION {None=0, In, Out}
 
   public GameObject[] players;
 
@@ -131,6 +132,8 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnMatchCreate (CreateMatchResponse matchInfo){
     base.OnMatchCreate (matchInfo);
+    GameMode = GAME_MODE.Multiplayer;
+    GameState = GAME_STATE.VehicleSelection;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -151,6 +154,7 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public void StartLocalGame (){
     GameMode = GAME_MODE.Singleplayer;
+    GameState = GAME_STATE.VehicleSelection;
     NetworkManager.singleton.StartHost ();
   }
 
@@ -242,6 +246,7 @@ public class GameManager : NetworkManager
           liNewPlace++;
         } // End else if(iDiff > 0){
       } //End for(int j = i; j < players.Length; j++)
+      _NetPlayeri.setPlace(liNewPlace);
     } //End for (int i = 0; i < players.Length; i++) 
   } // End public void UpdatePlaces()
 
@@ -283,22 +288,36 @@ public class GameManager : NetworkManager
   }
 
   private bool arePlayerStatesSynced(NetPlayer.PLAYER_STATE pState){
-    bool bResult = false;
+    bool bResult = true;
     foreach(GameObject p in players){
       if (p == null)
         continue;
-      if (p.GetComponent<NetPlayer> ().PlayerState != pState)
+      if (p.GetComponent<NetPlayer> ().PlayerState != pState){
         bResult = false;
-    }
+        break;
+      }// End if (p.GetComponent<NetPlayer> ().PlayerState != pState)
+    } //End foreach(GameObject p in players)
     return bResult;
   }
 
   private void checkVehicleSelectReady (){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.VehicleSelectReady))
       return;
+    
+    //foreach (GameObject p in players){
+    for(int i = 0; i < PLAYER_COUNT; i++){
+      //Add NPC's for any empty spots
+      if(players[i]==null){
+        GameObject NpcPlayer = (GameObject)Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+        NetPlayer _NetPlayer = NpcPlayer.GetComponent<NetPlayer> ();
 
-    foreach (GameObject p in players)
-      p.GetComponent<NetPlayer> ().PlayerState = NetPlayer.PLAYER_STATE.LoadingScene;
+        NetworkServer.Spawn(NpcPlayer);
+        _NetPlayer.Setup (i, false);
+        players[i] = NpcPlayer;
+      }
+
+      players[i].GetComponent<NetPlayer> ().PlayerState = NetPlayer.PLAYER_STATE.LoadingScene;
+    }
     GameState = GAME_STATE.SceneChange;
     ServerChangeScene (circuitScenes[iRaceCounter]);
   }
@@ -326,6 +345,8 @@ public class GameManager : NetworkManager
   }
 
   private void checkPlayersRacePrep(){
+    if(players[0].GetComponent<NetPlayer>().getPlayerState() == NetPlayer.PLAYER_STATE.Racing)
+      
     //Check if everyone has started racing to change game state
     if (arePlayerStatesSynced (NetPlayer.PLAYER_STATE.Racing))
       GameState = GAME_STATE.Racing;
@@ -346,8 +367,16 @@ public class GameManager : NetworkManager
       return;
 
     //TODO:  Insert end race screen and transition phase
+    int[] liPoints = {9,8,5,4,3,2,1,0};
     GameState = GAME_STATE.RaceFinished;
-
+    foreach(GameObject p in players){
+      NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
+      _NetPlayer.incPoints(liPoints[_NetPlayer.iPlace-1]);
+      if(_NetPlayer.isHuman())
+        _NetPlayer.RpcShowScoreboard();
+      else
+        _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+    } //End foreach(GameObject p in players)
   }
 
   private void checkChangeScene(){

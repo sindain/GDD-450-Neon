@@ -16,6 +16,9 @@ public class PlayerController : NetworkBehaviour
   //Public variables
   public Mesh[] healthM = new Mesh[4];
   public GameObject[] pieces = new GameObject[4];
+  public Vector3[] wingPos = new Vector3[4];
+  public GameObject explosion;
+  public Vector3[] exploPos = new Vector3[4];
 
   //Private variables
   private int lap = 0;
@@ -32,6 +35,8 @@ public class PlayerController : NetworkBehaviour
   private float fTurnThreshold;
   private float fLastUpdTime;
   private float fUpdTime = 333.33f;
+  private float fDamageTimer;
+  private float fDamageCooldown = 1.5f;
   public bool bCameraControl = false;
   private bool bIsRacing = false;
   private bool bManuallyBoosting = false;
@@ -57,6 +62,10 @@ public class PlayerController : NetworkBehaviour
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += _ShipStats.fMass * 250.0f;
+    exploPos[0] = new Vector3(1, .5f, 0);
+    exploPos[1] = new Vector3(-1, .5f, 0);
+    exploPos[2] = new Vector3(1, -.5f, 0);
+    exploPos[3] = new Vector3(-1, -.5f, 0);
   }
   //End void Start()
 	
@@ -64,7 +73,10 @@ public class PlayerController : NetworkBehaviour
   void Update (){
     if (!hasAuthority)
       return;
-    
+
+    if(fDamageTimer > 0)
+      fDamageTimer = fDamageTimer - Time.deltaTime < 0 ? 0 : fDamageTimer - Time.deltaTime;
+
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
     //Player 1 needs to update places every 1/3 of a second
@@ -84,8 +96,9 @@ public class PlayerController : NetworkBehaviour
   void FixedUpdate (){
     if (_NetPlayer == null)
       return;
-    //Only continue if the player has authority of this ship or testing
-    if (!hasAuthority && _NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Testing)
+    //Only continue if the player has authority of this ship, or is an NPC
+    if ((_NetPlayer.isHuman() && !hasAuthority) &&
+        (!_NetPlayer.isHuman() && !isServer))
       return;
     
     if (bCameraControl) {
@@ -190,7 +203,9 @@ public class PlayerController : NetworkBehaviour
   //Parameters:   Collider other - What the object has collided with
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
-    if (!hasAuthority)
+    //Only continue if the player has authority of this ship, or is an NPC
+    if ((_NetPlayer.isHuman() && !hasAuthority) &&
+        (!_NetPlayer.isHuman() && !isServer))
       return;
     switch (other.tag) {
     case "Waypoint":
@@ -267,20 +282,25 @@ public class PlayerController : NetworkBehaviour
     }
   }
 
-  void OnCollisionEnter(Collision collision)
-  {
-//      if (health == 0)
-//          return;
-//      bool spawn = (int)health/25 > (int)(health-10)/25;
-//      health -= 10;
-//      if (spawn)
-//      {
-//          GameObject.Instantiate(pieces[(int)health / 25], gameObject.transform.position, gameObject.transform.rotation);
-//      }
-//      print(health);
-//      gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)health/25];
-//      
-  }// End void OnTriggerEnter(Collider other)
+  void OnCollisionEnter(Collision collision){
+
+    if (fCurrentHealth == 0 || fDamageTimer > 0 || healthM[0] == null)
+        return;
+
+    fCurrentHealth -= 10;
+    fDamageTimer = Time.time + fDamageCooldown;
+
+    if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25){
+      //fMaxVelocity -= 5;
+      for (int i = 0; i < 4; i++){
+        GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+        piece1.transform.localScale = new Vector3(40, 40, 40);
+        GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
+      } //End for (int i = 0; i < 4; i++)
+      //CmdSpawnPieces();
+    } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
+    gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth/25];      
+  } //End void OnCollisionEnter(Collision collision)
 
   [ClientRpc]
   public void RpcSetup (){

@@ -21,9 +21,20 @@ public class NetPlayer : NetworkBehaviour
   [SyncVar] public PLAYER_STATE PlayerState;
   public string trackName;
 
+  private float fStartTimer;
+
   void Start (){
     DontDestroyOnLoad (transform.gameObject);
     //PlayerState = PLAYER_STATE.None;
+  }
+
+  void Update(){
+    if(!bIsHuman && PlayerState == PLAYER_STATE.RaceReady && fStartTimer > 0){
+      fStartTimer = fStartTimer - Time.deltaTime < 0 ? 0 :fStartTimer - Time.deltaTime;
+      if(fStartTimer == 0)
+        CmdChangeState(PLAYER_STATE.Racing);
+    }
+    
   }
 
   public void Setup (int piPlayerNum, bool pbIsHuman){
@@ -86,7 +97,10 @@ public class NetPlayer : NetworkBehaviour
       selectedShip,
       spawnTrans.position,
       spawnTrans.rotation);
-    NetworkServer.SpawnWithClientAuthority (newShip, bIsHuman ? connectionToClient : connection);
+    if(bIsHuman)
+      NetworkServer.SpawnWithClientAuthority (newShip, connectionToClient);
+    else
+      NetworkServer.Spawn(newShip);
     ship = newShip;
     RpcSetShip (newShip);
     RpcChangePortrait (iPlayerNum, piChoice);
@@ -97,7 +111,7 @@ public class NetPlayer : NetworkBehaviour
   [Command]
   private void CmdChangeState(PLAYER_STATE state){
     PlayerState = state;
-    GameObject.Find ("GameObject").GetComponent<GameManager> ().checkPlayerStates ();
+    GameObject.Find ("GameManager").GetComponent<GameManager> ().checkPlayerStates ();
   }
 
   [Command] public void CmdUpdNumWaypointsHit(int iNum){
@@ -107,10 +121,8 @@ public class NetPlayer : NetworkBehaviour
   [Command] public void CmdUpdLap(int piLaps){
     iLap = piLaps;
     //Check if player finished the race
-    if(iLap >= GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps){
-      PlayerState = PLAYER_STATE.RaceFinished;
-      iPoints = iPlace;
-    }
+    if(iLap >= 1)//GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps)
+      CmdChangeState(PLAYER_STATE.RaceFinished);
   }
 
   [ClientRpc]
@@ -135,12 +147,19 @@ public class NetPlayer : NetworkBehaviour
 
   [ClientRpc]
   public void RpcStartRaceCountdown(){
+    if(!bIsHuman)
+      fStartTimer = 4.0f;
+      
+    if(!isLocalPlayer)
+      return;
     GameObject.Find ("HUD").GetComponent<SpHUD> ().startCountdown ();
   }
 
   [ClientRpc]
-  public void RpcShowPostgameScreen(){
-    
+  public void RpcShowScoreboard(){
+    if(!isLocalPlayer)
+      return;
+    GameObject.Find("HUD").GetComponent<SpHUD>().startScoreboard();
   }
 
   [ClientRpc]
@@ -172,7 +191,7 @@ public class NetPlayer : NetworkBehaviour
   public void incLap(){
     if(!isLocalPlayer && !isServer)
       return;
-    iLap++;
+    iLap++;    
     CmdUpdLap(iLap);
   }
   public void setLap (int piLap){iLap = piLap;}
@@ -193,6 +212,10 @@ public class NetPlayer : NetworkBehaviour
     iNumWaypointsHit = piNumWaypointsHit;
     CmdUpdNumWaypointsHit(iNumWaypointsHit);
   }
+
+  public int getPoints(){return iPoints;}
+  public void setPoints(int piPoints){iPoints = piPoints;}
+  public void incPoints(int piValue){iPoints += piValue;}
 
   public bool isHuman(){return bIsHuman;}
   public void setIsHuman(bool pbIsHuman){bIsHuman = pbIsHuman;}
