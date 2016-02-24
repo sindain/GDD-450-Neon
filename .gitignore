@@ -9,3 +9,6 @@ NeonHell/ProjectNeon/Temp
 NeonHell/ProjectNeon/testBuild_Data
 NeonHell/ProjectNeon/testBuild.exe
 *.pdb
+NeonHell/ProjectNeon/obj/Debug/Assembly-CSharp.csproj.FileListAbsolute.txt
+NeonHell/ProjectNeon/obj/Debug/Assembly-CSharp.dll
+NeonHell/ProjectNeon/testBuild.zip
