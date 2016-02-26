@@ -275,7 +275,7 @@ public class PlayerController : NetworkBehaviour
 
   void OnCollisionEnter(Collision collision){
 
-    if (fCurrentHealth == 0 || fDamageTimer > 0 || healthM[0] == null)
+    if (fCurrentHealth == 0 || fDamageTimer > 0 || healthM[0] == null || !hasAuthority)
         return;
 
     fCurrentHealth -= 10;
@@ -283,12 +283,12 @@ public class PlayerController : NetworkBehaviour
 
     if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25){
       //fMaxVelocity -= 5;
-      for (int i = 0; i < 4; i++){
-        GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
-        piece1.transform.localScale = new Vector3(40, 40, 40);
-        GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
-      } //End for (int i = 0; i < 4; i++)
-      //CmdSpawnPieces();
+      //for (int i = 0; i < 4; i++){
+        //GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+        //piece1.transform.localScale = new Vector3(40, 40, 40);
+        //GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
+      //} //End for (int i = 0; i < 4; i++)
+      CmdSpawnPieces();
     } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
     gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth/25];      
   } //End void OnCollisionEnter(Collision collision)
@@ -301,6 +301,18 @@ public class PlayerController : NetworkBehaviour
   [Command]
   public void CmdUpdPlaces(){
     GameObject.Find ("GameManager").GetComponent<GameManager> ().UpdatePlaces ();
+  }
+
+  [Command]
+  public void CmdSpawnPieces()
+  {
+      for (int i = 0; i < 4; i++)
+      {
+          GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+          NetworkServer.Spawn(piece1);
+          piece1.transform.localScale = new Vector3(40, 40, 40);
+          //GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
+      } //End for (int i = 0; i < 4; i++)
   }
 
 //-------------------------------------Getters and Setters--------------------------------------------------------------
