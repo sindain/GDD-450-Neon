@@ -16,6 +16,7 @@ public class SpHUD : MonoBehaviour
   public Text EnergyText;
   public Text placeText;
   public Text lapsText;
+  public Sprite[] Huds;
   //public Image menu;
 
   public float fTimer;
@@ -91,17 +92,19 @@ public class SpHUD : MonoBehaviour
   private void UpdateHUD(){
     PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
 
-    velocityText.text = "Velocity: " + Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f) + " km/h";
+		velocityText.text =Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f).ToString();
     PolarityText.text = _PlayerController.getShipStats().Polarity == 1 ? "Blue" : "Red";
     EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
-    lapsText.text = "Lap: " + _NetPlayer.getLap ().ToString();
+    lapsText.text =_NetPlayer.getLap ().ToString();
   }
 
   public void startCountdown(){
     UIState = UI_STATE.Countdown;
     fTimer = 4.0f;
     transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (true);
+	HUD.GetComponent<Image>().sprite = Huds [_NetPlayer.iShipChoice];
+	HUD.GetComponent<Image> ().enabled = true;
     countdownText.text = "3";
     countdownText.color = Color.red;
   } //End public void startCountdown()
