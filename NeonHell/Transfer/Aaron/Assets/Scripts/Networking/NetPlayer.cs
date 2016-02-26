@@ -68,19 +68,24 @@ public class NetPlayer : NetworkBehaviour
     if (!isLocalPlayer)
       return;
 
-    GameObject Hud = GameObject.Find ("HUD");
+    GameObject Hud = GameObject.Find ("UI");
     if (Hud == null) {
       print ("Error: NetPlayer.69 - No HUD found in scene");
       return;
     }
+
     SpHUD _Hud = Hud.GetComponent<SpHUD> ();
+    if(_Hud != null)
     _Hud._NetPlayer = this;
   }
 
-//  void OnLevelWasLoaded(int level) {
-//    setupRace ();
-//    CmdChangeState (PLAYER_STATE.Racing);
-//  }
+  void OnLevelWasLoaded(int level) {
+    if (!isLocalPlayer)
+      return;
+    print (level);
+    //setupRace ();
+    //CmdChangeState (PLAYER_STATE.Racing);
+  }
 
   [Command]
   private void CmdChangeShip (int piChoice){
@@ -105,7 +110,7 @@ public class NetPlayer : NetworkBehaviour
     RpcSetShip (newShip);
     RpcChangePortrait (iPlayerNum, piChoice);
     if (!bIsHuman && isServer)
-      PlayerState = PLAYER_STATE.VehicleSelectReady;
+      CmdChangeState(PLAYER_STATE.VehicleSelectReady);
   }
 
   [Command]
@@ -121,7 +126,7 @@ public class NetPlayer : NetworkBehaviour
   [Command] public void CmdUpdLap(int piLaps){
     iLap = piLaps;
     //Check if player finished the race
-    if(iLap >= 1)//GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps)
+    if(iLap >= GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps)
       CmdChangeState(PLAYER_STATE.RaceFinished);
   }
 
@@ -152,14 +157,22 @@ public class NetPlayer : NetworkBehaviour
       
     if(!isLocalPlayer)
       return;
-    GameObject.Find ("HUD").GetComponent<SpHUD> ().startCountdown ();
+    print (GameObject.Find ("UI").transform.GetChild(0));
+    print (GameObject.Find ("UI").GetComponent<SpHUD>());
+//    SpHUD _Hud = GameObject.Find ("HUD").GetComponent<SpHUD> ();
+//    print (GameObject.Find ("HUD"));
+//    if (_Hud._NetPlayer == null){
+//      
+//      _Hud._NetPlayer = this;
+//    }
+    GameObject.Find ("UI").GetComponent<SpHUD> ().startCountdown ();
   }
 
   [ClientRpc]
   public void RpcShowScoreboard(){
     if(!isLocalPlayer)
       return;
-    GameObject.Find("HUD").GetComponent<SpHUD>().startScoreboard();
+    GameObject.Find ("UI").GetComponent<SpHUD> ().startScoreboard ();
   }
 
   [ClientRpc]

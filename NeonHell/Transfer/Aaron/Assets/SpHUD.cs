@@ -46,21 +46,14 @@ public class SpHUD : MonoBehaviour
     //------------------------------------
     //---------Update HUD-----------------
     //------------------------------------
-    //Velocity converted from m/s to km/hr
-    if(UIState == UI_STATE.HUD){
-      PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
-
-      velocityText.text = "Velocity: " + Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f) + " km/h";
-      PolarityText.text = _PlayerController.getShipStats().Polarity == 1 ? "Blue" : "Red";
-      EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
-      placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
-      lapsText.text = "Lap: " + _NetPlayer.getLap ().ToString();
-    } //End if(UIState == UI_STATE.HUD)
+    if (UIState == UI_STATE.HUD)
+      UpdateHUD ();
 
     //------------------------------------
     //------Update countdown timer--------
     //------------------------------------
-    else if(UIState == UI_STATE.Countdown){
+    if(UIState == UI_STATE.Countdown){
+      UpdateHUD ();
       fTimer -= Time.deltaTime;
       if(fTimer > 0){
         countdownText.text = Mathf.CeilToInt (fTimer).ToString();
@@ -94,6 +87,16 @@ public class SpHUD : MonoBehaviour
     } //End if(UI_STATE == UI_STATE.Scoreboard)
 
   } //End public void Update()
+
+  private void UpdateHUD(){
+    PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
+
+    velocityText.text = "Velocity: " + Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f) + " km/h";
+    PolarityText.text = _PlayerController.getShipStats().Polarity == 1 ? "Blue" : "Red";
+    EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
+    placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
+    lapsText.text = "Lap: " + _NetPlayer.getLap ().ToString();
+  }
 
   public void startCountdown(){
     UIState = UI_STATE.Countdown;

@@ -33,8 +33,6 @@ public class PlayerController : NetworkBehaviour
   private float fBoostTargetTime;
   private float fThrustCurrent;
   private float fTurnThreshold;
-  private float fLastUpdTime;
-  private float fUpdTime = 333.33f;
   private float fDamageTimer;
   private float fDamageCooldown = 1.5f;
   public bool bCameraControl = false;
@@ -52,7 +50,6 @@ public class PlayerController : NetworkBehaviour
     direction = new GameObject ();
     direction.transform.SetParent (transform);
     DontDestroyOnLoad (transform.gameObject);
-    fLastUpdTime = Time.time;
     lap = 0; 
     fCurrentHealth = _ShipStats.fMaxHealth;
     fCurrentEnergy = _ShipStats.fMaxEnergy;
@@ -78,12 +75,6 @@ public class PlayerController : NetworkBehaviour
       fDamageTimer = fDamageTimer - Time.deltaTime < 0 ? 0 : fDamageTimer - Time.deltaTime;
 
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
-
-    //Player 1 needs to update places every 1/3 of a second
-    if(bIsRacing && Time.time - fLastUpdTime < fUpdTime){
-        fLastUpdTime = Time.time;
-        CmdUpdPlaces ();
-    }
 
     if (!bManuallyBoosting){
       fCurrentEnergy += 5.0f * Time.deltaTime;

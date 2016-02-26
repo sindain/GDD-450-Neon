@@ -14,10 +14,20 @@ public class GameManager : NetworkManager
 
   private readonly int PLAYER_COUNT = 8;
   private int iRaceCounter;
+  private float fTimer;
+  private float fUpdPlaceTime = 200.0f;
   public GAME_MODE GameMode;
   public GAME_STATE GameState;
-  private string[] circuitScenes = new string[3]{"CitySmall", "CitySmall", "CityMed"};
-  private string[] trackNames = new string[3]{"InfTrack", "T-Track", "OverUnder"};
+  public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
+                                                 "CitySmall", "CityMed", "CityMed", //Ar Circuit
+                                                 "CityMed", "CityLarge", "CityXL", //Xe Circuit
+                                                 "CityMed", "CityXL", "CityXL"}; //Noble Circuit
+  public readonly string[] TRACK_NAMES = new string[12]{"InfTrack", "T-Track", "OverUnder", //He Circuit
+                                                        "T-Split", "Mobius","JumpBridge", //Ar Circuit
+                                                        "","","", //Xe Circuit
+                                                        "","",""}; //Noble Circuit
+  public string[] circuitScenes;
+  public string[] trackNames;
 
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
@@ -27,10 +37,19 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   void Start (){
     iRaceCounter = 0;
+    fTimer = Time.time;
     GameMode = GAME_MODE.None;
     GameState = GAME_STATE.None;
     players = new GameObject[PLAYER_COUNT];
-    //returnToMain ();
+  }
+
+  void Update(){
+    //Update places
+    if(fTimer + fUpdPlaceTime >= Time.time && GameState == GAME_STATE.Racing){
+      fTimer = Time.time;
+      UpdatePlaces ();
+    }
+
   }
     
   //--------------------------------------------------------------------------------------------------------------------
@@ -198,6 +217,7 @@ public class GameManager : NetworkManager
   {
     base.OnClientSceneChanged (conn);
     foreach(GameObject p in players){
+      
       if (p == null)
         continue;
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer> ();
@@ -230,6 +250,11 @@ public class GameManager : NetworkManager
         if (players [j] == null || j == i)
           continue;
         NetPlayer _NetPlayerj = players [j].GetComponent<NetPlayer> ();
+        //If other has finished race, increment place and continue to next
+        if(_NetPlayerj.getPlayerState() == NetPlayer.PLAYER_STATE.RaceFinished){
+          liNewPlace++;
+          continue;
+        }
         int iDiff = _NetPlayerj.getNumWaypointsHit () - _NetPlayeri.getNumWaypointsHit ();
 
         //If tied
@@ -399,4 +424,15 @@ public class GameManager : NetworkManager
   public GAME_MODE getGameMode(){return GameMode;}
   public void setGameMode(GAME_MODE piGameMode){GameMode = piGameMode;}
 
+  //[Command]
+  public void CmdChangeCircuit(int piChoice){
+    int liCircuitLength = piChoice == 4 ? 12 : 3;
+    int liCircuitStart = piChoice == 4 ? 0 : 3 * piChoice;
+    circuitScenes = new string[liCircuitLength];
+    trackNames = new string[liCircuitLength];
+    for (int i = 0; i < liCircuitLength; i++){
+      circuitScenes [i] = CIRCUIT_SCENES [liCircuitStart + i];
+      trackNames [i] = TRACK_NAMES [liCircuitStart + i];
+    } //End for (int i = 0; i < liCircuitLength; i++)
+  } //End public void CmdChangeCircuit(int piChoice)
 }
