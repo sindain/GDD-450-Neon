@@ -1,0 +1,781 @@
+fileFormatVersion: 2
+guid: 42873c48ff233304ca13b80efd27aac4
+timeCreated: 1456446194
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Banner
+    100002: banner
+    100004: barrier
+    100006: barrier 1
+    100008: barrier 2
+    100010: barrier101
+    100012: barrier101 1
+    100014: barrier101 10
+    100016: barrier101 11
+    100018: barrier101 12
+    100020: barrier101 13
+    100022: barrier101 14
+    100024: barrier101 15
+    100026: barrier101 16
+    100028: barrier101 17
+    100030: barrier101 18
+    100032: barrier101 19
+    100034: barrier101 2
+    100036: barrier101 20
+    100038: barrier101 21
+    100040: barrier101 22
+    100042: barrier101 23
+    100044: barrier101 24
+    100046: barrier101 25
+    100048: barrier101 26
+    100050: barrier101 27
+    100052: barrier101 28
+    100054: barrier101 29
+    100056: barrier101 3
+    100058: barrier101 30
+    100060: barrier101 4
+    100062: barrier101 5
+    100064: barrier101 6
+    100066: barrier101 7
+    100068: barrier101 8
+    100070: barrier101 9
+    100072: group1
+    100074: group1 1
+    100076: group1 2
+    100078: group10
+    100080: group10 1
+    100082: group10 2
+    100084: group11
+    100086: group13
+    100088: group13_group9_barrier101
+    100090: group14
+    100092: group14_group9_barrier101
+    100094: group14_group9_long_straigh_railing
+    100096: group14_group9_long_straight_road
+    100098: group15
+    100100: group16
+    100102: group17
+    100104: group17_group4_long_straigh_railing
+    100106: group17_group4_long_straight_road
+    100108: group18
+    100110: group19
+    100112: group2
+    100114: group2 1
+    100116: group2 2
+    100118: group2 3
+    100120: group20
+    100122: group3
+    100124: group3 1
+    100126: group3 2
+    100128: group3 3
+    100130: group4
+    100132: group4 1
+    100134: group4 2
+    100136: group4 3
+    100138: group5
+    100140: group5 1
+    100142: group5 2
+    100144: group5 3
+    100146: group6
+    100148: group6 1
+    100150: group6 2
+    100152: group7
+    100154: group7 1
+    100156: group7 2
+    100158: group9
+    100160: group9 1
+    100162: group9 2
+    100164: //RootNode
+    100166: long_straigh_railing
+    100168: long_straigh_railing 1
+    100170: long_straigh_railing 10
+    100172: long_straigh_railing 11
+    100174: long_straigh_railing 12
+    100176: long_straigh_railing 13
+    100178: long_straigh_railing 14
+    100180: long_straigh_railing 15
+    100182: long_straigh_railing 16
+    100184: long_straigh_railing 17
+    100186: long_straigh_railing 18
+    100188: long_straigh_railing 19
+    100190: long_straigh_railing 2
+    100192: long_straigh_railing 20
+    100194: long_straigh_railing 21
+    100196: long_straigh_railing 22
+    100198: long_straigh_railing 23
+    100200: long_straigh_railing 24
+    100202: long_straigh_railing 25
+    100204: long_straigh_railing 26
+    100206: long_straigh_railing 27
+    100208: long_straigh_railing 28
+    100210: long_straigh_railing 29
+    100212: long_straigh_railing 3
+    100214: long_straigh_railing 30
+    100216: long_straigh_railing 4
+    100218: long_straigh_railing 5
+    100220: long_straigh_railing 6
+    100222: long_straigh_railing 7
+    100224: long_straigh_railing 8
+    100226: long_straigh_railing 9
+    100228: long_straight_railing
+    100230: long_straight_road
+    100232: long_straight_road 1
+    100234: long_straight_road 10
+    100236: long_straight_road 11
+    100238: long_straight_road 12
+    100240: long_straight_road 13
+    100242: long_straight_road 14
+    100244: long_straight_road 15
+    100246: long_straight_road 16
+    100248: long_straight_road 17
+    100250: long_straight_road 18
+    100252: long_straight_road 19
+    100254: long_straight_road 2
+    100256: long_straight_road 20
+    100258: long_straight_road 21
+    100260: long_straight_road 22
+    100262: long_straight_road 23
+    100264: long_straight_road 24
+    100266: long_straight_road 25
+    100268: long_straight_road 26
+    100270: long_straight_road 27
+    100272: long_straight_road 28
+    100274: long_straight_road 29
+    100276: long_straight_road 3
+    100278: long_straight_road 30
+    100280: long_straight_road 4
+    100282: long_straight_road 5
+    100284: long_straight_road 6
+    100286: long_straight_road 7
+    100288: long_straight_road 8
+    100290: long_straight_road 9
+    100292: Poles
+    100294: Starter
+    100296: startthing
+    100298: switch:barrier
+    100300: switch:barrier 1
+    100302: switch:barrier1
+    100304: switch:barrier1 1
+    100306: switch:side2
+    100308: switch:side2 1
+    100310: switch:switcher
+    100312: switch:switcher 1
+    100314: switch:switcher1
+    100316: switch:thinner_railing
+    100318: switch:thinner_railing 1
+    100320: switch:thinner_railing1
+    100322: switch:thinner_railing1 1
+    100324: switch:thinner_road
+    100326: switch:thinner_road 1
+    100328: test
+    100330: test 1
+    100332: testlines:barrier101
+    100334: testlines:group1
+    100336: testlines:long_straigh_railing
+    100338: testlines:long_straight_road
+    100340: thinner
+    100342: thinner1
+    100344: thinner_railing
+    100346: thinner_railing 1
+    100348: thinner_road
+    100350: thinner_road 1
+    100352: transform1
+    100354: transform10
+    100356: transform11
+    100358: transform12
+    100360: transform2
+    100362: transform3
+    100364: transform4
+    100366: transform5
+    100368: transform6
+    100370: transform7
+    100372: transform8
+    100374: transform9
+    400000: Banner
+    400002: banner
+    400004: barrier
+    400006: barrier 1
+    400008: barrier 2
+    400010: barrier101
+    400012: barrier101 1
+    400014: barrier101 10
+    400016: barrier101 11
+    400018: barrier101 12
+    400020: barrier101 13
+    400022: barrier101 14
+    400024: barrier101 15
+    400026: barrier101 16
+    400028: barrier101 17
+    400030: barrier101 18
+    400032: barrier101 19
+    400034: barrier101 2
+    400036: barrier101 20
+    400038: barrier101 21
+    400040: barrier101 22
+    400042: barrier101 23
+    400044: barrier101 24
+    400046: barrier101 25
+    400048: barrier101 26
+    400050: barrier101 27
+    400052: barrier101 28
+    400054: barrier101 29
+    400056: barrier101 3
+    400058: barrier101 30
+    400060: barrier101 4
+    400062: barrier101 5
+    400064: barrier101 6
+    400066: barrier101 7
+    400068: barrier101 8
+    400070: barrier101 9
+    400072: group1
+    400074: group1 1
+    400076: group1 2
+    400078: group10
+    400080: group10 1
+    400082: group10 2
+    400084: group11
+    400086: group13
+    400088: group13_group9_barrier101
+    400090: group14
+    400092: group14_group9_barrier101
+    400094: group14_group9_long_straigh_railing
+    400096: group14_group9_long_straight_road
+    400098: group15
+    400100: group16
+    400102: group17
+    400104: group17_group4_long_straigh_railing
+    400106: group17_group4_long_straight_road
+    400108: group18
+    400110: group19
+    400112: group2
+    400114: group2 1
+    400116: group2 2
+    400118: group2 3
+    400120: group20
+    400122: group3
+    400124: group3 1
+    400126: group3 2
+    400128: group3 3
+    400130: group4
+    400132: group4 1
+    400134: group4 2
+    400136: group4 3
+    400138: group5
+    400140: group5 1
+    400142: group5 2
+    400144: group5 3
+    400146: group6
+    400148: group6 1
+    400150: group6 2
+    400152: group7
+    400154: group7 1
+    400156: group7 2
+    400158: group9
+    400160: group9 1
+    400162: group9 2
+    400164: //RootNode
+    400166: long_straigh_railing
+    400168: long_straigh_railing 1
+    400170: long_straigh_railing 10
+    400172: long_straigh_railing 11
+    400174: long_straigh_railing 12
+    400176: long_straigh_railing 13
+    400178: long_straigh_railing 14
+    400180: long_straigh_railing 15
+    400182: long_straigh_railing 16
+    400184: long_straigh_railing 17
+    400186: long_straigh_railing 18
+    400188: long_straigh_railing 19
+    400190: long_straigh_railing 2
+    400192: long_straigh_railing 20
+    400194: long_straigh_railing 21
+    400196: long_straigh_railing 22
+    400198: long_straigh_railing 23
+    400200: long_straigh_railing 24
+    400202: long_straigh_railing 25
+    400204: long_straigh_railing 26
+    400206: long_straigh_railing 27
+    400208: long_straigh_railing 28
+    400210: long_straigh_railing 29
+    400212: long_straigh_railing 3
+    400214: long_straigh_railing 30
+    400216: long_straigh_railing 4
+    400218: long_straigh_railing 5
+    400220: long_straigh_railing 6
+    400222: long_straigh_railing 7
+    400224: long_straigh_railing 8
+    400226: long_straigh_railing 9
+    400228: long_straight_railing
+    400230: long_straight_road
+    400232: long_straight_road 1
+    400234: long_straight_road 10
+    400236: long_straight_road 11
+    400238: long_straight_road 12
+    400240: long_straight_road 13
+    400242: long_straight_road 14
+    400244: long_straight_road 15
+    400246: long_straight_road 16
+    400248: long_straight_road 17
+    400250: long_straight_road 18
+    400252: long_straight_road 19
+    400254: long_straight_road 2
+    400256: long_straight_road 20
+    400258: long_straight_road 21
+    400260: long_straight_road 22
+    400262: long_straight_road 23
+    400264: long_straight_road 24
+    400266: long_straight_road 25
+    400268: long_straight_road 26
+    400270: long_straight_road 27
+    400272: long_straight_road 28
+    400274: long_straight_road 29
+    400276: long_straight_road 3
+    400278: long_straight_road 30
+    400280: long_straight_road 4
+    400282: long_straight_road 5
+    400284: long_straight_road 6
+    400286: long_straight_road 7
+    400288: long_straight_road 8
+    400290: long_straight_road 9
+    400292: Poles
+    400294: Starter
+    400296: startthing
+    400298: switch:barrier
+    400300: switch:barrier 1
+    400302: switch:barrier1
+    400304: switch:barrier1 1
+    400306: switch:side2
+    400308: switch:side2 1
+    400310: switch:switcher
+    400312: switch:switcher 1
+    400314: switch:switcher1
+    400316: switch:thinner_railing
+    400318: switch:thinner_railing 1
+    400320: switch:thinner_railing1
+    400322: switch:thinner_railing1 1
+    400324: switch:thinner_road
+    400326: switch:thinner_road 1
+    400328: test
+    400330: test 1
+    400332: testlines:barrier101
+    400334: testlines:group1
+    400336: testlines:long_straigh_railing
+    400338: testlines:long_straight_road
+    400340: thinner
+    400342: thinner1
+    400344: thinner_railing
+    400346: thinner_railing 1
+    400348: thinner_road
+    400350: thinner_road 1
+    400352: transform1
+    400354: transform10
+    400356: transform11
+    400358: transform12
+    400360: transform2
+    400362: transform3
+    400364: transform4
+    400366: transform5
+    400368: transform6
+    400370: transform7
+    400372: transform8
+    400374: transform9
+    2300000: Banner
+    2300002: barrier
+    2300004: barrier 1
+    2300006: barrier 2
+    2300008: barrier101
+    2300010: barrier101 1
+    2300012: barrier101 10
+    2300014: barrier101 11
+    2300016: barrier101 13
+    2300018: barrier101 14
+    2300020: barrier101 15
+    2300022: barrier101 16
+    2300024: barrier101 17
+    2300026: barrier101 18
+    2300028: barrier101 19
+    2300030: barrier101 2
+    2300032: barrier101 20
+    2300034: barrier101 22
+    2300036: barrier101 23
+    2300038: barrier101 24
+    2300040: barrier101 25
+    2300042: barrier101 28
+    2300044: barrier101 29
+    2300046: barrier101 3
+    2300048: barrier101 30
+    2300050: barrier101 4
+    2300052: barrier101 5
+    2300054: barrier101 6
+    2300056: barrier101 7
+    2300058: barrier101 8
+    2300060: barrier101 9
+    2300062: group13_group9_barrier101
+    2300064: group14_group9_barrier101
+    2300066: group14_group9_long_straigh_railing
+    2300068: group14_group9_long_straight_road
+    2300070: group17_group4_long_straigh_railing
+    2300072: group17_group4_long_straight_road
+    2300074: long_straigh_railing
+    2300076: long_straigh_railing 1
+    2300078: long_straigh_railing 10
+    2300080: long_straigh_railing 11
+    2300082: long_straigh_railing 13
+    2300084: long_straigh_railing 14
+    2300086: long_straigh_railing 15
+    2300088: long_straigh_railing 16
+    2300090: long_straigh_railing 17
+    2300092: long_straigh_railing 18
+    2300094: long_straigh_railing 19
+    2300096: long_straigh_railing 2
+    2300098: long_straigh_railing 20
+    2300100: long_straigh_railing 22
+    2300102: long_straigh_railing 23
+    2300104: long_straigh_railing 24
+    2300106: long_straigh_railing 25
+    2300108: long_straigh_railing 28
+    2300110: long_straigh_railing 29
+    2300112: long_straigh_railing 3
+    2300114: long_straigh_railing 30
+    2300116: long_straigh_railing 4
+    2300118: long_straigh_railing 5
+    2300120: long_straigh_railing 6
+    2300122: long_straigh_railing 7
+    2300124: long_straigh_railing 8
+    2300126: long_straigh_railing 9
+    2300128: long_straight_railing
+    2300130: long_straight_road
+    2300132: long_straight_road 1
+    2300134: long_straight_road 10
+    2300136: long_straight_road 11
+    2300138: long_straight_road 13
+    2300140: long_straight_road 14
+    2300142: long_straight_road 15
+    2300144: long_straight_road 16
+    2300146: long_straight_road 17
+    2300148: long_straight_road 18
+    2300150: long_straight_road 19
+    2300152: long_straight_road 2
+    2300154: long_straight_road 20
+    2300156: long_straight_road 22
+    2300158: long_straight_road 23
+    2300160: long_straight_road 24
+    2300162: long_straight_road 25
+    2300164: long_straight_road 28
+    2300166: long_straight_road 29
+    2300168: long_straight_road 3
+    2300170: long_straight_road 30
+    2300172: long_straight_road 4
+    2300174: long_straight_road 5
+    2300176: long_straight_road 6
+    2300178: long_straight_road 7
+    2300180: long_straight_road 8
+    2300182: long_straight_road 9
+    2300184: Poles
+    2300186: switch:barrier
+    2300188: switch:barrier 1
+    2300190: switch:barrier1
+    2300192: switch:barrier1 1
+    2300194: switch:thinner_railing
+    2300196: switch:thinner_railing 1
+    2300198: switch:thinner_railing1
+    2300200: switch:thinner_railing1 1
+    2300202: switch:thinner_road
+    2300204: switch:thinner_road 1
+    2300206: test 1
+    2300208: testlines:barrier101
+    2300210: testlines:long_straigh_railing
+    2300212: testlines:long_straight_road
+    2300214: thinner_railing
+    2300216: thinner_railing 1
+    2300218: thinner_road
+    2300220: thinner_road 1
+    3300000: Banner
+    3300002: barrier
+    3300004: barrier 1
+    3300006: barrier 2
+    3300008: barrier101
+    3300010: barrier101 1
+    3300012: barrier101 10
+    3300014: barrier101 11
+    3300016: barrier101 13
+    3300018: barrier101 14
+    3300020: barrier101 15
+    3300022: barrier101 16
+    3300024: barrier101 17
+    3300026: barrier101 18
+    3300028: barrier101 19
+    3300030: barrier101 2
+    3300032: barrier101 20
+    3300034: barrier101 22
+    3300036: barrier101 23
+    3300038: barrier101 24
+    3300040: barrier101 25
+    3300042: barrier101 28
+    3300044: barrier101 29
+    3300046: barrier101 3
+    3300048: barrier101 30
+    3300050: barrier101 4
+    3300052: barrier101 5
+    3300054: barrier101 6
+    3300056: barrier101 7
+    3300058: barrier101 8
+    3300060: barrier101 9
+    3300062: group13_group9_barrier101
+    3300064: group14_group9_barrier101
+    3300066: group14_group9_long_straigh_railing
+    3300068: group14_group9_long_straight_road
+    3300070: group17_group4_long_straigh_railing
+    3300072: group17_group4_long_straight_road
+    3300074: long_straigh_railing
+    3300076: long_straigh_railing 1
+    3300078: long_straigh_railing 10
+    3300080: long_straigh_railing 11
+    3300082: long_straigh_railing 13
+    3300084: long_straigh_railing 14
+    3300086: long_straigh_railing 15
+    3300088: long_straigh_railing 16
+    3300090: long_straigh_railing 17
+    3300092: long_straigh_railing 18
+    3300094: long_straigh_railing 19
+    3300096: long_straigh_railing 2
+    3300098: long_straigh_railing 20
+    3300100: long_straigh_railing 22
+    3300102: long_straigh_railing 23
+    3300104: long_straigh_railing 24
+    3300106: long_straigh_railing 25
+    3300108: long_straigh_railing 28
+    3300110: long_straigh_railing 29
+    3300112: long_straigh_railing 3
+    3300114: long_straigh_railing 30
+    3300116: long_straigh_railing 4
+    3300118: long_straigh_railing 5
+    3300120: long_straigh_railing 6
+    3300122: long_straigh_railing 7
+    3300124: long_straigh_railing 8
+    3300126: long_straigh_railing 9
+    3300128: long_straight_railing
+    3300130: long_straight_road
+    3300132: long_straight_road 1
+    3300134: long_straight_road 10
+    3300136: long_straight_road 11
+    3300138: long_straight_road 13
+    3300140: long_straight_road 14
+    3300142: long_straight_road 15
+    3300144: long_straight_road 16
+    3300146: long_straight_road 17
+    3300148: long_straight_road 18
+    3300150: long_straight_road 19
+    3300152: long_straight_road 2
+    3300154: long_straight_road 20
+    3300156: long_straight_road 22
+    3300158: long_straight_road 23
+    3300160: long_straight_road 24
+    3300162: long_straight_road 25
+    3300164: long_straight_road 28
+    3300166: long_straight_road 29
+    3300168: long_straight_road 3
+    3300170: long_straight_road 30
+    3300172: long_straight_road 4
+    3300174: long_straight_road 5
+    3300176: long_straight_road 6
+    3300178: long_straight_road 7
+    3300180: long_straight_road 8
+    3300182: long_straight_road 9
+    3300184: Poles
+    3300186: switch:barrier
+    3300188: switch:barrier 1
+    3300190: switch:barrier1
+    3300192: switch:barrier1 1
+    3300194: switch:thinner_railing
+    3300196: switch:thinner_railing 1
+    3300198: switch:thinner_railing1
+    3300200: switch:thinner_railing1 1
+    3300202: switch:thinner_road
+    3300204: switch:thinner_road 1
+    3300206: test 1
+    3300208: testlines:barrier101
+    3300210: testlines:long_straigh_railing
+    3300212: testlines:long_straight_road
+    3300214: thinner_railing
+    3300216: thinner_railing 1
+    3300218: thinner_road
+    3300220: thinner_road 1
+    4300000: group17_group4_long_straigh_railing
+    4300002: group13_group9_barrier101
+    4300004: group17_group4_long_straight_road
+    4300006: group14_group9_barrier101
+    4300008: group14_group9_long_straigh_railing
+    4300010: group14_group9_long_straight_road
+    4300012: long_straight_road
+    4300014: long_straigh_railing
+    4300016: barrier101
+    4300018: long_straight_road
+    4300020: long_straigh_railing
+    4300022: barrier101
+    4300024: long_straight_road
+    4300026: long_straigh_railing
+    4300028: barrier101
+    4300030: long_straight_road
+    4300032: long_straigh_railing
+    4300034: barrier101
+    4300036: long_straight_road
+    4300038: long_straigh_railing
+    4300040: barrier101
+    4300042: long_straight_road
+    4300044: long_straigh_railing
+    4300046: barrier101
+    4300048: long_straight_road
+    4300050: long_straigh_railing
+    4300052: barrier101
+    4300054: long_straight_road
+    4300056: long_straigh_railing
+    4300058: barrier101
+    4300060: long_straight_road
+    4300062: long_straigh_railing
+    4300064: barrier101
+    4300066: long_straight_road
+    4300068: long_straigh_railing
+    4300070: barrier101
+    4300072: long_straight_road
+    4300074: long_straigh_railing
+    4300076: barrier101
+    4300078: long_straight_road
+    4300080: long_straigh_railing
+    4300082: barrier101
+    4300084: long_straight_road
+    4300086: long_straigh_railing
+    4300088: barrier101
+    4300090: long_straight_road
+    4300092: long_straigh_railing
+    4300094: barrier101
+    4300096: long_straight_road
+    4300098: long_straigh_railing
+    4300100: barrier101
+    4300102: long_straight_road
+    4300104: long_straigh_railing
+    4300106: barrier101
+    4300108: long_straight_road
+    4300110: long_straigh_railing
+    4300112: barrier101
+    4300114: long_straight_road
+    4300116: long_straigh_railing
+    4300118: barrier101
+    4300120: testlines:long_straight_road
+    4300122: testlines:long_straigh_railing
+    4300124: testlines:barrier101
+    4300126: long_straight_road
+    4300128: long_straigh_railing
+    4300130: barrier101
+    4300132: long_straight_road
+    4300134: long_straigh_railing
+    4300136: barrier101
+    4300138: long_straight_road
+    4300140: long_straigh_railing
+    4300142: barrier101
+    4300144: long_straight_road
+    4300146: long_straigh_railing
+    4300148: barrier101
+    4300150: long_straight_road
+    4300152: long_straigh_railing
+    4300154: barrier101
+    4300156: long_straight_road
+    4300158: long_straigh_railing
+    4300160: barrier101
+    4300162: long_straight_road
+    4300164: long_straigh_railing
+    4300166: barrier101
+    4300168: long_straight_road
+    4300170: long_straigh_railing
+    4300172: barrier101
+    4300174: long_straight_road
+    4300176: long_straigh_railing
+    4300178: barrier101
+    4300180: switch:thinner_road
+    4300182: switch:thinner_railing
+    4300184: switch:barrier
+    4300186: switch:thinner_railing1
+    4300188: switch:barrier1
+    4300190: switch:thinner_road
+    4300192: switch:thinner_railing
+    4300194: switch:barrier
+    4300196: switch:thinner_railing1
+    4300198: switch:barrier1
+    4300200: thinner_road
+    4300202: thinner_railing
+    4300204: barrier
+    4300206: Banner
+    4300208: Poles
+    4300210: test
+    4300212: long_straight_railing
+    4300214: barrier
+    4300216: thinner_road
+    4300218: thinner_railing
+    4300220: barrier
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
