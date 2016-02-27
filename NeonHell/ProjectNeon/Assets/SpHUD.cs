@@ -12,7 +12,7 @@ public class SpHUD : MonoBehaviour
   public GameObject Menu;
   public Text countdownText;
   public Text velocityText;
-  public Text PolarityText;
+  public Image polarityImage;
   public Text EnergyText;
   public Text placeText;
   public Text lapsText;
@@ -93,7 +93,7 @@ public class SpHUD : MonoBehaviour
     PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
 
 		velocityText.text =Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f).ToString();
-    PolarityText.text = _PlayerController.getShipStats().Polarity == 1 ? "Blue" : "Red";
+    polarityImage.color = _PlayerController.getShipStats().Polarity == 1 ? Color.blue : Color.red;
     EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
     lapsText.text =_NetPlayer.getLap ().ToString();
