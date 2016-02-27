@@ -18,8 +18,16 @@ public class GameManager : NetworkManager
   private float fUpdPlaceTime = 200.0f;
   public GAME_MODE GameMode;
   public GAME_STATE GameState;
-  private string[] circuitScenes = new string[3]{"CitySmall", "CitySmall", "CityMed"};
-  private string[] trackNames = new string[3]{"InfTrack", "T-Track", "OverUnder"};
+  public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
+                                                 "CitySmall", "CityMed", "CityMed", //Ar Circuit
+                                                 "CityMed", "CityLarge", "CityXL", //Xe Circuit
+                                                 "CityMed", "CityXL", "CityXL"}; //Noble Circuit
+  public readonly string[] TRACK_NAMES = new string[12]{"InfTrack", "T-Track", "OverUnder", //He Circuit
+                                                        "T-Split", "Mobius","JumpBridge", //Ar Circuit
+                                                        "","","", //Xe Circuit
+                                                        "","",""}; //Noble Circuit
+  public string[] circuitScenes;
+  public string[] trackNames;
 
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
@@ -320,7 +328,9 @@ public class GameManager : NetworkManager
   private void checkVehicleSelectReady (){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.VehicleSelectReady))
       return;
-    
+
+    GameState = GAME_STATE.LevelSelection;
+
     //foreach (GameObject p in players){
     for(int i = 0; i < PLAYER_COUNT; i++){
       //Add NPC's for any empty spots
@@ -331,19 +341,27 @@ public class GameManager : NetworkManager
         NetworkServer.Spawn(NpcPlayer);
         _NetPlayer.Setup (i, false);
         players[i] = NpcPlayer;
+        players[i].GetComponent<NetPlayer> ().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelectReady);
       }
-
-      players[i].GetComponent<NetPlayer> ().PlayerState = NetPlayer.PLAYER_STATE.LoadingScene;
-    }
-    GameState = GAME_STATE.SceneChange;
-    ServerChangeScene (circuitScenes[iRaceCounter]);
+      else if (i==0){
+        players[i].GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelect);
+        players[i].GetComponent<NetPlayer>().RpcStartLevelSelection();
+        //players[i].GetComponent<NetPlayer>().PlayerState = 
+      } 
+      else 
+        players[i].GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelectReady);
+    } //End for(int i = 0; i < PLAYER_COUNT; i++)
   }
 
   private void checkLevelSelectReady(){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.LevelSelectReady))
       return;
 
+    foreach(GameObject p in players)
+      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+    
     GameState = GAME_STATE.SceneChange;
+    ServerChangeScene (circuitScenes[iRaceCounter]);
   }
 
   private void checkPlayersLoadedScene(){
@@ -416,4 +434,15 @@ public class GameManager : NetworkManager
   public GAME_MODE getGameMode(){return GameMode;}
   public void setGameMode(GAME_MODE piGameMode){GameMode = piGameMode;}
 
+  //[Command]
+  public void CmdChangeCircuit(int piChoice){
+    int liCircuitLength = piChoice == 4 ? 12 : 3;
+    int liCircuitStart = piChoice == 4 ? 0 : 3 * piChoice;
+    circuitScenes = new string[liCircuitLength];
+    trackNames = new string[liCircuitLength];
+    for (int i = 0; i < liCircuitLength; i++){
+      circuitScenes [i] = CIRCUIT_SCENES [liCircuitStart + i];
+      trackNames [i] = TRACK_NAMES [liCircuitStart + i];
+    } //End for (int i = 0; i < liCircuitLength; i++)
+  } //End public void CmdChangeCircuit(int piChoice)
 }

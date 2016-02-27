@@ -181,6 +181,14 @@ public class NetPlayer : NetworkBehaviour
   }
 
   [ClientRpc]
+  public void RpcStartLevelSelection(){
+    if(!isLocalPlayer)
+      return;
+    GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive(false);
+    GameObject.Find("MainMenu").transform.FindChild("MapSelection").gameObject.SetActive(true);
+  }
+
+  [ClientRpc]
   public void RpcSetShip (GameObject pNewShip){
     //ship = pNewShip;
     pNewShip.GetComponent<PlayerController>().setNetPlayer(this);
