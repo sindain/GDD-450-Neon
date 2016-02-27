@@ -1,0 +1,227 @@
+fileFormatVersion: 2
+guid: e772468de55e91642b6f0fbc4660e6b4
+timeCreated: 1456526585
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Back_Thrusters
+    100002: Body
+    100004: Cab
+    100006: lBackPipe
+    100008: lBackThrust
+    100010: leftBackTurbine
+    100012: lFrontPipe
+    100014: lMidPipe
+    100016: //RootNode
+    100018: mBackThrust
+    100020: Pipes
+    100022: polySurface1
+    100024: polySurface2
+    100026: polySurface3
+    100028: polySurface4
+    100030: polySurface5
+    100032: polySurface6
+    100034: rBackThrust
+    100036: rightBackTurbine
+    100038: rightFrontTurbine
+    100040: U
+    400000: Back_Thrusters
+    400002: Body
+    400004: Cab
+    400006: lBackPipe
+    400008: lBackThrust
+    400010: leftBackTurbine
+    400012: lFrontPipe
+    400014: lMidPipe
+    400016: //RootNode
+    400018: mBackThrust
+    400020: Pipes
+    400022: polySurface1
+    400024: polySurface2
+    400026: polySurface3
+    400028: polySurface4
+    400030: polySurface5
+    400032: polySurface6
+    400034: rBackThrust
+    400036: rightBackTurbine
+    400038: rightFrontTurbine
+    400040: U
+    2300000: Body
+    2300002: Cab
+    2300004: lBackThrust
+    2300006: leftBackTurbine
+    2300008: mBackThrust
+    2300010: polySurface1
+    2300012: polySurface2
+    2300014: polySurface3
+    2300016: polySurface4
+    2300018: polySurface5
+    2300020: polySurface6
+    2300022: rBackThrust
+    2300024: rightBackTurbine
+    2300026: rightFrontTurbine
+    3300000: Body
+    3300002: Cab
+    3300004: lBackThrust
+    3300006: leftBackTurbine
+    3300008: mBackThrust
+    3300010: polySurface1
+    3300012: polySurface2
+    3300014: polySurface3
+    3300016: polySurface4
+    3300018: polySurface5
+    3300020: polySurface6
+    3300022: rBackThrust
+    3300024: rightBackTurbine
+    3300026: rightFrontTurbine
+    4300000: Cab
+    4300002: Body
+    4300004: rightFrontTurbine
+    4300006: rightBackTurbine
+    4300008: leftBackTurbine
+    4300010: rBackThrust
+    4300012: mBackThrust
+    4300014: lBackThrust
+    4300016: polySurface5
+    4300018: polySurface6
+    4300020: polySurface1
+    4300022: polySurface2
+    4300024: polySurface3
+    4300026: polySurface4
+    7400000: MagU40Anim
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: MagU40Anim
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Cab
+        weight: 1
+      - path: U
+        weight: 1
+      - path: U/Back_Thrusters
+        weight: 1
+      - path: U/Back_Thrusters/lBackThrust
+        weight: 1
+      - path: U/Back_Thrusters/mBackThrust
+        weight: 1
+      - path: U/Back_Thrusters/rBackThrust
+        weight: 1
+      - path: U/Body
+        weight: 1
+      - path: U/leftBackTurbine
+        weight: 1
+      - path: U/Pipes
+        weight: 1
+      - path: U/Pipes/lBackPipe
+        weight: 1
+      - path: U/Pipes/lBackPipe/polySurface1
+        weight: 1
+      - path: U/Pipes/lBackPipe/polySurface2
+        weight: 1
+      - path: U/Pipes/lFrontPipe
+        weight: 1
+      - path: U/Pipes/lFrontPipe/polySurface5
+        weight: 1
+      - path: U/Pipes/lFrontPipe/polySurface6
+        weight: 1
+      - path: U/Pipes/lMidPipe
+        weight: 1
+      - path: U/Pipes/lMidPipe/polySurface3
+        weight: 1
+      - path: U/Pipes/lMidPipe/polySurface4
+        weight: 1
+      - path: U/rightBackTurbine
+        weight: 1
+      - path: U/rightFrontTurbine
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
