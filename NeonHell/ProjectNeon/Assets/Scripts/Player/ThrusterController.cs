@@ -68,6 +68,8 @@ public class ThrusterController : MonoBehaviour {
 					return;
 				if((hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
 					return;
+				if (hit.transform.tag == "KillPlane" || hit.transform.tag == "Wall")
+					return;
 
 
 				//Update velocity of point relative to what it's hitting
