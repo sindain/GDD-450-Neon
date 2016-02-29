@@ -195,7 +195,7 @@ public class PlayerController : NetworkBehaviour
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
     //Only continue if the player has authority of this ship, or is an NPC
-    if ((_NetPlayer.isHuman() && !hasAuthority) &&
+    if ((_NetPlayer.isHuman() && !hasAuthority) ||
         (!_NetPlayer.isHuman() && !isServer))
       return;
     switch (other.tag) {
