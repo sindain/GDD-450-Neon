@@ -122,7 +122,7 @@ public class PlayerController : NetworkBehaviour
       fTorque = Mathf.Acos(Vector3.Dot(tProj,gameObject.transform.right)/(Vector3.Magnitude(tProj)*Vector3.Magnitude(gameObject.transform.right))) < (Mathf.PI/2.0f) ? 1 : -1;
       fTorque *= Mathf.Clamp(fDegOffset / (Mathf.PI/6f), 0.0f, 1.0f);
     }
-    rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque * rb.mass);
+    rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque * rb.mass);
 
     //If the player is close to the something, allow moving forward
     if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance)) {
@@ -169,7 +169,7 @@ public class PlayerController : NetworkBehaviour
       }
 
       //More force calculations
-      Vector3 forwardForce = transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
+      Vector3 forwardForce = transform.forward * (_NetPlayer.isHuman()?lfTotalThrust*1.0f:lfTotalThrust*1.2f) * fPercThrustPower * rb.mass;
       rb.AddForce (forwardForce);
 
       //Brake force
