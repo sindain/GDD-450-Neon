@@ -201,6 +201,13 @@ public class NetPlayer : NetworkBehaviour
     ship.GetComponent<PlayerController> ().setCameraControl (true);
   }
 
+  [ClientRpc]
+  public void RpcStartRaceOverTimer(){
+    if(!isLocalPlayer)
+      return;
+    GameObject.Find("UI").GetComponent<SpHUD>().startRaceOverTimer();
+  }
+
 //----------------------------------------------Getters and Setters-----------------------------------------------------
 
   public void setShipChoice (int piChoice){CmdChangeShip (piChoice);}

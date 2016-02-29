@@ -16,6 +16,7 @@ public class GameManager : NetworkManager
   private int iRaceCounter;
   private float fTimer;
   private float fUpdPlaceTime = 200.0f;
+  public float fRaceOverTimer;
   public GAME_MODE GameMode;
   public GAME_STATE GameState;
   public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
@@ -49,6 +50,22 @@ public class GameManager : NetworkManager
       fTimer = Time.time;
       UpdatePlaces ();
     }
+
+    //Check race over timer
+    if(fRaceOverTimer > 0){ //countdown has begun
+      if(fRaceOverTimer - Time.deltaTime <= 0){
+        foreach(GameObject p in players){
+          if(p==null)
+            continue;
+          NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
+          if(_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.RaceFinished)
+            _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.RaceFinished);
+        }//End foreach(GameObject p in players)
+        fRaceOverTimer = 0.0f;
+      }//End if(fRaceOverTimer - Time.deltaTime <= 0)
+      else
+        fRaceOverTimer -= Time.deltaTime;
+    }//End if(fRaceOverTimer >= 0)
 
   }
     
@@ -385,6 +402,7 @@ public class GameManager : NetworkManager
     //Check if everyone has started racing to change game state
     if (arePlayerStatesSynced (NetPlayer.PLAYER_STATE.Racing))
       GameState = GAME_STATE.Racing;
+      fRaceOverTimer = 0.0f;
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceReady))
       return;
 
@@ -398,6 +416,17 @@ public class GameManager : NetworkManager
   }
 
   private void checkRaceFinished(){
+    
+    //Someone has finished the race, start the countdown timer if it hasn't started already.
+    if(fRaceOverTimer == 0.0f){
+      fRaceOverTimer = 30.0f; //30s
+      foreach(GameObject p in players){
+        if(p==null)
+          continue;
+        p.GetComponent<NetPlayer>().RpcStartRaceOverTimer();
+      }
+    }
+
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceFinished))
       return;
 

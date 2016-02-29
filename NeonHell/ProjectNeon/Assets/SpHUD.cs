@@ -16,11 +16,13 @@ public class SpHUD : MonoBehaviour
   public Text EnergyText;
   public Text placeText;
   public Text lapsText;
+  public Text raceOverText;
   public Sprite[] Huds;
   //public Image menu;
 
   public float fTimer;
-  private GameManager.TRANSITION Trans;
+  public float fRaceOverTimer = 0.0f;
+  //private GameManager.TRANSITION Trans;
   public UI_STATE UIState;
   private Color[] countdownColors = {Color.green, Color.yellow, Color.yellow, Color.red, Color.red};
 
@@ -28,7 +30,7 @@ public class SpHUD : MonoBehaviour
   void Start (){
     //Initialize all variables to their starting positions\
     UIState = UI_STATE.None;
-    Trans = GameManager.TRANSITION.None;
+    //Trans = GameManager.TRANSITION.None;
     countdownText.color = Color.red;
     countdownText.text = "3";
     PlayerPrefs.SetFloat ("start", 0);
@@ -97,6 +99,13 @@ public class SpHUD : MonoBehaviour
     EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
     lapsText.text =_NetPlayer.getLap ().ToString();
+    if(fRaceOverTimer > 0.0f){
+      
+      raceOverText.text = fRaceOverTimer.ToString();
+      fRaceOverTimer -= Time.deltaTime;
+    }
+    else
+      raceOverText.text = "00:00";
   }
 
   public void startCountdown(){
@@ -108,6 +117,10 @@ public class SpHUD : MonoBehaviour
     countdownText.text = "3";
     countdownText.color = Color.red;
   } //End public void startCountdown()
+
+  public void startRaceOverTimer(){
+    fRaceOverTimer = 30.0f;
+  }
 
   public void startScoreboard(){
     UIState = UI_STATE.Scoreboard;
