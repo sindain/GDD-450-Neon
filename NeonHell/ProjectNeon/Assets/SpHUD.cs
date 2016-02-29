@@ -80,7 +80,8 @@ public class SpHUD : MonoBehaviour
     else if(UIState == UI_STATE.Scoreboard){
       fTimer -= Time.deltaTime;
       if(fTimer > 0 && fTimer <= 5.0f){
-      foreach(GameObject p in GameObject.Find("GameManager").GetComponent<GameManager>().players){
+        GameObject[] players = GameObject.FindGameObjectsWithTag ("NetPlayer");
+      foreach(GameObject p in players){
         Scorboard.transform.FindChild("Points").GetChild(p.GetComponent<NetPlayer>().getPlace()-1).GetComponent<Text>().text =
           p.GetComponent<NetPlayer>().getPoints().ToString();
         }
@@ -127,7 +128,8 @@ public class SpHUD : MonoBehaviour
     fTimer = 10.0f;
     HUD.SetActive(false);
     Scorboard.SetActive(true);
-    foreach(GameObject p in GameObject.Find("GameManager").GetComponent<GameManager>().players){
+    GameObject[] players = GameObject.FindGameObjectsWithTag ("NetPlayer");
+    foreach(GameObject p in players){
       if(p == null)
         continue;
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();

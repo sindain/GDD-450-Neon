@@ -58,7 +58,7 @@ public class GameManager : NetworkManager
           if(p==null)
             continue;
           NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
-          if(_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.RaceFinished)
+          if(_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Racing)
             _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.RaceFinished);
         }//End foreach(GameObject p in players)
         fRaceOverTimer = 0.0f;
@@ -418,7 +418,12 @@ public class GameManager : NetworkManager
   private void checkRaceFinished(){
     
     //Someone has finished the race, start the countdown timer if it hasn't started already.
-    if(fRaceOverTimer == 0.0f){
+    bool result = true;
+    foreach (GameObject pl in players)
+      if (pl.GetComponent<NetPlayer> ().getPlayerState () != NetPlayer.PLAYER_STATE.Racing)
+        result = false;
+    
+    if(!result && fRaceOverTimer == 0.0f){
       fRaceOverTimer = 30.0f; //30s
       foreach(GameObject p in players){
         if(p==null)
