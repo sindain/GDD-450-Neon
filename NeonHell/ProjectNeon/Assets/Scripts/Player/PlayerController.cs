@@ -200,6 +200,10 @@ public class PlayerController : NetworkBehaviour
       return;
     switch (other.tag) {
     case "Waypoint":
+      if (currentPoint == null)
+        return;
+      if (currentPoint.GetComponent<WaypointController> ().nextPoint == null)
+        return;
       GameObject[] possiblePoints = currentPoint.GetComponent<WaypointController> ().nextPoint;
       for(int i = 0; i < possiblePoints.Length; i++){
         if(other.gameObject.Equals(possiblePoints[i])){
