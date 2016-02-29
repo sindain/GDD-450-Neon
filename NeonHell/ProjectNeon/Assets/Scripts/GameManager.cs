@@ -216,14 +216,14 @@ public class GameManager : NetworkManager
   public override void OnClientSceneChanged (NetworkConnection conn)
   {
     base.OnClientSceneChanged (conn);
-    foreach(GameObject p in players){
-      
-      if (p == null)
+    GameObject[] lPlayers = GameObject.FindGameObjectsWithTag("NetPlayer");
+
+    foreach(GameObject p in lPlayers){
+      if(p==null)
         continue;
-      NetPlayer _NetPlayer = p.GetComponent<NetPlayer> ();
-      //Set up player if the connection matches or is not human.
-      if (_NetPlayer.connectionToServer == conn && _NetPlayer.isHuman ())
-        _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.SceneLoaded);
+
+      if(p.GetComponent<NetworkIdentity>().connectionToServer == conn)
+        p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneLoaded);
     }
   }
 
