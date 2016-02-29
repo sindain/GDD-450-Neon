@@ -38,7 +38,7 @@ public class PlayerController : NetworkBehaviour
   public bool bCameraControl = false;
   private bool bIsRacing = false;
   private bool bManuallyBoosting = false;
-  private GameObject currentPoint;
+  public GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
   private NetPlayer _NetPlayer;
@@ -275,7 +275,7 @@ public class PlayerController : NetworkBehaviour
 
   void OnCollisionEnter(Collision collision){
 
-    if (fCurrentHealth == 0 || fDamageTimer > 0 || healthM[0] == null || !hasAuthority)
+    if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
 
     fCurrentHealth -= 10;
@@ -290,7 +290,10 @@ public class PlayerController : NetworkBehaviour
       //} //End for (int i = 0; i < 4; i++)
       CmdSpawnPieces();
     } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
-    gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth/25];      
+    if (healthM[0] == null)
+    {
+        gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth / 25];
+    }
   } //End void OnCollisionEnter(Collision collision)
 
   [ClientRpc]
