@@ -21,8 +21,8 @@ public class PlayerController : NetworkBehaviour
   public Vector3[] exploPos = new Vector3[4];
 
   //Private variables
-  private int lap = 0;
-  private int BoostType = 0;
+  private int   lap = 0;
+  private int   BoostType = 0;
   private float fCurrentHealth;
   private float fCurrentEnergy;
   private float rotationVelocityX = 0.0f;
@@ -35,9 +35,10 @@ public class PlayerController : NetworkBehaviour
   private float fTurnThreshold;
   private float fDamageTimer;
   private float fDamageCooldown = 1.5f;
-  public bool bCameraControl = false;
-  private bool bIsRacing = false;
-  private bool bManuallyBoosting = false;
+  public  bool  bTesting = false;
+  private bool  bCameraControl = false;
+  private bool  bIsRacing = false;
+  private bool  bManuallyBoosting = false;
   public GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
@@ -68,7 +69,7 @@ public class PlayerController : NetworkBehaviour
 	
   // Update is called once per frame
   void Update (){
-    if (!hasAuthority)
+    if (!hasAuthority && !bTesting)
       return;
 
     if(fDamageTimer > 0)
@@ -85,30 +86,49 @@ public class PlayerController : NetworkBehaviour
 
   //FixedUpdate is called every frame
   void FixedUpdate (){
-    if (_NetPlayer == null)
-      return;
-    //Only continue if the player has authority of this ship, or is an NPC
-    if ((_NetPlayer.isHuman() && !hasAuthority) &&
-        (!_NetPlayer.isHuman() && !isServer))
-      return;
     
-    if (bCameraControl) {
+    if (_NetPlayer == null && !bTesting)
+      return;
+    //Only continue if the player has authority of this ship, or is an NPC, or testing
+    if (!bTesting){
+      if ((_NetPlayer.isHuman () && !hasAuthority) &&
+        (!_NetPlayer.isHuman () && !isServer))
+        return;
+    }
+
+    //Vector help keep the ship upright
+    float fTorque = 0.0f;
+    float fDegOffset = 0.0f;
+    bool lbAirborne = false;
+    Vector3 newRotation;
+    RaycastHit hit;   
+
+    //Consider the ship airborne if the raycast fails or hits a wall.
+    if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance))
+      lbAirborne = hit.collider.tag != "Wall";
+
+    //Right the ship if it is airborne
+    if(lbAirborne){
+      newRotation = transform.eulerAngles;
+      newRotation.x = Mathf.SmoothDampAngle (newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
+      newRotation.z = Mathf.SmoothDampAngle (newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
+      transform.eulerAngles = newRotation;
+    } //End if(lbAirborne)
+    
+    if (bCameraControl || bTesting) {
       Camera cam = Camera.main;
       cam.transform.position = Vector3.Slerp (cam.transform.position, transform.position + transform.rotation * _ShipStats.vCameraOffset, _ShipStats.fSlerpTime);
       cam.transform.rotation = Quaternion.Slerp (cam.transform.rotation, transform.rotation, _ShipStats.fSlerpTime);
     }
 
-    if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
-      return;
-
-    //Vector help keep the ship upright
-    float fTorque = 0.0f;
-    float fDegOffset = 0.0f;
-    Vector3 newRotation;
-    RaycastHit hit;		
+    if(!bTesting)
+      if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
+        return;
 
     //Apply torque, e.g. turn the ship left and right
-    if (_NetPlayer.bIsHuman)
+    if(bTesting)
+      fTorque = Input.GetAxis ("Horizontal");
+    else if (_NetPlayer.bIsHuman)
       fTorque = Input.GetAxis ("Horizontal");
     else{
       direction.transform.position = transform.position;
@@ -122,14 +142,19 @@ public class PlayerController : NetworkBehaviour
       fTorque = Mathf.Acos(Vector3.Dot(tProj,gameObject.transform.right)/(Vector3.Magnitude(tProj)*Vector3.Magnitude(gameObject.transform.right))) < (Mathf.PI/2.0f) ? 1 : -1;
       fTorque *= Mathf.Clamp(fDegOffset / (Mathf.PI/6f), 0.0f, 1.0f);
     }
-    rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque * rb.mass);
+    if(bTesting)
+      rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque, ForceMode.Acceleration);
+    else
+      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque, ForceMode.Impulse);
 
     //If the player is close to the something, allow moving forward
-    if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance)) {
+    if (lbAirborne) {
       rb.drag = 1;
       //Thrust Calculations
       float fThrustTarget = 0.0f;
-      if(_NetPlayer.bIsHuman)
+      if(bTesting)
+        fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
+      else if(_NetPlayer.bIsHuman)
         fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
       else
         fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration;
@@ -164,12 +189,15 @@ public class PlayerController : NetworkBehaviour
         }
         else if (BoostType == -1) {
           lfTotalThrust = _ShipStats.fMaxVelocity - 100.0f;
-          //fPercThrustPower = .5f;
         }
       }
 
       //More force calculations
-      Vector3 forwardForce = transform.forward * (_NetPlayer.isHuman()?lfTotalThrust*1.0f:lfTotalThrust*1.2f) * fPercThrustPower * rb.mass;
+      Vector3 forwardForce;
+      if(bTesting)
+        forwardForce= transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
+      else
+        forwardForce= transform.forward * (_NetPlayer.isHuman()?lfTotalThrust*1.0f:lfTotalThrust*1.2f) * fPercThrustPower * rb.mass;
       rb.AddForce (forwardForce);
 
       //Brake force
@@ -178,14 +206,8 @@ public class PlayerController : NetworkBehaviour
     } //End if (Physics.Raycast(transform.position, -this.transform.up, 4.0f))
 
 		//If the player isn't close to something
-		else {
+		else
       rb.drag = 0.16f;
-      //The following 4 lines help keep the ship upright while in midair
-      newRotation = transform.eulerAngles;
-      newRotation.x = Mathf.SmoothDampAngle (newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
-      newRotation.z = Mathf.SmoothDampAngle (newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
-      transform.eulerAngles = newRotation;
-    } //End else
   } // End void FixedUpdate()
 
   //-----------------------------------------------------------------------------------------------------------------
@@ -194,10 +216,12 @@ public class PlayerController : NetworkBehaviour
   //Parameters:   Collider other - What the object has collided with
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
-    //Only continue if the player has authority of this ship, or is an NPC
-    if ((_NetPlayer.isHuman() && !hasAuthority) ||
-        (!_NetPlayer.isHuman() && !isServer))
-      return;
+    if (!bTesting){
+      //Only continue if the player has authority of this ship, or is an NPC
+      if ((_NetPlayer.isHuman () && !hasAuthority) ||
+        (!_NetPlayer.isHuman () && !isServer))
+        return;
+    }
     switch (other.tag) {
     case "Waypoint":
       if (currentPoint == null)
@@ -212,12 +236,19 @@ public class PlayerController : NetworkBehaviour
           GetComponent<ThrusterController> ().setbMagnetize (currentPoint.GetComponent<WaypointController> ().getbMagnetize ());
           //Increment waypoint count
           WaypointController _WaypointController = currentPoint.GetComponent<WaypointController> ();
-          _NetPlayer.incNumWaypointsHit (_WaypointController.iWeight);
+          if (_NetPlayer != null)
+            _NetPlayer.incNumWaypointsHit (_WaypointController.iWeight);
+          else
+            Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
           //If just hit the finish line, increment the lap counter.
-          if (_WaypointController.bFinishLine)
-            _NetPlayer.incLap ();
-        }
-      }
+          if (_WaypointController.bFinishLine){
+            if(_NetPlayer != null)
+              _NetPlayer.incLap ();
+            else
+              Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
+          } //End if (_WaypointController.bFinishLine)
+        } //End if(other.gameObject.Equals(possiblePoints[i]))
+      } //End for(int i = 0; i < possiblePoints.Length; i++)
       break;
     case "KillPlane":
       transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
@@ -278,6 +309,13 @@ public class PlayerController : NetworkBehaviour
   }
 
   void OnCollisionEnter(Collision collision){
+
+    if(collision.gameObject.tag == "Wall"){
+      foreach (ContactPoint c in collision.contacts){
+        rb.AddForceAtPosition (-collision.impulse / collision.contacts.Length, c.point);
+        rb.AddForce (collision.impulse / collision.contacts.Length);
+      } //End foreach (ContactPoint c in collision.contacts)
+    } //End if(collision.gameObject.tag == "Wall")
 
     if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
