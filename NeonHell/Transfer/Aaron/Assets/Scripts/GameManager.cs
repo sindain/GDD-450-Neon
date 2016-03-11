@@ -16,6 +16,7 @@ public class GameManager : NetworkManager
   private int iRaceCounter;
   private float fTimer;
   private float fUpdPlaceTime = 200.0f;
+  public float fRaceOverTimer;
   public GAME_MODE GameMode;
   public GAME_STATE GameState;
   public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
@@ -49,6 +50,22 @@ public class GameManager : NetworkManager
       fTimer = Time.time;
       UpdatePlaces ();
     }
+
+    //Check race over timer
+    if(fRaceOverTimer > 0){ //countdown has begun
+      if(fRaceOverTimer - Time.deltaTime <= 0){
+        foreach(GameObject p in players){
+          if(p==null)
+            continue;
+          NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
+          if(_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Racing)
+            _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.RaceFinished);
+        }//End foreach(GameObject p in players)
+        fRaceOverTimer = 0.0f;
+      }//End if(fRaceOverTimer - Time.deltaTime <= 0)
+      else
+        fRaceOverTimer -= Time.deltaTime;
+    }//End if(fRaceOverTimer >= 0)
 
   }
     
@@ -216,14 +233,14 @@ public class GameManager : NetworkManager
   public override void OnClientSceneChanged (NetworkConnection conn)
   {
     base.OnClientSceneChanged (conn);
-    foreach(GameObject p in players){
-      
-      if (p == null)
+    GameObject[] lPlayers = GameObject.FindGameObjectsWithTag("NetPlayer");
+
+    foreach(GameObject p in lPlayers){
+      if(p==null)
         continue;
-      NetPlayer _NetPlayer = p.GetComponent<NetPlayer> ();
-      //Set up player if the connection matches or is not human.
-      if (_NetPlayer.connectionToServer == conn && _NetPlayer.isHuman ())
-        _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.SceneLoaded);
+
+      if(p.GetComponent<NetworkIdentity>().connectionToServer == conn)
+        p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneLoaded);
     }
   }
 
@@ -328,7 +345,9 @@ public class GameManager : NetworkManager
   private void checkVehicleSelectReady (){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.VehicleSelectReady))
       return;
-    
+
+    GameState = GAME_STATE.LevelSelection;
+
     //foreach (GameObject p in players){
     for(int i = 0; i < PLAYER_COUNT; i++){
       //Add NPC's for any empty spots
@@ -339,19 +358,27 @@ public class GameManager : NetworkManager
         NetworkServer.Spawn(NpcPlayer);
         _NetPlayer.Setup (i, false);
         players[i] = NpcPlayer;
+        players[i].GetComponent<NetPlayer> ().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelectReady);
       }
-
-      players[i].GetComponent<NetPlayer> ().PlayerState = NetPlayer.PLAYER_STATE.LoadingScene;
-    }
-    GameState = GAME_STATE.SceneChange;
-    ServerChangeScene (circuitScenes[iRaceCounter]);
+      else if (i==0){
+        players[i].GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelect);
+        players[i].GetComponent<NetPlayer>().RpcStartLevelSelection();
+        //players[i].GetComponent<NetPlayer>().PlayerState = 
+      } 
+      else 
+        players[i].GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelectReady);
+    } //End for(int i = 0; i < PLAYER_COUNT; i++)
   }
 
   private void checkLevelSelectReady(){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.LevelSelectReady))
       return;
 
+    foreach(GameObject p in players)
+      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+    
     GameState = GAME_STATE.SceneChange;
+    ServerChangeScene (circuitScenes[iRaceCounter]);
   }
 
   private void checkPlayersLoadedScene(){
@@ -375,6 +402,7 @@ public class GameManager : NetworkManager
     //Check if everyone has started racing to change game state
     if (arePlayerStatesSynced (NetPlayer.PLAYER_STATE.Racing))
       GameState = GAME_STATE.Racing;
+      fRaceOverTimer = 0.0f;
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceReady))
       return;
 
@@ -388,6 +416,22 @@ public class GameManager : NetworkManager
   }
 
   private void checkRaceFinished(){
+    
+    //Someone has finished the race, start the countdown timer if it hasn't started already.
+    bool result = true;
+    foreach (GameObject pl in players)
+      if (pl.GetComponent<NetPlayer> ().getPlayerState () != NetPlayer.PLAYER_STATE.Racing)
+        result = false;
+    
+    if(!result && fRaceOverTimer == 0.0f){
+      fRaceOverTimer = 30.0f; //30s
+      foreach(GameObject p in players){
+        if(p==null)
+          continue;
+        p.GetComponent<NetPlayer>().RpcStartRaceOverTimer();
+      }
+    }
+
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceFinished))
       return;
 

@@ -1,0 +1,156 @@
+fileFormatVersion: 2
+guid: 8fa939b479fcb5245857cb73df600501
+timeCreated: 1456446171
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Banner
+    100002: banner
+    100004: barrier_end
+    100006: barrier_middle
+    100008: barrier_middle1
+    100010: barrier_middle2
+    100012: barrier_start
+    100014: barrier_start1
+    100016: barrier_start3
+    100018: Poles
+    100020: railing_end
+    100022: railing_middle
+    100024: railing_middle1
+    100026: railing_start
+    100028: road_end
+    100030: road_middle
+    100032: road_start
+    100034: //RootNode
+    400000: Banner
+    400002: banner
+    400004: barrier_end
+    400006: barrier_middle
+    400008: barrier_middle1
+    400010: barrier_middle2
+    400012: barrier_start
+    400014: barrier_start1
+    400016: barrier_start3
+    400018: Poles
+    400020: railing_end
+    400022: railing_middle
+    400024: railing_middle1
+    400026: railing_start
+    400028: road_end
+    400030: road_middle
+    400032: road_start
+    400034: //RootNode
+    2300000: Banner
+    2300002: barrier_end
+    2300004: barrier_middle
+    2300006: barrier_middle1
+    2300008: barrier_middle2
+    2300010: barrier_start
+    2300012: barrier_start1
+    2300014: barrier_start3
+    2300016: Poles
+    2300018: railing_end
+    2300020: railing_middle
+    2300022: railing_middle1
+    2300024: railing_start
+    2300026: road_end
+    2300028: road_middle
+    2300030: road_start
+    3300000: Banner
+    3300002: barrier_end
+    3300004: barrier_middle
+    3300006: barrier_middle1
+    3300008: barrier_middle2
+    3300010: barrier_start
+    3300012: barrier_start1
+    3300014: barrier_start3
+    3300016: Poles
+    3300018: railing_end
+    3300020: railing_middle
+    3300022: railing_middle1
+    3300024: railing_start
+    3300026: road_end
+    3300028: road_middle
+    3300030: road_start
+    4300000: road_middle
+    4300002: railing_middle1
+    4300004: railing_start
+    4300006: road_start
+    4300008: barrier_start3
+    4300010: barrier_start1
+    4300012: barrier_middle2
+    4300014: railing_middle
+    4300016: barrier_middle1
+    4300018: barrier_start
+    4300020: barrier_middle
+    4300022: road_end
+    4300024: railing_end
+    4300026: barrier_end
+    4300028: Banner
+    4300030: Poles
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

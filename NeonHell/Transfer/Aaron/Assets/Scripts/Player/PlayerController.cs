@@ -14,6 +14,8 @@ public class PlayerController : NetworkBehaviour
 {
 
   //Public variables
+  public float fAirborneDistance = 3.0f;
+  public  bool  bTesting = false;
   public Mesh[] healthM = new Mesh[4];
   public GameObject[] pieces = new GameObject[4];
   public Vector3[] wingPos = new Vector3[4];
@@ -21,13 +23,12 @@ public class PlayerController : NetworkBehaviour
   public Vector3[] exploPos = new Vector3[4];
 
   //Private variables
-  private int lap = 0;
-  private int BoostType = 0;
+  private int   lap = 0;
+  private int   BoostType = 0;
   private float fCurrentHealth;
   private float fCurrentEnergy;
   private float rotationVelocityX = 0.0f;
   private float rotationVelocityZ = 0.0f;
-  private float fAirborneDistance = 3.0f;
   private float fRotationSeekSpeed = 0.6f;
   private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
@@ -35,9 +36,9 @@ public class PlayerController : NetworkBehaviour
   private float fTurnThreshold;
   private float fDamageTimer;
   private float fDamageCooldown = 1.5f;
-  public bool bCameraControl = false;
-  private bool bIsRacing = false;
-  private bool bManuallyBoosting = false;
+  private bool  bCameraControl = false;
+  private bool  bIsRacing = false;
+  private bool  bManuallyBoosting = false;
   private GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
@@ -68,7 +69,7 @@ public class PlayerController : NetworkBehaviour
 	
   // Update is called once per frame
   void Update (){
-    if (!hasAuthority)
+    if (!hasAuthority && !bTesting)
       return;
 
     if(fDamageTimer > 0)
@@ -77,7 +78,6 @@ public class PlayerController : NetworkBehaviour
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
     if (!bManuallyBoosting){
-      fCurrentEnergy += 5.0f * Time.deltaTime;
       if (fCurrentEnergy > _ShipStats.fMaxEnergy)
         fCurrentEnergy = _ShipStats.fMaxEnergy;
     } //End if (!bManuallyBoosting)
@@ -85,30 +85,49 @@ public class PlayerController : NetworkBehaviour
 
   //FixedUpdate is called every frame
   void FixedUpdate (){
-    if (_NetPlayer == null)
-      return;
-    //Only continue if the player has authority of this ship, or is an NPC
-    if ((_NetPlayer.isHuman() && !hasAuthority) &&
-        (!_NetPlayer.isHuman() && !isServer))
-      return;
     
-    if (bCameraControl) {
+    if (_NetPlayer == null && !bTesting)
+      return;
+    //Only continue if the player has authority of this ship, or is an NPC, or testing
+    if (!bTesting){
+      if ((_NetPlayer.isHuman () && !hasAuthority) &&
+        (!_NetPlayer.isHuman () && !isServer))
+        return;
+    }
+
+    //Vector help keep the ship upright
+    float fTorque = 0.0f;
+    float fDegOffset = 0.0f;
+    bool lbIsAirborne = true;
+    Vector3 newRotation;
+    RaycastHit hit;   
+
+    //Consider the ship airborne if the raycast fails or hits a wall.
+    if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance))
+      lbIsAirborne = hit.collider.tag == "Wall";
+
+    //Right the ship if it is airborne
+    if(lbIsAirborne){
+      newRotation = transform.eulerAngles;
+      newRotation.x = Mathf.SmoothDampAngle (newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
+      newRotation.z = Mathf.SmoothDampAngle (newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
+      transform.eulerAngles = newRotation;
+    } //End if(lbAirborne)
+    
+    if (bCameraControl || bTesting) {
       Camera cam = Camera.main;
       cam.transform.position = Vector3.Slerp (cam.transform.position, transform.position + transform.rotation * _ShipStats.vCameraOffset, _ShipStats.fSlerpTime);
       cam.transform.rotation = Quaternion.Slerp (cam.transform.rotation, transform.rotation, _ShipStats.fSlerpTime);
     }
 
-    if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
-      return;
-
-    //Vector help keep the ship upright
-    float fTorque = 0.0f;
-    float fDegOffset = 0.0f;
-    Vector3 newRotation;
-    RaycastHit hit;		
+    if(!bTesting)
+      if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
+        return;
 
     //Apply torque, e.g. turn the ship left and right
-    if (_NetPlayer.bIsHuman)
+    if(bTesting)
+      fTorque = Input.GetAxis ("Horizontal");
+    else if (_NetPlayer.bIsHuman)
       fTorque = Input.GetAxis ("Horizontal");
     else{
       direction.transform.position = transform.position;
@@ -122,14 +141,19 @@ public class PlayerController : NetworkBehaviour
       fTorque = Mathf.Acos(Vector3.Dot(tProj,gameObject.transform.right)/(Vector3.Magnitude(tProj)*Vector3.Magnitude(gameObject.transform.right))) < (Mathf.PI/2.0f) ? 1 : -1;
       fTorque *= Mathf.Clamp(fDegOffset / (Mathf.PI/6f), 0.0f, 1.0f);
     }
-    rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque * rb.mass);
-
+    if(bTesting)
+      rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque, ForceMode.Acceleration);
+    else
+      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque, ForceMode.Acceleration);
+    
     //If the player is close to the something, allow moving forward
-    if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance)) {
+    if (!lbIsAirborne) {
       rb.drag = 1;
       //Thrust Calculations
       float fThrustTarget = 0.0f;
-      if(_NetPlayer.bIsHuman)
+      if(bTesting)
+        fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
+      else if(_NetPlayer.bIsHuman)
         fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
       else
         fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration;
@@ -164,28 +188,24 @@ public class PlayerController : NetworkBehaviour
         }
         else if (BoostType == -1) {
           lfTotalThrust = _ShipStats.fMaxVelocity - 100.0f;
-          //fPercThrustPower = .5f;
         }
       }
 
       //More force calculations
-      Vector3 forwardForce = transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
+      Vector3 forwardForce;
+      if(bTesting)
+        forwardForce= transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
+      else
+        forwardForce= transform.forward * (_NetPlayer.isHuman()?lfTotalThrust*1.0f:lfTotalThrust*1.2f) * fPercThrustPower * rb.mass;
       rb.AddForce (forwardForce);
 
       //Brake force
       if (Input.GetAxis ("Brake") < 0)
         rb.AddForce (transform.forward * _ShipStats.fMaxVelocity * 0.2f * Input.GetAxis ("Brake") * rb.mass);
-    } //End if (Physics.Raycast(transform.position, -this.transform.up, 4.0f))
-
+    } //End if (!lbIsAirborne)
 		//If the player isn't close to something
-		else {
-      rb.drag = 0.16f;
-      //The following 4 lines help keep the ship upright while in midair
-      newRotation = transform.eulerAngles;
-      newRotation.x = Mathf.SmoothDampAngle (newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
-      newRotation.z = Mathf.SmoothDampAngle (newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
-      transform.eulerAngles = newRotation;
-    } //End else
+		else
+      rb.drag = 0.0f;
   } // End void FixedUpdate()
 
   //-----------------------------------------------------------------------------------------------------------------
@@ -194,12 +214,18 @@ public class PlayerController : NetworkBehaviour
   //Parameters:   Collider other - What the object has collided with
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
-    //Only continue if the player has authority of this ship, or is an NPC
-    if ((_NetPlayer.isHuman() && !hasAuthority) &&
-        (!_NetPlayer.isHuman() && !isServer))
-      return;
+    if (!bTesting){
+      //Only continue if the player has authority of this ship, or is an NPC
+      if ((_NetPlayer.isHuman () && !hasAuthority) ||
+        (!_NetPlayer.isHuman () && !isServer))
+        return;
+    }
     switch (other.tag) {
     case "Waypoint":
+      if (currentPoint == null)
+        return;
+      if (currentPoint.GetComponent<WaypointController> ().nextPoint == null)
+        return;
       GameObject[] possiblePoints = currentPoint.GetComponent<WaypointController> ().nextPoint;
       for(int i = 0; i < possiblePoints.Length; i++){
         if(other.gameObject.Equals(possiblePoints[i])){
@@ -208,12 +234,21 @@ public class PlayerController : NetworkBehaviour
           GetComponent<ThrusterController> ().setbMagnetize (currentPoint.GetComponent<WaypointController> ().getbMagnetize ());
           //Increment waypoint count
           WaypointController _WaypointController = currentPoint.GetComponent<WaypointController> ();
-          _NetPlayer.incNumWaypointsHit (_WaypointController.iWeight);
+          if (_NetPlayer != null)
+            _NetPlayer.incNumWaypointsHit (_WaypointController.iWeight);
+          else
+            Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
           //If just hit the finish line, increment the lap counter.
-          if (_WaypointController.bFinishLine)
-            _NetPlayer.incLap ();
-        }
-      }
+          if (_WaypointController.bFinishLine){
+            if (_NetPlayer != null){
+              _NetPlayer.incLap ();
+              fCurrentEnergy += _ShipStats.fMaxEnergy * 0.5f; //TODO:  Move this to repair station eventually.
+            }
+            else
+              Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
+          } //End if (_WaypointController.bFinishLine)
+        } //End if(other.gameObject.Equals(possiblePoints[i]))
+      } //End for(int i = 0; i < possiblePoints.Length; i++)
       break;
     case "KillPlane":
       transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
@@ -275,7 +310,19 @@ public class PlayerController : NetworkBehaviour
 
   void OnCollisionEnter(Collision collision){
 
-    if (fCurrentHealth == 0 || fDamageTimer > 0 || healthM[0] == null)
+    if(collision.gameObject.tag == "Wall"){
+      //rb.angularVelocity = Vector3.zero;
+      rb.AddForce (collision.impulse, ForceMode.Impulse);
+      rb.angularVelocity = Vector3.zero;
+      foreach (ContactPoint c in collision.contacts){
+        Vector3 force = -collision.impulse / collision.contacts.Length;
+        //rb.AddForceAtPosition (force, c.point, ForceMode.Impulse);
+        //rb.AddForce (collision.impulse / collision.contacts.Length);
+
+      } //End foreach (ContactPoint c in collision.contacts)
+    } //End if(collision.gameObject.tag == "Wall")
+
+    if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
 
     fCurrentHealth -= 10;
@@ -283,14 +330,17 @@ public class PlayerController : NetworkBehaviour
 
     if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25){
       //fMaxVelocity -= 5;
-      for (int i = 0; i < 4; i++){
-        GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
-        piece1.transform.localScale = new Vector3(40, 40, 40);
-        GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
-      } //End for (int i = 0; i < 4; i++)
-      //CmdSpawnPieces();
+      //for (int i = 0; i < 4; i++){
+        //GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+        //piece1.transform.localScale = new Vector3(40, 40, 40);
+        //GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
+      //} //End for (int i = 0; i < 4; i++)
+      CmdSpawnPieces();
     } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
-    gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth/25];      
+    if (healthM[0] != null)
+    {
+        gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth / 25];
+    }
   } //End void OnCollisionEnter(Collision collision)
 
   [ClientRpc]
@@ -301,6 +351,19 @@ public class PlayerController : NetworkBehaviour
   [Command]
   public void CmdUpdPlaces(){
     GameObject.Find ("GameManager").GetComponent<GameManager> ().UpdatePlaces ();
+  }
+
+  [Command]
+  public void CmdSpawnPieces()
+  {
+      for (int i = 0; i < 4; i++)
+      {
+          GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+          //piece1.transform.localScale = new Vector3(40, 40, 40);
+          NetworkServer.Spawn(piece1);
+          
+          //GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
+      } //End for (int i = 0; i < 4; i++)
   }
 
 //-------------------------------------Getters and Setters--------------------------------------------------------------

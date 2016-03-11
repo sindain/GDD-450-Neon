@@ -181,6 +181,14 @@ public class NetPlayer : NetworkBehaviour
   }
 
   [ClientRpc]
+  public void RpcStartLevelSelection(){
+    if(!isLocalPlayer)
+      return;
+    GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive(false);
+    GameObject.Find("MainMenu").transform.FindChild("MapSelection").gameObject.SetActive(true);
+  }
+
+  [ClientRpc]
   public void RpcSetShip (GameObject pNewShip){
     //ship = pNewShip;
     pNewShip.GetComponent<PlayerController>().setNetPlayer(this);
@@ -191,6 +199,13 @@ public class NetPlayer : NetworkBehaviour
     if (!isLocalPlayer)
       return;
     ship.GetComponent<PlayerController> ().setCameraControl (true);
+  }
+
+  [ClientRpc]
+  public void RpcStartRaceOverTimer(){
+    if(!isLocalPlayer)
+      return;
+    GameObject.Find("UI").GetComponent<SpHUD>().startRaceOverTimer();
   }
 
 //----------------------------------------------Getters and Setters-----------------------------------------------------
