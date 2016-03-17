@@ -14,6 +14,8 @@ public class PlayerController : NetworkBehaviour
 {
 
   //Public variables
+  public float fAirborneDistance = 3.0f;
+  public  bool  bTesting = false;
   public Mesh[] healthM = new Mesh[4];
   public GameObject[] pieces = new GameObject[4];
   public Vector3[] wingPos = new Vector3[4];
@@ -27,7 +29,6 @@ public class PlayerController : NetworkBehaviour
   private float fCurrentEnergy;
   private float rotationVelocityX = 0.0f;
   private float rotationVelocityZ = 0.0f;
-  private float fAirborneDistance = 3.0f;
   private float fRotationSeekSpeed = 0.6f;
   private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
@@ -35,11 +36,10 @@ public class PlayerController : NetworkBehaviour
   private float fTurnThreshold;
   private float fDamageTimer;
   private float fDamageCooldown = 1.5f;
-  public  bool  bTesting = false;
   private bool  bCameraControl = false;
   private bool  bIsRacing = false;
   private bool  bManuallyBoosting = false;
-  public GameObject currentPoint;
+  private GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
   private NetPlayer _NetPlayer;
@@ -78,7 +78,6 @@ public class PlayerController : NetworkBehaviour
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
     if (!bManuallyBoosting){
-      fCurrentEnergy += 5.0f * Time.deltaTime;
       if (fCurrentEnergy > _ShipStats.fMaxEnergy)
         fCurrentEnergy = _ShipStats.fMaxEnergy;
     } //End if (!bManuallyBoosting)
@@ -99,16 +98,16 @@ public class PlayerController : NetworkBehaviour
     //Vector help keep the ship upright
     float fTorque = 0.0f;
     float fDegOffset = 0.0f;
-    bool lbAirborne = false;
+    bool lbIsAirborne = true;
     Vector3 newRotation;
     RaycastHit hit;   
 
     //Consider the ship airborne if the raycast fails or hits a wall.
     if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance))
-      lbAirborne = hit.collider.tag != "Wall";
+      lbIsAirborne = hit.collider.tag == "Wall";
 
     //Right the ship if it is airborne
-    if(lbAirborne){
+    if(lbIsAirborne){
       newRotation = transform.eulerAngles;
       newRotation.x = Mathf.SmoothDampAngle (newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
       newRotation.z = Mathf.SmoothDampAngle (newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
@@ -145,10 +144,10 @@ public class PlayerController : NetworkBehaviour
     if(bTesting)
       rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque, ForceMode.Acceleration);
     else
-      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque, ForceMode.Impulse);
-
+      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque, ForceMode.Acceleration);
+    
     //If the player is close to the something, allow moving forward
-    if (lbAirborne) {
+    if (!lbIsAirborne) {
       rb.drag = 1;
       //Thrust Calculations
       float fThrustTarget = 0.0f;
@@ -203,11 +202,10 @@ public class PlayerController : NetworkBehaviour
       //Brake force
       if (Input.GetAxis ("Brake") < 0)
         rb.AddForce (transform.forward * _ShipStats.fMaxVelocity * 0.2f * Input.GetAxis ("Brake") * rb.mass);
-    } //End if (Physics.Raycast(transform.position, -this.transform.up, 4.0f))
-
+    } //End if (!lbIsAirborne)
 		//If the player isn't close to something
 		else
-      rb.drag = 0.16f;
+      rb.drag = 0.0f;
   } // End void FixedUpdate()
 
   //-----------------------------------------------------------------------------------------------------------------
@@ -242,8 +240,10 @@ public class PlayerController : NetworkBehaviour
             Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
           //If just hit the finish line, increment the lap counter.
           if (_WaypointController.bFinishLine){
-            if(_NetPlayer != null)
+            if (_NetPlayer != null){
               _NetPlayer.incLap ();
+              fCurrentEnergy += _ShipStats.fMaxEnergy * 0.5f; //TODO:  Move this to repair station eventually.
+            }
             else
               Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
           } //End if (_WaypointController.bFinishLine)
@@ -311,9 +311,14 @@ public class PlayerController : NetworkBehaviour
   void OnCollisionEnter(Collision collision){
 
     if(collision.gameObject.tag == "Wall"){
+      //rb.angularVelocity = Vector3.zero;
+      rb.AddForce (collision.impulse, ForceMode.Impulse);
+      rb.angularVelocity = Vector3.zero;
       foreach (ContactPoint c in collision.contacts){
-        rb.AddForceAtPosition (-collision.impulse / collision.contacts.Length, c.point);
-        rb.AddForce (collision.impulse / collision.contacts.Length);
+        Vector3 force = -collision.impulse / collision.contacts.Length;
+        //rb.AddForceAtPosition (force, c.point, ForceMode.Impulse);
+        //rb.AddForce (collision.impulse / collision.contacts.Length);
+
       } //End foreach (ContactPoint c in collision.contacts)
     } //End if(collision.gameObject.tag == "Wall")
 

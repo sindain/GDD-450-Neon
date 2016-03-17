@@ -9,25 +9,26 @@ public class ThrusterController : MonoBehaviour {
 	private float fThrustStrength;
 	private float fThrustDistance;
 	private float fGMax = 12.0f;
-	private float[] fDThrusters;
 	public bool  bMagnetize = false;
 	private Transform[] thrusters;
 	private Rigidbody rb;
 	
 	// Use this for initialization
 	void Start () {
+    Vector3 lCenterOfThrusters = Vector3.zero;
 		rb = GetComponent<Rigidbody> ();
 
 		//Initialize each thruster
 		iThrusterCount = transform.FindChild ("Thrusters").childCount - 1;
 		thrusters = new Transform[iThrusterCount];
-		fDThrusters = new float[iThrusterCount * 2];
 		for (int i = 0; i < iThrusterCount; i++) {
-			fDThrusters[2*i] = 0.0f;
-			fDThrusters[2*i + 1] = 0.0f;
-			if (transform.FindChild ("Thrusters").GetChild (i).tag == "Thruster")
-				thrusters [i] = transform.FindChild ("Thrusters").GetChild (i);
+      if (transform.FindChild ("Thrusters").GetChild (i).tag == "Thruster"){
+        thrusters [i] = transform.FindChild ("Thrusters").GetChild (i);
+        lCenterOfThrusters += thrusters [i].localPosition;
+      } //End if (transform.FindChild ("Thrusters").GetChild (i).tag == "Thruster")
 		}//End for (int i = 0; i < iThrusterCount; i++)
+    lCenterOfThrusters /= iThrusterCount;
+    rb.centerOfMass = new Vector3(lCenterOfThrusters.x, -1.0f, lCenterOfThrusters.z);
 
 		//Strength of each thruster
 		fThrustStrength = (-Physics.gravity.y * rb.mass) / iThrusterCount;
@@ -35,10 +36,6 @@ public class ThrusterController : MonoBehaviour {
 		//Determine thrust distanct e.g. the hover height of vehicle
 		if (GetComponent<PlayerController> () != null)
 			fThrustDistance = GetComponent<PlayerController> ().getAirborneDistance () / 2.0f;
-//        else if (GetComponent<NetworkPlayerController> () != null)
-//			fThrustDistance = GetComponent<NetworkPlayerController> ().getAirborneDistance () / 2.0f;
-		else if (GetComponent<NPCController> () != null)
-			fThrustDistance = GetComponent<NPCController> ().getAirborneDistance () / 2.0f;
 		else
 			print ("ThrusterController.cs: 38.  Controller not found on object " + this.transform.parent.name);
 	
@@ -50,6 +47,12 @@ public class ThrusterController : MonoBehaviour {
 
 	//Fixed update is called every frame
 	void FixedUpdate(){
+
+    //Determine thrust distanct e.g. the hover height of vehicle
+    if (GetComponent<PlayerController> () != null)
+      fThrustDistance = GetComponent<PlayerController> ().getAirborneDistance () / 2.0f;
+    else
+      print ("ThrusterController.cs: 38.  Controller not found on object " + this.transform.parent.name);
 		//Iterate through each thruster
 		for (int i = 0; i < iThrusterCount; i++) {
 			//Local variables
@@ -59,7 +62,6 @@ public class ThrusterController : MonoBehaviour {
 			if(Physics.Raycast(thrusters[i].position, -thrusters[i].up, out hit, alpha * fThrustDistance)){
 				//Vector3 vForce = thrusters[i].up;
 				float fGForce = 0.0f;
-				float fAPoint = 0.0f;
 				
 				//Ensure object hit wasn't a trigger or wall
 				//if(hit.collider.isTrigger || hit.transform.tag == "Wall")
@@ -70,19 +72,9 @@ public class ThrusterController : MonoBehaviour {
 					return;
 				if (hit.transform.tag == "KillPlane" || hit.transform.tag == "Wall")
 					return;
-
-
-				//Update velocity of point relative to what it's hitting
-				fDThrusters[2*i] = fDThrusters[2*i + 1];
-				fDThrusters[2*i + 1] = hit.distance;
-				fAPoint = (hit.distance - fDThrusters[2*i + 1] - (fDThrusters[2*i + 1] - fDThrusters[2*i])) / Mathf.Pow(Time.deltaTime, 2);
-				//Add force to keep player from bottoming out
-//				if(hit.distance < fThrustDistance / 3.0f  && fAPoint > 100.0f)
-//					rb.AddForceAtPosition(thrusters[i].up * rb.mass * fAPoint / iThrusterCount, thrusters[i].position);
-//				//Add force to keep player from flying off of track if magnetized
-//				else if(hit.distance > fThrustDistance + (alpha * fThrustDistance - fThrustDistance ) * 0.75f && bMagnetize && fAPoint < -100.0f)
-//					rb.AddForceAtPosition(thrusters[i].up * rb.mass * fAPoint / iThrusterCount, thrusters[i].position);	
-				
+        if (hit.transform.gameObject == gameObject)
+          return;
+          				
 				//Calculate g force to apply on each thruster
 				if(hit.distance <= fThrustDistance)
 					fGForce = ((fGMax - 1)/Mathf.Pow(fThrustDistance, 2)) * Mathf.Pow(hit.distance - fThrustDistance,2) + 1;
