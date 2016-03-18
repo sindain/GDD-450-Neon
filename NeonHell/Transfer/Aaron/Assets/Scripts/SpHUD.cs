@@ -16,11 +16,13 @@ public class SpHUD : MonoBehaviour
   public Text EnergyText;
   public Text placeText;
   public Text lapsText;
-  public Text raceOverText;
+  public Text raceTimeText;
+  public Text raceOverTimeText;
   public Sprite[] Huds;
   //public Image menu;
 
   public float fTimer;
+  public float fRaceTime = 0.0f;
   public float fRaceOverTimer = 0.0f;
   //private GameManager.TRANSITION Trans;
   public UI_STATE UIState;
@@ -78,21 +80,25 @@ public class SpHUD : MonoBehaviour
     //-------Update Scoreboard------------
     //------------------------------------
     else if(UIState == UI_STATE.Scoreboard){
-      fTimer -= Time.deltaTime;
-      if(fTimer > 0 && fTimer <= 5.0f){
-        GameObject[] players = GameObject.FindGameObjectsWithTag ("NetPlayer");
-      foreach(GameObject p in players){
-        Scorboard.transform.FindChild("Points").GetChild(p.GetComponent<NetPlayer>().getPlace()-1).GetComponent<Text>().text =
-          p.GetComponent<NetPlayer>().getPoints().ToString();
-        }
-      }
-      else if(fTimer <= 0)
-        _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+//      fTimer -= Time.deltaTime;
+//      if(fTimer > 0 && fTimer <= 5.0f){
+//        GameObject[] players = GameObject.FindGameObjectsWithTag ("NetPlayer");
+//      foreach(GameObject p in players){
+//        Scorboard.transform.FindChild("Points").GetChild(p.GetComponent<NetPlayer>().getPlace()-1).GetComponent<Text>().text =
+//          p.GetComponent<NetPlayer>().getPoints().ToString();
+//        }
+//      }
+//      else if(fTimer <= 0)
+//        _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
     } //End if(UI_STATE == UI_STATE.Scoreboard)
 
   } //End public void Update()
 
   private void UpdateHUD(){
+    int liMin = 0;
+    int liSec = 0;
+    int liRem = 0;
+
     PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
 
 		velocityText.text =Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f).ToString();
@@ -100,13 +106,22 @@ public class SpHUD : MonoBehaviour
     EnergyText.text = "Energy: " + Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
     lapsText.text =_NetPlayer.getLap ().ToString();
+
+    if (_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Racing)
+      fRaceTime += Time.deltaTime;
+    liMin = Mathf.FloorToInt (fRaceTime / 60.0f);
+    liSec = Mathf.FloorToInt(fRaceTime - liMin * 60.0f);
+    liRem = Mathf.FloorToInt (100.0f * (fRaceTime - Mathf.FloorToInt(fRaceTime)));
+    raceTimeText.text = liMin.ToString () + ':' + liSec.ToString () + ':' + liRem.ToString ();
+
     if(fRaceOverTimer > 0.0f){
-      
-      raceOverText.text = fRaceOverTimer.ToString();
+      liSec = Mathf.FloorToInt (fRaceOverTimer);
+      liRem = Mathf.FloorToInt(100.0f * (fRaceOverTimer - Mathf.FloorToInt(fRaceOverTimer)));
+      raceOverTimeText.text = liSec.ToString () + ":" + liRem.ToString ();
       fRaceOverTimer -= Time.deltaTime;
     }
     else
-      raceOverText.text = "00:00";
+      raceOverTimeText.text = "00:00";
   }
 
   public void startCountdown(){
@@ -120,7 +135,7 @@ public class SpHUD : MonoBehaviour
   } //End public void startCountdown()
 
   public void startRaceOverTimer(){
-    fRaceOverTimer = 30.0f;
+    fRaceOverTimer = 20.0f;
   }
 
   public void startScoreboard(){

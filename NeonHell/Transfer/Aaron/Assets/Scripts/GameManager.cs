@@ -53,14 +53,20 @@ public class GameManager : NetworkManager
 
     //Check race over timer
     if(fRaceOverTimer > 0){ //countdown has begun
+      //Race timer has ended
       if(fRaceOverTimer - Time.deltaTime <= 0){
-        foreach(GameObject p in players){
-          if(p==null)
-            continue;
-          NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
-          if(_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Racing)
-            _NetPlayer.setPlayerState(NetPlayer.PLAYER_STATE.RaceFinished);
-        }//End foreach(GameObject p in players)
+
+        //Check each place starting with last place
+        for(int i=8; i>1; i--){
+          foreach(GameObject p in players){
+            if (p == null)
+              continue;
+            NetPlayer _NP = p.GetComponent<NetPlayer> ();
+            if (_NP.PlayerState == NetPlayer.PLAYER_STATE.Racing && _NP.getPlace() == i)
+              _NP.setPlayerState (NetPlayer.PLAYER_STATE.RaceFinished);
+          }
+        } //End for(int i=7; i>0; i--)
+
         fRaceOverTimer = 0.0f;
       }//End if(fRaceOverTimer - Time.deltaTime <= 0)
       else
@@ -255,10 +261,10 @@ public class GameManager : NetworkManager
       //Don't process a player that doesn't exist
       if (players [i] == null)
         continue;
+      
       NetPlayer _NetPlayeri = players [i].GetComponent<NetPlayer> ();
-
       //Don't change the place if the player is done racing
-      if (_NetPlayeri.PlayerState == NetPlayer.PLAYER_STATE.RaceFinished)
+      if (_NetPlayeri.PlayerState != NetPlayer.PLAYER_STATE.Racing)
         continue;
 
       //loop through each other player and compare their number of waypoint hits.
@@ -290,6 +296,10 @@ public class GameManager : NetworkManager
       } //End for(int j = i; j < players.Length; j++)
       _NetPlayeri.setPlace(liNewPlace);
     } //End for (int i = 0; i < players.Length; i++) 
+    print (players [0].GetComponent<NetPlayer> ().getPlace () + " " + players [1].GetComponent<NetPlayer> ().getPlace () + 
+      " " + players [2].GetComponent<NetPlayer> ().getPlace () + " " + players [3].GetComponent<NetPlayer> ().getPlace () + 
+      " " + players [4].GetComponent<NetPlayer> ().getPlace () + " " + players [5].GetComponent<NetPlayer> ().getPlace () + 
+      " " + players [6].GetComponent<NetPlayer> ().getPlace () + " " + players [7].GetComponent<NetPlayer> ().getPlace ());
   } // End public void UpdatePlaces()
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -424,7 +434,7 @@ public class GameManager : NetworkManager
         result = false;
     
     if(!result && fRaceOverTimer == 0.0f){
-      fRaceOverTimer = 30.0f; //30s
+      fRaceOverTimer = 20.0f; //20s
       foreach(GameObject p in players){
         if(p==null)
           continue;
