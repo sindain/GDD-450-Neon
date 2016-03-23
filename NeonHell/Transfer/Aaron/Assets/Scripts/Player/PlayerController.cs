@@ -24,7 +24,8 @@ public class PlayerController : NetworkBehaviour
 
   //Private variables
   private int   lap = 0;
-  private int   BoostType = 0;
+  public int   BoostType = 0;
+  private Vector3 BoostDir;
   private float fCurrentHealth;
   private float fCurrentEnergy;
   private float rotationVelocityX = 0.0f;
@@ -172,8 +173,7 @@ public class PlayerController : NetworkBehaviour
       float lfTotalThrust = _ShipStats.fMaxVelocity;
 
       if ((bManuallyBoosting && fCurrentEnergy >= 0.0f)) {
-        lfTotalThrust = _ShipStats.fMaxVelocity + 10.0f;
-        fPercThrustPower = 1.0f;
+				rb.AddForce(rb.transform.forward * 35.0f * rb.mass);
         if (bManuallyBoosting) {
           fCurrentEnergy -= 20.0f * Time.deltaTime;
           if (fCurrentEnergy < 0)
@@ -181,16 +181,12 @@ public class PlayerController : NetworkBehaviour
         }
 
       }
-      if (Time.time <= fBoostTargetTime) {
         if (BoostType == 1) {
-          lfTotalThrust = _ShipStats.fMaxVelocity + 100.0f;
-          fPercThrustPower = 1.0f;
+		  rb.AddForce(BoostDir * 50.0f * rb.mass);
         }
         else if (BoostType == -1) {
-          lfTotalThrust = _ShipStats.fMaxVelocity - 100.0f;
+          lfTotalThrust *=.75f;
         }
-      }
-
       //More force calculations
       Vector3 forwardForce;
       if(bTesting)
@@ -256,14 +252,16 @@ public class PlayerController : NetworkBehaviour
       gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
       gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
       break;
-    case "+Booster":
-      fBoostTargetTime = Time.time + fBoostTime;
-      BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
+			/*
+		case "+Booster":
+			fBoostTargetTime = Time.time + fBoostTime;
+			BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
+			BoostDir = other.transform.right;
       break;
     case "-Booster":
       fBoostTargetTime = Time.time + fBoostTime;
       BoostType = _ShipStats.Polarity == -1 ? 1 : -1;
-      break;
+      break;*/
     case "SwitchGate":
       if (_ShipStats.Polarity == 0)
         return;
@@ -278,36 +276,43 @@ public class PlayerController : NetworkBehaviour
       _ShipStats.Polarity = -1;
       gameObject.GetComponent<ShipStats> ().Polarity = -1;
       break;
-    /*case "PosMine":
-			if (Polarity == 0) {
-				this.ShutDown ();
-			} 
-			else if (Polarity == 1) 
-			{
-				return;
-			}
-			else if (Polarity == -1) 
-			{
-				this.ShutDown ();
-			}
-			break;
-		case "NegMine":
-			if (Polarity == 0) {
-				this.ShutDown ();
-			} 
-			else if (Polarity == -1) 
-			{
-				return;
-			}
-			else if (Polarity == 1) 
-			{
-				this.ShutDown ();
-			}
-			break;*/
-
     }
   }
+	void OnTriggerStay (Collider other){
+		if (!bTesting){
+			//Only continue if the player has authority of this ship, or is an NPC
+			if ((_NetPlayer.isHuman () && !hasAuthority) ||
+				(!_NetPlayer.isHuman () && !isServer))
+				return;
+		}
+		switch (other.tag) {
+		case "+Booster":
+			BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
+			BoostDir = other.transform.right;
+			break;
+		case "-Booster":
+			BoostType = _ShipStats.Polarity == -1 ? 1 : -1;
+			BoostDir = other.transform.right;
+			break;
+		}
+	}
 
+	void OnTriggerExit (Collider other){
+		if (!bTesting){
+			//Only continue if the player has authority of this ship, or is an NPC
+			if ((_NetPlayer.isHuman () && !hasAuthority) ||
+				(!_NetPlayer.isHuman () && !isServer))
+				return;
+		}
+		switch (other.tag) {
+		case "+Booster":
+			BoostType = 0;
+			break;
+		case "-Booster":
+			BoostType = 0;
+			break;
+		}
+	}
   void OnCollisionEnter(Collision collision){
 
     if(collision.gameObject.tag == "Wall"){
