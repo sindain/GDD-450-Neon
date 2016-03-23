@@ -1,0 +1,167 @@
+fileFormatVersion: 2
+guid: 611048fb7d27587419d49d51c3784255
+timeCreated: 1458592486
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: barrier_left
+    100004: barrier_left 1
+    100006: barrier_left1
+    100008: barrier_right
+    100010: barrier_right 1
+    100012: barrier_right1
+    100014: post
+    100016: post 1
+    100018: post 2
+    100020: post 3
+    100022: post1
+    100024: post2
+    100026: post3
+    100028: post4
+    100030: post5
+    100032: post6
+    100034: post7
+    100036: post8
+    100038: post9
+    100040: post_left
+    100042: post_right
+    100044: railing_left
+    100046: railing_right
+    100048: road
+    400000: //RootNode
+    400002: barrier_left
+    400004: barrier_left 1
+    400006: barrier_left1
+    400008: barrier_right
+    400010: barrier_right 1
+    400012: barrier_right1
+    400014: post
+    400016: post 1
+    400018: post 2
+    400020: post 3
+    400022: post1
+    400024: post2
+    400026: post3
+    400028: post4
+    400030: post5
+    400032: post6
+    400034: post7
+    400036: post8
+    400038: post9
+    400040: post_left
+    400042: post_right
+    400044: railing_left
+    400046: railing_right
+    400048: road
+    2300000: barrier_left 1
+    2300002: barrier_left1
+    2300004: barrier_right 1
+    2300006: barrier_right1
+    2300008: post 3
+    2300010: post1
+    2300012: post2
+    2300014: post3
+    2300016: post4
+    2300018: post5
+    2300020: post6
+    2300022: post7
+    2300024: railing_left
+    2300026: railing_right
+    2300028: road
+    3300000: barrier_left 1
+    3300002: barrier_left1
+    3300004: barrier_right 1
+    3300006: barrier_right1
+    3300008: post 3
+    3300010: post1
+    3300012: post2
+    3300014: post3
+    3300016: post4
+    3300018: post5
+    3300020: post6
+    3300022: post7
+    3300024: railing_left
+    3300026: railing_right
+    3300028: road
+    4300000: road
+    4300002: post1
+    4300004: post2
+    4300006: post6
+    4300008: post4
+    4300010: post
+    4300012: post3
+    4300014: post5
+    4300016: post7
+    4300018: railing_right
+    4300020: railing_left
+    4300022: barrier_right
+    4300024: barrier_right1
+    4300026: barrier_left
+    4300028: barrier_left1
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
