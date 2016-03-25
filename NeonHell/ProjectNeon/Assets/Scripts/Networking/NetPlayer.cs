@@ -14,6 +14,8 @@ public class NetPlayer : NetworkBehaviour
   [SyncVar] public int iLap = 0;
   [SyncVar] public int iPlace = 0;
   [SyncVar] public int iPoints = 0;
+  [SyncVar] public int iFlags = 0;
+  [SyncVar] public float fRaceTime;
   [SyncVar] public bool bIsHuman = false;
   public NetworkConnection connection;
   [SyncVar] public GameObject ship;
@@ -34,7 +36,9 @@ public class NetPlayer : NetworkBehaviour
       if(fStartTimer == 0)
         CmdChangeState(PLAYER_STATE.Racing);
     }
-    
+    if ((isLocalPlayer || isServer) && PlayerState == PLAYER_STATE.Racing){
+      fRaceTime += Time.deltaTime;
+    }
   }
 
   public void Setup (int piPlayerNum, bool pbIsHuman){
@@ -59,6 +63,7 @@ public class NetPlayer : NetworkBehaviour
     ship.transform.position = spawnPosition.position;
     ship.transform.rotation = spawnPosition.rotation;
     ship.GetComponent<Rigidbody>().velocity = Vector3.zero;
+    ship.GetComponent<ThrusterController> ().setbMagnetize (false);
     //Find and set first waypoint
     ship.GetComponent<PlayerController> ().setCurrentPoint (track.transform.GetChild (0).FindChild ("start_finish").FindChild ("Waypoints").GetChild (0).gameObject);
     //TODO: Move this to its appropriate place later.
@@ -82,7 +87,6 @@ public class NetPlayer : NetworkBehaviour
   void OnLevelWasLoaded(int level) {
     if (!isLocalPlayer)
       return;
-    print (level);
     //setupRace ();
     //CmdChangeState (PLAYER_STATE.Racing);
   }
@@ -119,15 +123,22 @@ public class NetPlayer : NetworkBehaviour
     GameObject.Find ("GameManager").GetComponent<GameManager> ().checkPlayerStates ();
   }
 
-  [Command] public void CmdUpdNumWaypointsHit(int iNum){
+  [Command] 
+  public void CmdUpdNumWaypointsHit(int iNum){
     iNumWaypointsHit = iNum;
     GameObject.Find ("GameManager").GetComponent<GameManager> ().UpdatePlaces ();
   }
-  [Command] public void CmdUpdLap(int piLaps){
+  [Command] 
+  public void CmdUpdLap(int piLaps){
     iLap = piLaps;
     //Check if player finished the race
     if(iLap >= GameObject.Find(trackName).GetComponent<TrackInfo>().NumberOfLaps)
       CmdChangeState(PLAYER_STATE.RaceFinished);
+  }
+
+  [Command]
+  public void CmdUpdRaceTime(float pfValue){
+    setRaceTime (pfValue);
   }
 
   [ClientRpc]
@@ -157,8 +168,6 @@ public class NetPlayer : NetworkBehaviour
       
     if(!isLocalPlayer)
       return;
-    print (GameObject.Find ("UI").transform.GetChild(0));
-    print (GameObject.Find ("UI").GetComponent<SpHUD>());
 //    SpHUD _Hud = GameObject.Find ("HUD").GetComponent<SpHUD> ();
 //    print (GameObject.Find ("HUD"));
 //    if (_Hud._NetPlayer == null){
@@ -245,9 +254,21 @@ public class NetPlayer : NetworkBehaviour
   public void setPoints(int piPoints){iPoints = piPoints;}
   public void incPoints(int piValue){iPoints += piValue;}
 
+  public int getFlags(){return iFlags;}
+  public void setFlags(int piValue){iFlags = piValue;}
+  public void incFlags(int piValue){iFlags += piValue;}
+
+  public float getRaceTime(){return fRaceTime;}
+  public void setRaceTime(float pfValue){fRaceTime = pfValue;}
+
   public bool isHuman(){return bIsHuman;}
   public void setIsHuman(bool pbIsHuman){bIsHuman = pbIsHuman;}
 
   public PLAYER_STATE getPlayerState(){return PlayerState;}
-  public void setPlayerState(PLAYER_STATE pState){CmdChangeState (pState);}
+  public void setPlayerState(PLAYER_STATE pState){
+    CmdChangeState (pState);
+    //Finalize race time once race if over.
+    if (pState == PLAYER_STATE.RaceFinished)
+      CmdUpdRaceTime (fRaceTime);
+  }
 }

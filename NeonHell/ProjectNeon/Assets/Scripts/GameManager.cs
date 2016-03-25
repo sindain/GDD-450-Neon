@@ -27,6 +27,7 @@ public class GameManager : NetworkManager
                                                         "T-Split", "Mobius","JumpBridge", //Ar Circuit
                                                         "","","", //Xe Circuit
                                                         "","",""}; //Noble Circuit
+  public static readonly int[] POINTS = {9,8,5,4,3,2,1,0};
   public string[] circuitScenes;
   public string[] trackNames;
 
@@ -205,8 +206,8 @@ public class GameManager : NetworkManager
   }
 
   public void returnToMain(){
-    if (matchMaker != null)
-        print (true);
+//    if (matchMaker != null)
+//        print (true);
     if (NetworkManager.singleton.isNetworkActive)
       StopLocalGame ();
     iRaceCounter = 0;
@@ -296,10 +297,6 @@ public class GameManager : NetworkManager
       } //End for(int j = i; j < players.Length; j++)
       _NetPlayeri.setPlace(liNewPlace);
     } //End for (int i = 0; i < players.Length; i++) 
-    print (players [0].GetComponent<NetPlayer> ().getPlace () + " " + players [1].GetComponent<NetPlayer> ().getPlace () + 
-      " " + players [2].GetComponent<NetPlayer> ().getPlace () + " " + players [3].GetComponent<NetPlayer> ().getPlace () + 
-      " " + players [4].GetComponent<NetPlayer> ().getPlace () + " " + players [5].GetComponent<NetPlayer> ().getPlace () + 
-      " " + players [6].GetComponent<NetPlayer> ().getPlace () + " " + players [7].GetComponent<NetPlayer> ().getPlace ());
   } // End public void UpdatePlaces()
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -401,6 +398,7 @@ public class GameManager : NetworkManager
       if (p == null)
         continue;
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer> ();
+      _NetPlayer.setRaceTime (0.0f);
       _NetPlayer.RpcSetTrack (trackNames [iRaceCounter]);
       _NetPlayer.RpcGiveCarCameraControl ();
     }
@@ -434,7 +432,7 @@ public class GameManager : NetworkManager
         result = false;
     
     if(!result && fRaceOverTimer == 0.0f){
-      fRaceOverTimer = 30.0f; //30s
+      fRaceOverTimer = 20.0f; //20s
       foreach(GameObject p in players){
         if(p==null)
           continue;
@@ -446,11 +444,10 @@ public class GameManager : NetworkManager
       return;
 
     //TODO:  Insert end race screen and transition phase
-    int[] liPoints = {9,8,5,4,3,2,1,0};
     GameState = GAME_STATE.RaceFinished;
     foreach(GameObject p in players){
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
-      _NetPlayer.incPoints(liPoints[_NetPlayer.iPlace-1]);
+      _NetPlayer.incPoints(POINTS[_NetPlayer.iPlace-1]);
       if(_NetPlayer.isHuman())
         _NetPlayer.RpcShowScoreboard();
       else
