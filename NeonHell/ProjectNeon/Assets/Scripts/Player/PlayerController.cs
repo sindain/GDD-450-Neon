@@ -252,16 +252,15 @@ public class PlayerController : NetworkBehaviour
       gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
       gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
       break;
-			/*
-		case "+Booster":
-			fBoostTargetTime = Time.time + fBoostTime;
-			BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
-			BoostDir = other.transform.right;
-      break;
-    case "-Booster":
-      fBoostTargetTime = Time.time + fBoostTime;
-      BoostType = _ShipStats.Polarity == -1 ? 1 : -1;
-      break;*/
+//		case "+Booster":
+//			fBoostTargetTime = Time.time + fBoostTime;
+//			BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
+//			BoostDir = other.transform.right;
+//      break;
+//    case "-Booster":
+//      fBoostTargetTime = Time.time + fBoostTime;
+//      BoostType = _ShipStats.Polarity == -1 ? 1 : -1;
+//      break;
     case "SwitchGate":
       if (_ShipStats.Polarity == 0)
         return;
