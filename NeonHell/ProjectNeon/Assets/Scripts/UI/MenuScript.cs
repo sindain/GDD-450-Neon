@@ -16,7 +16,7 @@ public class MenuScript : MonoBehaviour
   private float refU;
   private bool fadeToScreen=true;
   private bool fadeToBlack;
-  private bool beingHandled = false;
+  //private bool beingHandled = false;
   private bool bCameraControl = true;
   public Vector3 cameraTargetPos;
   public Quaternion cameraTargetRot;
