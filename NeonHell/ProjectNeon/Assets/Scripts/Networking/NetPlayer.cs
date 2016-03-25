@@ -48,7 +48,7 @@ public class NetPlayer : NetworkBehaviour
     if (pbIsHuman)
       RpcSetup (piPlayerNum);
     else
-      ChangeShip (Random.Range (0, 7));
+      ChangeShip (Random.Range (0, 8));
   }
 
   public void setupRace(){
