@@ -124,6 +124,7 @@ public class SpHUD : MonoBehaviour
       switch(UIState){
       case UI_STATE.SBWait:
         changeState (1, UI_STATE.SBPoints);
+        HUD.SetActive(false);
         break;
 
       case UI_STATE.SBPoints:
@@ -132,7 +133,6 @@ public class SpHUD : MonoBehaviour
         int liMin = 0;
         int liSec = 0;
         int liRem = 0;
-        HUD.SetActive(false);
         Scorboard.SetActive(true);
         foreach(GameObject p in players){
           if(p == null)
@@ -146,7 +146,7 @@ public class SpHUD : MonoBehaviour
           //Ship Icon
           slot.FindChild ("Ship").GetComponent<Image> ().sprite = ShipIcons [_NP.iShipChoice];
           //Player# (text)
-          slot.FindChild ("Name").GetComponent<Text> ().text = "Player " + (_NP.getPlayerNum()/* + 1*/).ToString();
+          slot.FindChild ("Name").GetComponent<Text> ().text = "Player " + (_NP.getPlayerNum() + 1).ToString();
           //Points
           slot.FindChild ("Points").GetComponent<Text> ().text = 
             _NP.getPoints () - GameManager.POINTS [_NP.getPlace () - 1] + "+" + GameManager.POINTS [_NP.getPlace () - 1];
@@ -225,11 +225,11 @@ public class SpHUD : MonoBehaviour
     PlayerController _PlayerController = _NetPlayer.ship.GetComponent<PlayerController> ();
 
     //Update HUD text
-		velocityText.text =Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude * 3.6f).ToString();
+		velocityText.text =Mathf.Floor(_NetPlayer.ship.GetComponent<Rigidbody> ().velocity.magnitude/* * 3.6f*/).ToString();
     polarityImage.color = _PlayerController.getShipStats().Polarity == 1 ? Color.blue : Color.red;
     EnergyText.text = Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
-    lapsText.text =_NetPlayer.getLap ().ToString();
+    lapsText.text = _NetPlayer.getLap () < 1 ? "1" : _NetPlayer.getLap ().ToString ();
 
     //Update Race time
     if (_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Racing)

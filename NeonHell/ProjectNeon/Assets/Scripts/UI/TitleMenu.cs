@@ -15,6 +15,7 @@ public class TitleMenu : MonoBehaviour
 
   public void onSinglePlayerClicked (){
     GameObject.Find ("GameManager").GetComponent<GameManager> ().StartLocalGame ();
+    transform.parent.FindChild ("Neon Sign").gameObject.SetActive (false);
     transform.parent.FindChild ("VehicleSelection").gameObject.SetActive (true);
     gameObject.SetActive (false);
   }

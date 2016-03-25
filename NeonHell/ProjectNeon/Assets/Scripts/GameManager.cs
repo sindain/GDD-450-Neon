@@ -65,7 +65,7 @@ public class GameManager : NetworkManager
             NetPlayer _NP = p.GetComponent<NetPlayer> ();
             if (_NP.PlayerState == NetPlayer.PLAYER_STATE.Racing && _NP.getPlace() == i)
               _NP.setPlayerState (NetPlayer.PLAYER_STATE.RaceFinished);
-          }
+          } //End foreach(GameObject p in players)
         } //End for(int i=7; i>0; i--)
 
         fRaceOverTimer = 0.0f;
