@@ -45,6 +45,7 @@ public class PlayerController : NetworkBehaviour
   private Rigidbody rb;
   private NetPlayer _NetPlayer;
   private ShipStats _ShipStats;
+	private float SucTimer = 0.0f;
 
   // Use this for initialization
   void Start (){
@@ -76,6 +77,19 @@ public class PlayerController : NetworkBehaviour
     if(fDamageTimer > 0)
       fDamageTimer = fDamageTimer - Time.deltaTime < 0 ? 0 : fDamageTimer - Time.deltaTime;
 
+	if(Input.GetKey(KeyCode.R)) {
+		SucTimer += 1.0f*Time.deltaTime;
+	}
+	if (SucTimer >= 2.0f) {
+		transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
+		transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
+		gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+		gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+		SucTimer = 0.0f;
+	}
+	if(Input.GetKeyUp (KeyCode.R)) {
+		SucTimer = 0.0f;
+	}
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
     if (!bManuallyBoosting){
