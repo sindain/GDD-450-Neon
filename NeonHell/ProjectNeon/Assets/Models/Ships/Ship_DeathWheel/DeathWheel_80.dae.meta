@@ -1,0 +1,172 @@
+fileFormatVersion: 2
+guid: 688e4a711267e9340930d024944a238f
+timeCreated: 1459110283
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Axel
+    100002: DeathWheel_2
+    100004: //RootNode
+    100006: Flaps
+    100008: inFlap2
+    100010: leftSpokes
+    100012: leftThruster
+    100014: outFlap1
+    100016: outFlap2
+    100018: outFlap3
+    100020: polySurface106
+    100022: polySurface110
+    100024: polySurface113
+    100026: polySurface115
+    100028: polySurface99
+    100030: rightSpokes
+    100032: rightThruster
+    100034: ThickSpinner
+    100036: ThickSpinner_ncl1_1
+    100038: ThinSpinner
+    100040: ThinSpinner_ncl1_1
+    400000: Axel
+    400002: DeathWheel_2
+    400004: //RootNode
+    400006: Flaps
+    400008: inFlap2
+    400010: leftSpokes
+    400012: leftThruster
+    400014: outFlap1
+    400016: outFlap2
+    400018: outFlap3
+    400020: polySurface106
+    400022: polySurface110
+    400024: polySurface113
+    400026: polySurface115
+    400028: polySurface99
+    400030: rightSpokes
+    400032: rightThruster
+    400034: ThickSpinner
+    400036: ThickSpinner_ncl1_1
+    400038: ThinSpinner
+    400040: ThinSpinner_ncl1_1
+    2300000: Axel
+    2300002: DeathWheel_2
+    2300004: inFlap2
+    2300006: leftSpokes
+    2300008: leftThruster
+    2300010: outFlap1
+    2300012: outFlap2
+    2300014: outFlap3
+    2300016: polySurface106
+    2300018: polySurface110
+    2300020: polySurface113
+    2300022: polySurface115
+    2300024: polySurface99
+    2300026: rightSpokes
+    2300028: rightThruster
+    2300030: ThickSpinner
+    2300032: ThickSpinner_ncl1_1
+    2300034: ThinSpinner
+    2300036: ThinSpinner_ncl1_1
+    3300000: Axel
+    3300002: DeathWheel_2
+    3300004: inFlap2
+    3300006: leftSpokes
+    3300008: leftThruster
+    3300010: outFlap1
+    3300012: outFlap2
+    3300014: outFlap3
+    3300016: polySurface106
+    3300018: polySurface110
+    3300020: polySurface113
+    3300022: polySurface115
+    3300024: polySurface99
+    3300026: rightSpokes
+    3300028: rightThruster
+    3300030: ThickSpinner
+    3300032: ThickSpinner_ncl1_1
+    3300034: ThinSpinner
+    3300036: ThinSpinner_ncl1_1
+    4300000: DeathWheel_2
+    4300002: rightSpokes
+    4300004: leftSpokes
+    4300006: Axel
+    4300008: leftThruster
+    4300010: ThickSpinner
+    4300012: ThinSpinner
+    4300014: outFlap1
+    4300016: outFlap2
+    4300018: inFlap2
+    4300020: outFlap3
+    4300022: rightThruster
+    4300024: polySurface99
+    4300026: polySurface115
+    4300028: polySurface110
+    4300030: polySurface106
+    4300032: polySurface113
+    4300034: ThinSpinner_ncl1_1
+    4300036: ThickSpinner_ncl1_1
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
