@@ -261,6 +261,8 @@ public class PlayerController : NetworkBehaviour
       } //End for(int i = 0; i < possiblePoints.Length; i++)
       break;
     case "KillPlane":
+      if(gameObject == null)
+        return;
       transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
       transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
       gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;

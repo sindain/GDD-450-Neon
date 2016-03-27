@@ -20,7 +20,7 @@ public class GameManager : NetworkManager
   public GAME_MODE GameMode;
   public GAME_STATE GameState;
   public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
-                                                 "CitySmall", "CityMed", "CityMed", //Ar Circuit
+                                                 "CitySmall", "CityMed", "CityLarge", //Ar Circuit
                                                  "CityMed", "CityLarge", "CityXL", //Xe Circuit
                                                  "CityMed", "CityXL", "CityXL"}; //Noble Circuit
   public readonly string[] TRACK_NAMES = new string[12]{"InfTrack", "T-Track", "OverUnder", //He Circuit
