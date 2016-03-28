@@ -16,13 +16,10 @@ public class PlayerController : NetworkBehaviour
   //Public variables
   public float fAirborneDistance = 3.0f;
   public  bool  bTesting = false;
-  public Mesh[] healthM = new Mesh[4];
   public GameObject[] pieces = new GameObject[4];
-  public Vector3[] wingPos = new Vector3[4];
-  public GameObject explosion;
-  public Vector3[] exploPos = new Vector3[4];
 
   //Private variables
+  public AudioClip[] soundEffects = new AudioClip[5];
   private int   lap = 0;
   public int   BoostType = 0;
   private Vector3 BoostDir;
@@ -45,10 +42,18 @@ public class PlayerController : NetworkBehaviour
   private Rigidbody rb;
   private NetPlayer _NetPlayer;
   private ShipStats _ShipStats;
-	private float SucTimer = 0.0f;
-
+  private float SucTimer = 0.0f;
+  private AudioSource engine;
+  public int modelChild;
   // Use this for initialization
   void Start (){
+    engine = gameObject.AddComponent<AudioSource>();
+    engine.clip = soundEffects[1];
+    engine.playOnAwake = true;
+    engine.loop = true;
+    engine.volume = 0.30f;
+    engine.Play();
+    engine.spatialBlend = 0.4f;
     _ShipStats = GetComponent<ShipStats> ();
     direction = new GameObject ();
     direction.transform.SetParent (transform);
@@ -62,15 +67,12 @@ public class PlayerController : NetworkBehaviour
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += _ShipStats.fMass * 250.0f;
-    exploPos[0] = new Vector3(1, .5f, 0);
-    exploPos[1] = new Vector3(-1, .5f, 0);
-    exploPos[2] = new Vector3(1, -.5f, 0);
-    exploPos[3] = new Vector3(-1, -.5f, 0);
   }
   //End void Start()
 	
   // Update is called once per frame
   void Update (){
+      engine.pitch = 1+ (rb.velocity.magnitude / gameObject.GetComponent<ShipStats>().fMaxVelocity);
     if (!hasAuthority && !bTesting)
       return;
 
@@ -80,7 +82,7 @@ public class PlayerController : NetworkBehaviour
 	if(Input.GetKey(KeyCode.R)) {
 		SucTimer += 1.0f*Time.deltaTime;
 	}
-	if (SucTimer >= 2.0f) {
+	if (SucTimer >= 1.0f) {
 		transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
 		transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
 		gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
@@ -329,8 +331,9 @@ public class PlayerController : NetworkBehaviour
 		}
 	}
   void OnCollisionEnter(Collision collision){
-
+      
     if(collision.gameObject.tag == "Wall"){
+      
       //rb.angularVelocity = Vector3.zero;
       rb.AddForce (collision.impulse, ForceMode.Impulse);
       rb.angularVelocity = Vector3.zero;
@@ -344,23 +347,66 @@ public class PlayerController : NetworkBehaviour
 
     if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
-
-    fCurrentHealth -= 10;
+    
+    fCurrentHealth -= 20;
     fDamageTimer = Time.time + fDamageCooldown;
+    gameObject.GetComponent<AudioSource>().PlayOneShot(soundEffects[0]);
+
+    if(fCurrentHealth >=100){
+        gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = true;
+        gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+        modelChild = 0;
+    }
+    else if (fCurrentHealth < 100 && fCurrentHealth >=80)
+    {
+        gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = true;
+        gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+        modelChild = 1;
+    }
+    else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
+    {
+        gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = true;
+        gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+        modelChild = 2;
+    }
+    else if (fCurrentHealth < 60 && fCurrentHealth >=40)
+    {
+        gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = true;
+        gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+        modelChild = 3;
+    }
+    else{
+        gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+        gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = true;
+        modelChild = 4;
+    }
+    
 
     if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25){
       //fMaxVelocity -= 5;
-      //for (int i = 0; i < 4; i++){
-        //GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
+      for (int i = 0; i < 4; i++){
+        GameObject piece1 = (GameObject)GameObject.Instantiate(pieces[i], gameObject.transform.position, gameObject.transform.rotation);
         //piece1.transform.localScale = new Vector3(40, 40, 40);
-        //GameObject explosion1 = (GameObject)GameObject.Instantiate(explosion, gameObject.transform.position + exploPos[i], gameObject.transform.rotation);
-      //} //End for (int i = 0; i < 4; i++)
+      } //End for (int i = 0; i < 4; i++)
       CmdSpawnPieces();
     } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
-    if (healthM[0] != null)
-    {
-        gameObject.transform.FindChild("Model").GetComponent<MeshFilter>().mesh = healthM[(int)fCurrentHealth / 25];
-    }
+
+    
   } //End void OnCollisionEnter(Collision collision)
 
   [ClientRpc]
