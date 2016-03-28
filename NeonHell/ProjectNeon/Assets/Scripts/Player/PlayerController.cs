@@ -234,7 +234,7 @@ public class PlayerController : NetworkBehaviour
     }
     switch (other.tag) {
     case "Waypoint":
-      if (currentPoint == null)
+      if (currentPoint == null || _NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
         return;
       if (currentPoint.GetComponent<WaypointController> ().nextPoint == null)
         return;
@@ -263,7 +263,7 @@ public class PlayerController : NetworkBehaviour
       } //End for(int i = 0; i < possiblePoints.Length; i++)
       break;
     case "KillPlane":
-      if(gameObject == null)
+      if (gameObject == null || currentPoint == null)
         return;
       transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
       transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
