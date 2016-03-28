@@ -188,7 +188,7 @@ public class PlayerController : NetworkBehaviour
 
       float lfTotalThrust = _ShipStats.fMaxVelocity;
 
-      if ((bManuallyBoosting && fCurrentEnergy >= 0.0f)) {
+      if ((bManuallyBoosting && fCurrentEnergy > 0.0f)) {
 				rb.AddForce(rb.transform.forward * 35.0f * rb.mass);
         if (bManuallyBoosting) {
           fCurrentEnergy -= 20.0f * Time.deltaTime;
