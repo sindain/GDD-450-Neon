@@ -292,7 +292,57 @@ public class PlayerController : NetworkBehaviour
     case "NegGate":
       _ShipStats.Polarity = -1;
       gameObject.GetComponent<ShipStats> ().Polarity = -1;
-      break;
+	break;case "HealthGate":
+	fCurrentHealth += 50;
+	  if (fCurrentHealth > 100) {
+		  fCurrentHealth = 100;
+
+	}
+			if(fCurrentHealth >=100){
+				gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = true;
+				gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+				modelChild = 0;
+			}
+			else if (fCurrentHealth < 100 && fCurrentHealth >=80)
+			{
+				gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = true;
+				gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+				modelChild = 1;
+			}
+			else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
+			{
+				gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = true;
+				gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+				modelChild = 2;
+			}
+			else if (fCurrentHealth < 60 && fCurrentHealth >=40)
+			{
+				gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = true;
+				gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = false;
+				modelChild = 3;
+			}
+			else{
+				gameObject.transform.FindChild("Model").GetChild(0).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(1).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(2).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(3).gameObject.active = false;
+				gameObject.transform.FindChild("Model").GetChild(4).gameObject.active = true;
+				modelChild = 4;
+			}
+	break;
+
     }
   }
 	void OnTriggerStay (Collider other){
@@ -440,6 +490,7 @@ public class PlayerController : NetworkBehaviour
   public float getAirborneDistance (){return fAirborneDistance;}
 
   public float getDisplayEnergy(){return fCurrentEnergy / _ShipStats.fMaxEnergy * 100;}
+  public float getHealth(){return fCurrentHealth;}
 
   public bool getCameraControl (){return bCameraControl;}
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
