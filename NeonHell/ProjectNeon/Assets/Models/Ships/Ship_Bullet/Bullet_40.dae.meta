@@ -44,7 +44,7 @@ ModelImporter:
     4300008: polySurface27
     4300010: polySurface29
     4300012: polySurface31
-    7400000: Take 001
+    7400000: Bullet40
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -66,7 +66,53 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Bullet40
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Body
+        weight: 1
+      - path: Thrusters
+        weight: 1
+      - path: Thrusters/polySurface22
+        weight: 1
+      - path: Thrusters/polySurface24
+        weight: 1
+      - path: Thrusters/polySurface25
+        weight: 1
+      - path: Thrusters/polySurface27
+        weight: 1
+      - path: Thrusters/polySurface29
+        weight: 1
+      - path: Thrusters/polySurface31
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []

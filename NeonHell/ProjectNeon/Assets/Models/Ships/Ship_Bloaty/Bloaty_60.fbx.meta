@@ -1,54 +1,15 @@
 fileFormatVersion: 2
-guid: a6de5ee31401f0a4d9d1c21b756b583b
-timeCreated: 1459109276
+guid: 7be06dd8893ef9b44a949bb696630307
+timeCreated: 1459137533
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: leftBooster1
-    100004: leftPipes
-    100006: polySurface12
-    100008: polySurface13
-    100010: polySurface14
-    100012: polySurface15
-    100014: polySurface16
-    100016: rightBooster
-    100018: rightPipes
     400000: //RootNode
-    400002: leftBooster1
-    400004: leftPipes
-    400006: polySurface12
-    400008: polySurface13
-    400010: polySurface14
-    400012: polySurface15
-    400014: polySurface16
-    400016: rightBooster
-    400018: rightPipes
     2300000: //RootNode
-    2300002: leftBooster1
-    2300004: polySurface12
-    2300006: polySurface13
-    2300008: polySurface14
-    2300010: polySurface15
-    2300012: polySurface16
-    2300014: rightBooster
     3300000: //RootNode
-    3300002: leftBooster1
-    3300004: polySurface12
-    3300006: polySurface13
-    3300008: polySurface14
-    3300010: polySurface15
-    3300012: polySurface16
-    3300014: rightBooster
     4300000: Boaty_60
-    4300002: leftBooster1
-    4300004: rightBooster
-    4300006: polySurface16
-    4300008: polySurface14
-    4300010: polySurface12
-    4300012: polySurface15
-    4300014: polySurface13
     9500000: //RootNode
   materials:
     importMaterials: 1

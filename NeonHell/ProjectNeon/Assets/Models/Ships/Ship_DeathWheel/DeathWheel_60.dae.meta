@@ -99,7 +99,7 @@ ModelImporter:
     4300030: polySurface113
     4300032: ThinSpinner_ncl1_1
     4300034: ThickSpinner_ncl1_1
-    7400000: Take 001
+    7400000: dw60
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -121,7 +121,75 @@ ModelImporter:
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: dw60
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Axel
+        weight: 1
+      - path: Axel/leftThruster
+        weight: 1
+      - path: Axel/leftThruster/inFlap2
+        weight: 1
+      - path: Axel/leftThruster/outFlap1
+        weight: 1
+      - path: Axel/leftThruster/outFlap2
+        weight: 1
+      - path: Axel/leftThruster/ThickSpinner
+        weight: 1
+      - path: Axel/leftThruster/ThinSpinner
+        weight: 1
+      - path: Axel/rightThruster
+        weight: 1
+      - path: Axel/rightThruster/Flaps
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface99
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface106
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface110
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface113
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface115
+        weight: 1
+      - path: Axel/rightThruster/ThickSpinner_ncl1_1
+        weight: 1
+      - path: Axel/rightThruster/ThinSpinner_ncl1_1
+        weight: 1
+      - path: DeathWheel_2
+        weight: 1
+      - path: DeathWheel_2/leftSpokes
+        weight: 1
+      - path: DeathWheel_2/rightSpokes
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []
