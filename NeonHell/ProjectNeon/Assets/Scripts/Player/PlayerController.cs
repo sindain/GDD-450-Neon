@@ -20,7 +20,6 @@ public class PlayerController : NetworkBehaviour
 
   //Private variables
   public AudioClip[] soundEffects = new AudioClip[5];
-  private int   lap = 0;
   public int   BoostType = 0;
   private Vector3 BoostDir;
   private float fCurrentHealth;
@@ -28,14 +27,13 @@ public class PlayerController : NetworkBehaviour
   private float rotationVelocityX = 0.0f;
   private float rotationVelocityZ = 0.0f;
   private float fRotationSeekSpeed = 0.6f;
-  private float fBoostTime = 0.25f;
+  //private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
   private float fThrustCurrent;
   private float fTurnThreshold;
   private float fDamageTimer;
   private float fDamageCooldown = 1.5f;
   private bool  bCameraControl = false;
-  private bool  bIsRacing = false;
   private bool  bManuallyBoosting = false;
   private GameObject currentPoint;
   private GameObject direction;
@@ -58,7 +56,6 @@ public class PlayerController : NetworkBehaviour
     direction = new GameObject ();
     direction.transform.SetParent (transform);
     DontDestroyOnLoad (transform.gameObject);
-    lap = 0; 
     fCurrentHealth = _ShipStats.fMaxHealth;
     fCurrentEnergy = _ShipStats.fMaxEnergy;
     fThrustCurrent = 0.0f;
@@ -484,9 +481,6 @@ public class PlayerController : NetworkBehaviour
 
 //-------------------------------------Getters and Setters--------------------------------------------------------------
 
-  public int getLap (){return lap;}
-  public void setLap (int pLap){lap = pLap;}
-
   public float getAirborneDistance (){return fAirborneDistance;}
 
   public float getDisplayEnergy(){return fCurrentEnergy / _ShipStats.fMaxEnergy * 100;}
@@ -494,9 +488,6 @@ public class PlayerController : NetworkBehaviour
 
   public bool getCameraControl (){return bCameraControl;}
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
-
-  public bool getIsRacing(){return bIsRacing;}
-  public void setIsRacing(bool pbIsRacing){bIsRacing = pbIsRacing;}
 
   public GameObject getCurrentPoint (){return currentPoint;}  
   public void setCurrentPoint(GameObject point){currentPoint = point;}

@@ -16,9 +16,19 @@ public class MultiplayerLobby : MonoBehaviour
   void Start (){
     viewPort = transform.FindChild ("Lobbies").gameObject.transform.FindChild ("Viewport").gameObject;
     request = new UnityEngine.Networking.Match.CreateMatchRequest ();
-  }
-  //End void Start()
+  } //End void Start()
 	
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         matchRequest
+  //Description:  Called once the user requests a new list of matches.  Disables multiplayer screen buttons and shows
+  //              wait screen.
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
+  public void matchRequest(){
+    toggleWaitScreen (true, "Loading matches.");
+  }
+
   //--------------------------------------------------------------------------------------------------------------------
   //Name:     matchResponse
   //Description:  Called once server has returned a list of available matches then displays them in the lobbies viewport
@@ -27,6 +37,7 @@ public class MultiplayerLobby : MonoBehaviour
   //--------------------------------------------------------------------------------------------------------------------
   public void matchResponse (UnityEngine.Networking.Match.ListMatchResponse matches){
     descriptions = matches.matches.ToArray ();
+    toggleWaitScreen (false, "");
 
     //Remove any children currently present
     for (int i = 0; i < viewPort.transform.childCount; i++)
@@ -49,8 +60,22 @@ public class MultiplayerLobby : MonoBehaviour
       });
 
     } //End for(int i = 0; i < descriptions.Length; i ++)
+  } //End public void matchResponse(UnityEngine.Networking.Match.ListMatchResponse matches)
+
+  public void toggleWaitScreen(bool pbTurnOn, string pMessage){
+    GameObject btnPanel = gameObject.transform.FindChild ("ButtonPanel").gameObject;
+    btnPanel.transform.FindChild ("Host").GetComponent<Button> ().interactable = !pbTurnOn;
+    btnPanel.transform.FindChild ("Join").GetComponent<Button> ().interactable = !pbTurnOn;
+    btnPanel.transform.FindChild ("Back").GetComponent<Button> ().interactable = !pbTurnOn;
+    gameObject.transform.FindChild("TopPanel").FindChild("RefreshButton").GetComponent<Button>().interactable = !pbTurnOn;
+    if(viewPort != null)
+      foreach(Transform t in viewPort.transform)
+        t.GetComponent<Button> ().interactable = !pbTurnOn;
+    
+
+    transform.parent.FindChild ("Wait").gameObject.SetActive (pbTurnOn);
+    transform.parent.FindChild ("Wait").gameObject.transform.FindChild ("Message").gameObject.GetComponent<Text>().text = pMessage;
   }
-  //End public void matchResponse(UnityEngine.Networking.Match.ListMatchResponse matches)
 
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         getSelectedMatch
