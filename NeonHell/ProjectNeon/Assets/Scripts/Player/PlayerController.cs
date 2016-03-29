@@ -491,6 +491,10 @@ public class PlayerController : NetworkBehaviour
 
   public float getDisplayEnergy(){return fCurrentEnergy / _ShipStats.fMaxEnergy * 100;}
   public float getHealth(){return fCurrentHealth;}
+  public void setHealth(float health) {fCurrentHealth = health;}
+
+  public float getEnergy() { return fCurrentEnergy; }
+  public void setEnergy(float energy) { fCurrentEnergy = energy; }
 
   public bool getCameraControl (){return bCameraControl;}
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}

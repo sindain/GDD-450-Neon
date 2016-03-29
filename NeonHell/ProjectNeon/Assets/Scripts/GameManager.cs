@@ -113,9 +113,45 @@ public class GameManager : NetworkManager
   //Parameters:   NetworkConnection conn, UnityEngine.Networking.PlayerController player
   //Returns:      NA
   //--------------------------------------------------------------------------------------------------------------------
-  public override void OnServerRemovePlayer (NetworkConnection conn, UnityEngine.Networking.PlayerController player){
-    base.OnServerRemovePlayer (conn, player);
-    //players.Remove (player.gameObject);
+  public override void OnServerDisconnect (NetworkConnection conn){
+    returnToMain();
+    /*bool found = false;
+    print("FUCKING BITCH ASS PLAYER LEFT THE GAME");
+    GameObject player = new GameObject();
+    foreach(GameObject i in players){
+      if (found == false)
+      {
+        if (i.GetComponent<NetPlayer>().connection.connectionId == conn.connectionId)
+        {
+          player = i;
+          print("Match Found");
+          found = true;
+        }
+        else
+        {
+          print("Not a Match");
+        }
+      }
+    }
+
+    player.gameObject.GetComponent<NetPlayer>().ship.SetActive(false);
+    GameObject NpcPlayer = (GameObject)Instantiate(player);
+    NetPlayer _NetPlayer = NpcPlayer.GetComponent<NetPlayer>();
+    _NetPlayer.connection = players[0].GetComponent<NetPlayer>().connection;
+    _NetPlayer.setIsHuman(false);
+    
+    NetworkServer.Spawn(NpcPlayer);
+    GameObject NpcShip = (GameObject)Instantiate(player.GetComponent<NetPlayer>().ship);
+    
+    print(NpcShip);
+    NetworkServer.Spawn(NpcShip);
+    
+    _NetPlayer.RpcSetShip(NpcShip);
+
+    print("SHIT SHOULD BE SPAWNED YO");
+    
+    base.OnServerDisconnect(conn);
+    //players.Remove (player.gameObject);*/
   }
 
   //--------------------------------------------------------------------------------------------------------------------
