@@ -172,7 +172,7 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public void StartMatchMaking (){
     StartMatchMaker ();
-    matchMaker.ListMatches (0, 5, "", OnMatchList);
+    refreshMatches ();
   }
 
   public void StopMatchmaking(){
@@ -187,6 +187,7 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public void refreshMatches (){
     matchMaker.ListMatches (0, 5, "", OnMatchList);
+    GameObject.Find ("MainMenu").transform.FindChild ("MultiplayerLobby").GetComponent<MultiplayerLobby> ().matchRequest ();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -406,7 +407,6 @@ public class GameManager : NetworkManager
       else if (i==0){
         players[i].GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelect);
         players[i].GetComponent<NetPlayer>().RpcStartLevelSelection();
-        //players[i].GetComponent<NetPlayer>().PlayerState = 
       } 
       else 
         players[i].GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LevelSelectReady);
