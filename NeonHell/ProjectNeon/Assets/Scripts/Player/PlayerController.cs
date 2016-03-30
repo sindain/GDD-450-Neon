@@ -20,7 +20,6 @@ public class PlayerController : NetworkBehaviour
 
   //Private variables
   public AudioClip[] soundEffects = new AudioClip[5];
-  private int   lap = 0;
   public int   BoostType = 0;
   private Vector3 BoostDir;
   private float fCurrentHealth;
@@ -28,15 +27,15 @@ public class PlayerController : NetworkBehaviour
   private float rotationVelocityX = 0.0f;
   private float rotationVelocityZ = 0.0f;
   private float fRotationSeekSpeed = 0.6f;
-  private float fBoostTime = 0.25f;
+  //private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
   private float fThrustCurrent;
   private float fTurnThreshold;
   private float fDamageTimer;
-  private float fDamageCooldown = 1.5f;
+  private float fDamageCooldown = 5.0f;
   private bool  bCameraControl = false;
-  private bool  bIsRacing = false;
   private bool  bManuallyBoosting = false;
+	public bool bPaused = false;
   private GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
@@ -51,14 +50,15 @@ public class PlayerController : NetworkBehaviour
     engine.clip = soundEffects[1];
     engine.playOnAwake = true;
     engine.loop = true;
-    engine.volume = 0.30f;
+    engine.volume = .40f;
     engine.Play();
-    engine.spatialBlend = 0.4f;
+    engine.spatialBlend = 1.0f;
+		engine.minDistance = 8;
+		engine.maxDistance = 40;
     _ShipStats = GetComponent<ShipStats> ();
     direction = new GameObject ();
     direction.transform.SetParent (transform);
     DontDestroyOnLoad (transform.gameObject);
-    lap = 0; 
     fCurrentHealth = _ShipStats.fMaxHealth;
     fCurrentEnergy = _ShipStats.fMaxEnergy;
     fThrustCurrent = 0.0f;
@@ -76,8 +76,8 @@ public class PlayerController : NetworkBehaviour
     if (!hasAuthority && !bTesting)
       return;
 
-    if(fDamageTimer > 0)
-      fDamageTimer = fDamageTimer - Time.deltaTime < 0 ? 0 : fDamageTimer - Time.deltaTime;
+    if(fDamageTimer >= 0)
+      fDamageTimer = fDamageTimer - Time.deltaTime;
 
 	if(Input.GetKey(KeyCode.R)) {
 		SucTimer += 1.0f*Time.deltaTime;
@@ -138,7 +138,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     if(!bTesting)
-      if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
+		if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing || bPaused)
         return;
 
     //Apply torque, e.g. turn the ship left and right
@@ -292,8 +292,9 @@ public class PlayerController : NetworkBehaviour
     case "NegGate":
       _ShipStats.Polarity = -1;
       gameObject.GetComponent<ShipStats> ().Polarity = -1;
-	break;case "HealthGate":
-	fCurrentHealth += 50;
+	break;
+	case "HealthGate":
+		fCurrentHealth += 50;
 	  if (fCurrentHealth > 100) {
 		  fCurrentHealth = 100;
 
@@ -399,7 +400,7 @@ public class PlayerController : NetworkBehaviour
         return;
     
     fCurrentHealth -= 20;
-    fDamageTimer = Time.time + fDamageCooldown;
+    fDamageTimer += fDamageCooldown;
     gameObject.GetComponent<AudioSource>().PlayOneShot(soundEffects[0]);
 
     if(fCurrentHealth >=100){
@@ -484,19 +485,17 @@ public class PlayerController : NetworkBehaviour
 
 //-------------------------------------Getters and Setters--------------------------------------------------------------
 
-  public int getLap (){return lap;}
-  public void setLap (int pLap){lap = pLap;}
-
   public float getAirborneDistance (){return fAirborneDistance;}
 
   public float getDisplayEnergy(){return fCurrentEnergy / _ShipStats.fMaxEnergy * 100;}
   public float getHealth(){return fCurrentHealth;}
+  public void setHealth(float health) {fCurrentHealth = health;}
+
+  public float getEnergy() { return fCurrentEnergy; }
+  public void setEnergy(float energy) { fCurrentEnergy = energy; }
 
   public bool getCameraControl (){return bCameraControl;}
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
-
-  public bool getIsRacing(){return bIsRacing;}
-  public void setIsRacing(bool pbIsRacing){bIsRacing = pbIsRacing;}
 
   public GameObject getCurrentPoint (){return currentPoint;}  
   public void setCurrentPoint(GameObject point){currentPoint = point;}

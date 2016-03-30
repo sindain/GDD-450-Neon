@@ -48,7 +48,7 @@ public class VehicleSelection : MonoBehaviour
 
     foreach (GameObject i in players) {
       NetPlayer netPlayer = i.GetComponent<NetPlayer> ();
-      if (netPlayer.isLocalPlayer)
+      if (netPlayer.isLocalPlayer && netPlayer.getShipChoice() != -1)
         netPlayer.setPlayerState(NetPlayer.PLAYER_STATE.VehicleSelectReady);
     } 
   }

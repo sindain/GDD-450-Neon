@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 using System.Collections;
 
 public class NetPlayer : NetworkBehaviour
@@ -150,6 +151,7 @@ public class NetPlayer : NetworkBehaviour
     Transform target = GameObject.Find ("Garage").transform.FindChild ("CameraPositions").transform.GetChild (iNum);
     GameObject.Find ("MainMenu").GetComponent<MenuScript> ().setCameraTarget (target.position, target.rotation);
     GameObject.Find ("MainMenu").transform.FindChild ("MultiplayerLobby").gameObject.SetActive (false);
+    GameObject.Find ("MainMenu").transform.FindChild ("Wait").gameObject.SetActive (false);
     GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive (true);
     //GameObject.Find ("MainMenu").GetComponent<MenuScript> ().setCameraTarget (pos, rot);
   }  
@@ -191,11 +193,19 @@ public class NetPlayer : NetworkBehaviour
 
   [ClientRpc]
   public void RpcStartLevelSelection(){
-    if(!isLocalPlayer)
+    if (!bIsHuman)
       return;
+
+    //Turn vehicle selection off
     GameObject.Find ("MainMenu").transform.FindChild ("VehicleSelection").gameObject.SetActive(false);
-    GameObject.Find("MainMenu").transform.FindChild("MapSelection").gameObject.SetActive(true);
-  }
+    if (isLocalPlayer)
+      GameObject.Find ("MainMenu").transform.FindChild ("MapSelection").gameObject.SetActive (true);
+    else{
+      GameObject wait = GameObject.Find ("MainMenu").transform.FindChild ("Wait").gameObject;
+      wait.SetActive (true);
+      wait.transform.FindChild ("Message").gameObject.GetComponent<Text> ().text = "Player 1 is choosing a circuit.";
+    } //End else
+  } //End public void RpcStartLevelSelection()
 
   [ClientRpc]
   public void RpcSetShip (GameObject pNewShip){
@@ -219,6 +229,7 @@ public class NetPlayer : NetworkBehaviour
 
 //----------------------------------------------Getters and Setters-----------------------------------------------------
 
+  public int getShipChoice(){return iShipChoice;}
   public void setShipChoice (int piChoice){CmdChangeShip (piChoice);}
 
   public int getPlayerNum (){return iPlayerNum;}
@@ -271,4 +282,11 @@ public class NetPlayer : NetworkBehaviour
     if (pState == PLAYER_STATE.RaceFinished)
       CmdUpdRaceTime (fRaceTime);
   }
+	public void OnExitClicked (){
+		CmdPeacOut ();
+	}
+	[Command]
+	public void CmdPeacOut(){
+		GameObject.Find ("GameManager").GetComponent<GameManager> ().returnToMain ();
+	}
 }

@@ -22,6 +22,7 @@ public class TitleMenu : MonoBehaviour
 
   public void onMultiPlayerClicked (){
     GameObject.Find ("GameManager").GetComponent<GameManager> ().StartMatchMaking ();
+    transform.parent.FindChild ("Neon Sign").gameObject.SetActive (false);
     transform.parent.FindChild ("MultiplayerLobby").gameObject.SetActive (true);
     gameObject.SetActive (false);
   }
