@@ -50,9 +50,11 @@ public class PlayerController : NetworkBehaviour
     engine.clip = soundEffects[1];
     engine.playOnAwake = true;
     engine.loop = true;
-    engine.volume = 0.30f;
+    engine.volume = .40f;
     engine.Play();
-    engine.spatialBlend = 0.4f;
+    engine.spatialBlend = 1.0f;
+		engine.minDistance = 8;
+		engine.maxDistance = 40;
     _ShipStats = GetComponent<ShipStats> ();
     direction = new GameObject ();
     direction.transform.SetParent (transform);
