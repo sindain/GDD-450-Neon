@@ -49,7 +49,7 @@ public class SpHUD : MonoBehaviour
     3.0f, //final
     0.0f}; //Times for events during the scoreboard
   private Color[] countdownColors = {Color.green, Color.yellow, Color.yellow, Color.red, Color.red};
-
+  public bool IsPaused;
   // Use this for initialization
   void Start (){
     //Initialize all variables to their starting positions\
@@ -58,14 +58,17 @@ public class SpHUD : MonoBehaviour
     countdownText.color = Color.red;
     countdownText.text = "3";
     PlayerPrefs.SetFloat ("start", 0);
+	IsPaused = false;
   }
 
   // Update is called once per frame
   void Update (){
     //Hide/Shows the menu button
-    //if (Input.GetKeyDown (KeyCode.Escape)) {
-    //  menu.enabled = !menu.enabled;
-    //}
+    if (Input.GetKeyDown (KeyCode.Escape)) {
+			IsPaused = !IsPaused;
+			_NetPlayer.ship.GetComponent<PlayerController> ().bPaused = IsPaused;
+			Menu.SetActive(IsPaused);
+    }
 
     if (_NetPlayer == null)
       return;
@@ -271,4 +274,13 @@ public class SpHUD : MonoBehaviour
     fTimer = fSBTimes[0];
 
   } //End public void startScoreboard()
+	public void ContinueRace(){
+		IsPaused = false;
+		_NetPlayer.ship.GetComponent<PlayerController> ().bPaused = IsPaused;
+		Menu.SetActive(false);
+	}
+	public void QuitToMenu(){
+		//call grants function here.
+		_NetPlayer.OnExitClicked();
+	}
 }

@@ -32,9 +32,10 @@ public class PlayerController : NetworkBehaviour
   private float fThrustCurrent;
   private float fTurnThreshold;
   private float fDamageTimer;
-  private float fDamageCooldown = 1.5f;
+  private float fDamageCooldown = 5.0f;
   private bool  bCameraControl = false;
   private bool  bManuallyBoosting = false;
+	public bool bPaused = false;
   private GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
@@ -73,8 +74,8 @@ public class PlayerController : NetworkBehaviour
     if (!hasAuthority && !bTesting)
       return;
 
-    if(fDamageTimer > 0)
-      fDamageTimer = fDamageTimer - Time.deltaTime < 0 ? 0 : fDamageTimer - Time.deltaTime;
+    if(fDamageTimer >= 0)
+      fDamageTimer = fDamageTimer - Time.deltaTime;
 
 	if(Input.GetKey(KeyCode.R)) {
 		SucTimer += 1.0f*Time.deltaTime;
@@ -135,7 +136,7 @@ public class PlayerController : NetworkBehaviour
     }
 
     if(!bTesting)
-      if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
+		if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing || bPaused)
         return;
 
     //Apply torque, e.g. turn the ship left and right
@@ -289,8 +290,9 @@ public class PlayerController : NetworkBehaviour
     case "NegGate":
       _ShipStats.Polarity = -1;
       gameObject.GetComponent<ShipStats> ().Polarity = -1;
-	break;case "HealthGate":
-	fCurrentHealth += 50;
+	break;
+	case "HealthGate":
+		fCurrentHealth += 50;
 	  if (fCurrentHealth > 100) {
 		  fCurrentHealth = 100;
 
@@ -396,7 +398,7 @@ public class PlayerController : NetworkBehaviour
         return;
     
     fCurrentHealth -= 20;
-    fDamageTimer = Time.time + fDamageCooldown;
+    fDamageTimer += fDamageCooldown;
     gameObject.GetComponent<AudioSource>().PlayOneShot(soundEffects[0]);
 
     if(fCurrentHealth >=100){

@@ -57,6 +57,8 @@ public class MultiplayerLobby : MonoBehaviour
 
       content.GetComponent<Button> ().onClick.AddListener (delegate {
         SelectedMatch = content.GetComponent<MatchContent> ().getDesctription ();
+				print("23");
+				transform.FindChild("ButtonPanel").FindChild("Join").GetComponent<JoinButton>().interactable=true;
       });
 
     } //End for(int i = 0; i < descriptions.Length; i ++)
@@ -65,7 +67,7 @@ public class MultiplayerLobby : MonoBehaviour
   public void toggleWaitScreen(bool pbTurnOn, string pMessage){
     GameObject btnPanel = gameObject.transform.FindChild ("ButtonPanel").gameObject;
     btnPanel.transform.FindChild ("Host").GetComponent<Button> ().interactable = !pbTurnOn;
-    btnPanel.transform.FindChild ("Join").GetComponent<Button> ().interactable = !pbTurnOn;
+    //btnPanel.transform.FindChild ("Join").GetComponent<Button> ().interactable = !pbTurnOn;
     btnPanel.transform.FindChild ("Back").GetComponent<Button> ().interactable = !pbTurnOn;
     gameObject.transform.FindChild("TopPanel").FindChild("RefreshButton").GetComponent<Button>().interactable = !pbTurnOn;
     if(viewPort != null)

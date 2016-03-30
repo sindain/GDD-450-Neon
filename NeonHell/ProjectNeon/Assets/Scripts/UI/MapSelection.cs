@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class MapSelection : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class MapSelection : MonoBehaviour {
 
   public void onMapButtonClicked(int piChoice){
     GM.CmdChangeCircuit (piChoice);
+	transform.FindChild ("ContinueBack").FindChild("Ready").GetComponent<Button>().interactable = true;
+
   }
 
   public void onReadyButtonClicked(){

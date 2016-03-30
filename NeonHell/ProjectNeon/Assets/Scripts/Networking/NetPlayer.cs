@@ -282,4 +282,11 @@ public class NetPlayer : NetworkBehaviour
     if (pState == PLAYER_STATE.RaceFinished)
       CmdUpdRaceTime (fRaceTime);
   }
+	public void OnExitClicked (){
+		CmdPeacOut ();
+	}
+	[Command]
+	public void CmdPeacOut(){
+		GameObject.Find ("GameManager").GetComponent<GameManager> ().returnToMain ();
+	}
 }
