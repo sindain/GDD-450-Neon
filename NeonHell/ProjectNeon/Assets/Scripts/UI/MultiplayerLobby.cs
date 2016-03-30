@@ -16,6 +16,8 @@ public class MultiplayerLobby : MonoBehaviour
   void Start (){
     viewPort = transform.FindChild ("Lobbies").gameObject.transform.FindChild ("Viewport").gameObject;
     request = new UnityEngine.Networking.Match.CreateMatchRequest ();
+    if (SelectedMatch == null)
+      gameObject.transform.FindChild ("ButtonPanel").gameObject.transform.FindChild ("Join").GetComponent<Button> ().interactable = false;
   } //End void Start()
 	
   //--------------------------------------------------------------------------------------------------------------------
@@ -67,7 +69,7 @@ public class MultiplayerLobby : MonoBehaviour
   public void toggleWaitScreen(bool pbTurnOn, string pMessage){
     GameObject btnPanel = gameObject.transform.FindChild ("ButtonPanel").gameObject;
     btnPanel.transform.FindChild ("Host").GetComponent<Button> ().interactable = !pbTurnOn;
-    //btnPanel.transform.FindChild ("Join").GetComponent<Button> ().interactable = !pbTurnOn;
+    btnPanel.transform.FindChild ("Join").GetComponent<Button> ().interactable = SelectedMatch == null ? false : !pbTurnOn;
     btnPanel.transform.FindChild ("Back").GetComponent<Button> ().interactable = !pbTurnOn;
     gameObject.transform.FindChild("TopPanel").FindChild("RefreshButton").GetComponent<Button>().interactable = !pbTurnOn;
     if(viewPort != null)
@@ -131,6 +133,11 @@ public class MultiplayerLobby : MonoBehaviour
   public void onCreateClicked (){
     if (request.name != "")
       GameObject.Find ("GameManager").GetComponent<GameManager> ().StartMatchmakerGame (request);
+  }
+
+  public void onRefreshClicked(){
+    toggleWaitScreen (true, "Loading Matches");
+    SelectedMatch = null;
   }
 }
 //End public class MultiplayerLobby : MonoBehaviour
