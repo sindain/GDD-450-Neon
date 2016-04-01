@@ -399,7 +399,7 @@ public class PlayerController : NetworkBehaviour
     if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
     
-    fCurrentHealth -= 20;
+    fCurrentHealth -= 5;
     fDamageTimer += fDamageCooldown;
     gameObject.GetComponent<AudioSource>().PlayOneShot(soundEffects[0]);
 
