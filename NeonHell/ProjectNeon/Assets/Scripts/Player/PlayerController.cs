@@ -396,10 +396,10 @@ public class PlayerController : NetworkBehaviour
       } //End foreach (ContactPoint c in collision.contacts)
     } //End if(collision.gameObject.tag == "Wall")
 
-    if (fCurrentHealth <= 0 || fDamageTimer > 0 || !hasAuthority)
+    if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
     
-    fCurrentHealth -= 5;
+    fCurrentHealth -= 20;
     fDamageTimer += fDamageCooldown;
     gameObject.GetComponent<AudioSource>().PlayOneShot(soundEffects[0]);
 
