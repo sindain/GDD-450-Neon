@@ -31,6 +31,7 @@ public class SpHUD : MonoBehaviour
   public Text raceTimeText;
   public Text raceOverTimeText;
   public Sprite[] Huds;
+  public Sprite[] MapBorders;
   public Sprite[] ShipIcons;
   //public Image menu;
 
@@ -40,6 +41,7 @@ public class SpHUD : MonoBehaviour
   //private GameManager.TRANSITION Trans;
   public UI_STATE UIState;
 
+  private int miniMapZoom = 0;
   private float[] fSBTimes = { 
     15.0f, //wait
     12.0f, //points
@@ -72,6 +74,42 @@ public class SpHUD : MonoBehaviour
 
     if (_NetPlayer == null)
       return;
+
+    if(Input.GetKeyDown(KeyCode.Tab)){
+      if(miniMapZoom < 3){  
+        miniMapZoom++;
+      }
+      else{
+        miniMapZoom = 0;
+      }
+    }
+    if (_NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.Racing || _NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.RaceReady)
+    {
+      switch (miniMapZoom)
+      {
+        case 0:
+          print(GameObject.FindGameObjectWithTag("minimap"));
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 50;
+          break;
+        case 1:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 85;
+          break;
+        case 2:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 150;
+          break;
+        case 3:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = false;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(false);
+          break;
+      }
+    }
+
 
     //------------------------------------
     //---------Update HUD-----------------
@@ -129,6 +167,7 @@ public class SpHUD : MonoBehaviour
       case UI_STATE.SBWait:
         changeState (1, UI_STATE.SBPoints);
         HUD.SetActive(false);
+        GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = false;
         break;
 
       case UI_STATE.SBPoints:
@@ -261,6 +300,7 @@ public class SpHUD : MonoBehaviour
     transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (true);
   	HUD.GetComponent<Image>().sprite = Huds [_NetPlayer.iShipChoice];
   	HUD.GetComponent<Image> ().enabled = true;
+    HUD.transform.FindChild("MiniMapBack").GetComponent<Image>().sprite = MapBorders[_NetPlayer.iShipChoice];
     countdownText.text = "3";
     countdownText.color = Color.red;
   } //End public void startCountdown()
