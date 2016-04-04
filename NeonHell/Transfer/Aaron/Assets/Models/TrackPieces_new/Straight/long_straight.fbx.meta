@@ -1,0 +1,204 @@
+fileFormatVersion: 2
+guid: b8095ec9f8342ca4992a5c521b32503e
+timeCreated: 1458592472
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: arrowlight
+    100002: arrowlightreverse
+    100004: barrier_left
+    100006: barrier_right
+    100008: dashlight
+    100010: dashlight 1
+    100012: diamondslight
+    100014: diamondslight 1
+    100016: group3_road10
+    100018: group3_road10 1
+    100020: linelight
+    100022: linelight 1
+    100024: //RootNode
+    100026: post
+    100028: post1
+    100030: post2
+    100032: post3
+    100034: post4
+    100036: post5
+    100038: post6
+    100040: post7
+    100042: post8
+    100044: post9
+    100046: post_left
+    100048: post_right
+    100050: rail_left
+    100052: rail_right
+    100054: road
+    100056: track
+    100058: zigzaglight
+    100060: zigzaglight 1
+    100062: zigzaglight 2
+    100064: zigzaglight2
+    400000: arrowlight
+    400002: arrowlightreverse
+    400004: barrier_left
+    400006: barrier_right
+    400008: dashlight
+    400010: dashlight 1
+    400012: diamondslight
+    400014: diamondslight 1
+    400016: group3_road10
+    400018: group3_road10 1
+    400020: linelight
+    400022: linelight 1
+    400024: //RootNode
+    400026: post
+    400028: post1
+    400030: post2
+    400032: post3
+    400034: post4
+    400036: post5
+    400038: post6
+    400040: post7
+    400042: post8
+    400044: post9
+    400046: post_left
+    400048: post_right
+    400050: rail_left
+    400052: rail_right
+    400054: road
+    400056: track
+    400058: zigzaglight
+    400060: zigzaglight 1
+    400062: zigzaglight 2
+    400064: zigzaglight2
+    2300000: barrier_left
+    2300002: barrier_right
+    2300004: dashlight 1
+    2300006: diamondslight 1
+    2300008: group3_road10
+    2300010: group3_road10 1
+    2300012: linelight 1
+    2300014: post
+    2300016: post1
+    2300018: post2
+    2300020: post3
+    2300022: post4
+    2300024: post5
+    2300026: post6
+    2300028: post7
+    2300030: post8
+    2300032: post9
+    2300034: rail_left
+    2300036: rail_right
+    2300038: road
+    2300040: zigzaglight 1
+    2300042: zigzaglight 2
+    3300000: barrier_left
+    3300002: barrier_right
+    3300004: dashlight 1
+    3300006: diamondslight 1
+    3300008: group3_road10
+    3300010: group3_road10 1
+    3300012: linelight 1
+    3300014: post
+    3300016: post1
+    3300018: post2
+    3300020: post3
+    3300022: post4
+    3300024: post5
+    3300026: post6
+    3300028: post7
+    3300030: post8
+    3300032: post9
+    3300034: rail_left
+    3300036: rail_right
+    3300038: road
+    3300040: zigzaglight 1
+    3300042: zigzaglight 2
+    4300000: linelight
+    4300002: group3_road10
+    4300004: diamondslight
+    4300006: zigzaglight
+    4300008: dashlight
+    4300010: zigzaglight
+    4300012: group3_road10
+    4300014: road
+    4300016: barrier_right
+    4300018: barrier_left
+    4300020: rail_right
+    4300022: rail_left
+    4300024: post
+    4300026: post1
+    4300028: post2
+    4300030: post3
+    4300032: post4
+    4300034: post5
+    4300036: post6
+    4300038: post7
+    4300040: post8
+    4300042: post9
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
