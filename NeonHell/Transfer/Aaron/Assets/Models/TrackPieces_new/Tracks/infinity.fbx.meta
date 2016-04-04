@@ -1,0 +1,3596 @@
+fileFormatVersion: 2
+guid: d685000051bff154188c9bdc6c1316df
+timeCreated: 1459019639
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: arrowlight
+    100002: arrowlight 1
+    100004: arrowlight 10
+    100006: arrowlight 11
+    100008: arrowlight 12
+    100010: arrowlight 13
+    100012: arrowlight 14
+    100014: arrowlight 15
+    100016: arrowlight 16
+    100018: arrowlight 17
+    100020: arrowlight 18
+    100022: arrowlight 19
+    100024: arrowlight 2
+    100026: arrowlight 20
+    100028: arrowlight 21
+    100030: arrowlight 22
+    100032: arrowlight 3
+    100034: arrowlight 4
+    100036: arrowlight 5
+    100038: arrowlight 6
+    100040: arrowlight 7
+    100042: arrowlight 8
+    100044: arrowlight 9
+    100046: arrowlightreverse
+    100048: arrowlightreverse 1
+    100050: arrowlightreverse 10
+    100052: arrowlightreverse 11
+    100054: arrowlightreverse 12
+    100056: arrowlightreverse 13
+    100058: arrowlightreverse 14
+    100060: arrowlightreverse 15
+    100062: arrowlightreverse 16
+    100064: arrowlightreverse 17
+    100066: arrowlightreverse 18
+    100068: arrowlightreverse 19
+    100070: arrowlightreverse 2
+    100072: arrowlightreverse 20
+    100074: arrowlightreverse 21
+    100076: arrowlightreverse 22
+    100078: arrowlightreverse 3
+    100080: arrowlightreverse 4
+    100082: arrowlightreverse 5
+    100084: arrowlightreverse 6
+    100086: arrowlightreverse 7
+    100088: arrowlightreverse 8
+    100090: arrowlightreverse 9
+    100092: Banner
+    100094: banner
+    100096: barrier
+    100098: barrier 1
+    100100: barrier 2
+    100102: barrier 3
+    100104: barrier 4
+    100106: barrier_left
+    100108: barrier_left 1
+    100110: barrier_left 10
+    100112: barrier_left 11
+    100114: barrier_left 12
+    100116: barrier_left 13
+    100118: barrier_left 14
+    100120: barrier_left 15
+    100122: barrier_left 16
+    100124: barrier_left 17
+    100126: barrier_left 18
+    100128: barrier_left 19
+    100130: barrier_left 2
+    100132: barrier_left 20
+    100134: barrier_left 21
+    100136: barrier_left 22
+    100138: barrier_left 3
+    100140: barrier_left 4
+    100142: barrier_left 5
+    100144: barrier_left 6
+    100146: barrier_left 7
+    100148: barrier_left 8
+    100150: barrier_left 9
+    100152: barrier_right
+    100154: barrier_right 1
+    100156: barrier_right 10
+    100158: barrier_right 11
+    100160: barrier_right 12
+    100162: barrier_right 13
+    100164: barrier_right 14
+    100166: barrier_right 15
+    100168: barrier_right 16
+    100170: barrier_right 17
+    100172: barrier_right 18
+    100174: barrier_right 19
+    100176: barrier_right 2
+    100178: barrier_right 20
+    100180: barrier_right 21
+    100182: barrier_right 22
+    100184: barrier_right 3
+    100186: barrier_right 4
+    100188: barrier_right 5
+    100190: barrier_right 6
+    100192: barrier_right 7
+    100194: barrier_right 8
+    100196: barrier_right 9
+    100198: dashlight
+    100200: dashlight 1
+    100202: dashlight 10
+    100204: dashlight 11
+    100206: dashlight 12
+    100208: dashlight 13
+    100210: dashlight 14
+    100212: dashlight 15
+    100214: dashlight 16
+    100216: dashlight 17
+    100218: dashlight 18
+    100220: dashlight 19
+    100222: dashlight 2
+    100224: dashlight 20
+    100226: dashlight 21
+    100228: dashlight 22
+    100230: dashlight 23
+    100232: dashlight 24
+    100234: dashlight 25
+    100236: dashlight 26
+    100238: dashlight 27
+    100240: dashlight 28
+    100242: dashlight 29
+    100244: dashlight 3
+    100246: dashlight 30
+    100248: dashlight 31
+    100250: dashlight 32
+    100252: dashlight 33
+    100254: dashlight 34
+    100256: dashlight 35
+    100258: dashlight 36
+    100260: dashlight 37
+    100262: dashlight 38
+    100264: dashlight 39
+    100266: dashlight 4
+    100268: dashlight 40
+    100270: dashlight 41
+    100272: dashlight 42
+    100274: dashlight 43
+    100276: dashlight 44
+    100278: dashlight 45
+    100280: dashlight 5
+    100282: dashlight 6
+    100284: dashlight 7
+    100286: dashlight 8
+    100288: dashlight 9
+    100290: diamondslight
+    100292: diamondslight 1
+    100294: diamondslight 10
+    100296: diamondslight 11
+    100298: diamondslight 12
+    100300: diamondslight 13
+    100302: diamondslight 14
+    100304: diamondslight 15
+    100306: diamondslight 16
+    100308: diamondslight 17
+    100310: diamondslight 18
+    100312: diamondslight 19
+    100314: diamondslight 2
+    100316: diamondslight 20
+    100318: diamondslight 21
+    100320: diamondslight 22
+    100322: diamondslight 23
+    100324: diamondslight 24
+    100326: diamondslight 25
+    100328: diamondslight 26
+    100330: diamondslight 27
+    100332: diamondslight 28
+    100334: diamondslight 29
+    100336: diamondslight 3
+    100338: diamondslight 30
+    100340: diamondslight 31
+    100342: diamondslight 32
+    100344: diamondslight 33
+    100346: diamondslight 34
+    100348: diamondslight 35
+    100350: diamondslight 36
+    100352: diamondslight 37
+    100354: diamondslight 38
+    100356: diamondslight 39
+    100358: diamondslight 4
+    100360: diamondslight 40
+    100362: diamondslight 41
+    100364: diamondslight 42
+    100366: diamondslight 43
+    100368: diamondslight 44
+    100370: diamondslight 45
+    100372: diamondslight 5
+    100374: diamondslight 6
+    100376: diamondslight 7
+    100378: diamondslight 8
+    100380: diamondslight 9
+    100382: End
+    100384: group1
+    100386: group11
+    100388: group11 1
+    100390: group11 2
+    100392: group17
+    100394: group18
+    100396: group19
+    100398: group2
+    100400: group20
+    100402: group21
+    100404: group22
+    100406: group3_road10
+    100408: group3_road10 1
+    100410: group3_road10 10
+    100412: group3_road10 11
+    100414: group3_road10 12
+    100416: group3_road10 13
+    100418: group3_road10 14
+    100420: group3_road10 15
+    100422: group3_road10 16
+    100424: group3_road10 17
+    100426: group3_road10 18
+    100428: group3_road10 19
+    100430: group3_road10 2
+    100432: group3_road10 20
+    100434: group3_road10 21
+    100436: group3_road10 22
+    100438: group3_road10 23
+    100440: group3_road10 24
+    100442: group3_road10 25
+    100444: group3_road10 26
+    100446: group3_road10 27
+    100448: group3_road10 28
+    100450: group3_road10 29
+    100452: group3_road10 3
+    100454: group3_road10 30
+    100456: group3_road10 31
+    100458: group3_road10 32
+    100460: group3_road10 33
+    100462: group3_road10 34
+    100464: group3_road10 35
+    100466: group3_road10 36
+    100468: group3_road10 37
+    100470: group3_road10 38
+    100472: group3_road10 39
+    100474: group3_road10 4
+    100476: group3_road10 40
+    100478: group3_road10 41
+    100480: group3_road10 42
+    100482: group3_road10 43
+    100484: group3_road10 44
+    100486: group3_road10 45
+    100488: group3_road10 5
+    100490: group3_road10 6
+    100492: group3_road10 7
+    100494: group3_road10 8
+    100496: group3_road10 9
+    100498: group4
+    100500: group4 1
+    100502: group4 2
+    100504: group4 3
+    100506: group5
+    100508: group5 1
+    100510: group5 2
+    100512: group6
+    100514: group6 1
+    100516: group6 2
+    100518: group7
+    100520: group7 1
+    100522: group7 2
+    100524: group8
+    100526: group8 1
+    100528: group8 2
+    100530: group8 3
+    100532: group9
+    100534: group9 1
+    100536: group9 2
+    100538: group9 3
+    100540: //RootNode
+    100542: linelight
+    100544: linelight 1
+    100546: linelight 10
+    100548: linelight 11
+    100550: linelight 12
+    100552: linelight 13
+    100554: linelight 14
+    100556: linelight 15
+    100558: linelight 16
+    100560: linelight 17
+    100562: linelight 18
+    100564: linelight 19
+    100566: linelight 2
+    100568: linelight 20
+    100570: linelight 21
+    100572: linelight 22
+    100574: linelight 23
+    100576: linelight 24
+    100578: linelight 25
+    100580: linelight 26
+    100582: linelight 27
+    100584: linelight 28
+    100586: linelight 29
+    100588: linelight 3
+    100590: linelight 30
+    100592: linelight 31
+    100594: linelight 32
+    100596: linelight 33
+    100598: linelight 34
+    100600: linelight 35
+    100602: linelight 36
+    100604: linelight 37
+    100606: linelight 38
+    100608: linelight 39
+    100610: linelight 4
+    100612: linelight 40
+    100614: linelight 41
+    100616: linelight 42
+    100618: linelight 43
+    100620: linelight 44
+    100622: linelight 45
+    100624: linelight 5
+    100626: linelight 6
+    100628: linelight 7
+    100630: linelight 8
+    100632: linelight 9
+    100634: Mid
+    100636: Poles
+    100638: post
+    100640: post 1
+    100642: post 10
+    100644: post 11
+    100646: post 12
+    100648: post 13
+    100650: post 14
+    100652: post 15
+    100654: post 16
+    100656: post 17
+    100658: post 18
+    100660: post 19
+    100662: post 2
+    100664: post 20
+    100666: post 21
+    100668: post 22
+    100670: post 23
+    100672: post 24
+    100674: post 25
+    100676: post 26
+    100678: post 27
+    100680: post 28
+    100682: post 29
+    100684: post 3
+    100686: post 30
+    100688: post 31
+    100690: post 4
+    100692: post 5
+    100694: post 6
+    100696: post 7
+    100698: post 8
+    100700: post 9
+    100702: post1
+    100704: post1 1
+    100706: post1 10
+    100708: post1 11
+    100710: post1 12
+    100712: post1 13
+    100714: post1 14
+    100716: post1 15
+    100718: post1 16
+    100720: post1 17
+    100722: post1 18
+    100724: post1 19
+    100726: post1 2
+    100728: post1 20
+    100730: post1 21
+    100732: post1 22
+    100734: post1 23
+    100736: post1 24
+    100738: post1 25
+    100740: post1 3
+    100742: post1 4
+    100744: post1 5
+    100746: post1 6
+    100748: post1 7
+    100750: post1 8
+    100752: post1 9
+    100754: post10
+    100756: post10 1
+    100758: post10 2
+    100760: post11
+    100762: post11 1
+    100764: post11 2
+    100766: post12
+    100768: post12 1
+    100770: post12 2
+    100772: post13
+    100774: post13 1
+    100776: post13 2
+    100778: post14
+    100780: post14 1
+    100782: post14 2
+    100784: post15
+    100786: post15 1
+    100788: post15 2
+    100790: post16
+    100792: post17
+    100794: post18
+    100796: post19
+    100798: post2
+    100800: post2 1
+    100802: post2 10
+    100804: post2 11
+    100806: post2 12
+    100808: post2 13
+    100810: post2 14
+    100812: post2 15
+    100814: post2 16
+    100816: post2 17
+    100818: post2 18
+    100820: post2 19
+    100822: post2 2
+    100824: post2 20
+    100826: post2 21
+    100828: post2 22
+    100830: post2 23
+    100832: post2 24
+    100834: post2 25
+    100836: post2 3
+    100838: post2 4
+    100840: post2 5
+    100842: post2 6
+    100844: post2 7
+    100846: post2 8
+    100848: post2 9
+    100850: post20
+    100852: post21
+    100854: post22
+    100856: post23
+    100858: post24
+    100860: post25
+    100862: post26
+    100864: post27
+    100866: post28
+    100868: post29
+    100870: post3
+    100872: post3 1
+    100874: post3 10
+    100876: post3 11
+    100878: post3 12
+    100880: post3 13
+    100882: post3 14
+    100884: post3 15
+    100886: post3 16
+    100888: post3 17
+    100890: post3 18
+    100892: post3 19
+    100894: post3 2
+    100896: post3 20
+    100898: post3 21
+    100900: post3 22
+    100902: post3 23
+    100904: post3 24
+    100906: post3 25
+    100908: post3 3
+    100910: post3 4
+    100912: post3 5
+    100914: post3 6
+    100916: post3 7
+    100918: post3 8
+    100920: post3 9
+    100922: post30
+    100924: post31
+    100926: post32
+    100928: post33
+    100930: post34
+    100932: post35
+    100934: post36
+    100936: post37
+    100938: post38
+    100940: post39
+    100942: post4
+    100944: post4 1
+    100946: post4 10
+    100948: post4 11
+    100950: post4 12
+    100952: post4 13
+    100954: post4 14
+    100956: post4 15
+    100958: post4 16
+    100960: post4 17
+    100962: post4 18
+    100964: post4 19
+    100966: post4 2
+    100968: post4 20
+    100970: post4 21
+    100972: post4 22
+    100974: post4 23
+    100976: post4 24
+    100978: post4 3
+    100980: post4 4
+    100982: post4 5
+    100984: post4 6
+    100986: post4 7
+    100988: post4 8
+    100990: post4 9
+    100992: post40
+    100994: post5
+    100996: post5 1
+    100998: post5 10
+    101000: post5 11
+    101002: post5 12
+    101004: post5 13
+    101006: post5 14
+    101008: post5 15
+    101010: post5 16
+    101012: post5 17
+    101014: post5 18
+    101016: post5 19
+    101018: post5 2
+    101020: post5 20
+    101022: post5 21
+    101024: post5 22
+    101026: post5 23
+    101028: post5 24
+    101030: post5 3
+    101032: post5 4
+    101034: post5 5
+    101036: post5 6
+    101038: post5 7
+    101040: post5 8
+    101042: post5 9
+    101044: post6
+    101046: post6 1
+    101048: post6 10
+    101050: post6 11
+    101052: post6 12
+    101054: post6 13
+    101056: post6 14
+    101058: post6 15
+    101060: post6 16
+    101062: post6 17
+    101064: post6 18
+    101066: post6 19
+    101068: post6 2
+    101070: post6 20
+    101072: post6 21
+    101074: post6 22
+    101076: post6 23
+    101078: post6 24
+    101080: post6 25
+    101082: post6 3
+    101084: post6 4
+    101086: post6 5
+    101088: post6 6
+    101090: post6 7
+    101092: post6 8
+    101094: post6 9
+    101096: post7
+    101098: post7 1
+    101100: post7 10
+    101102: post7 11
+    101104: post7 12
+    101106: post7 13
+    101108: post7 14
+    101110: post7 15
+    101112: post7 16
+    101114: post7 17
+    101116: post7 18
+    101118: post7 19
+    101120: post7 2
+    101122: post7 20
+    101124: post7 21
+    101126: post7 22
+    101128: post7 23
+    101130: post7 24
+    101132: post7 25
+    101134: post7 3
+    101136: post7 4
+    101138: post7 5
+    101140: post7 6
+    101142: post7 7
+    101144: post7 8
+    101146: post7 9
+    101148: post8
+    101150: post8 1
+    101152: post8 10
+    101154: post8 11
+    101156: post8 12
+    101158: post8 13
+    101160: post8 14
+    101162: post8 15
+    101164: post8 16
+    101166: post8 17
+    101168: post8 18
+    101170: post8 19
+    101172: post8 2
+    101174: post8 20
+    101176: post8 21
+    101178: post8 22
+    101180: post8 23
+    101182: post8 24
+    101184: post8 25
+    101186: post8 3
+    101188: post8 4
+    101190: post8 5
+    101192: post8 6
+    101194: post8 7
+    101196: post8 8
+    101198: post8 9
+    101200: post9
+    101202: post9 1
+    101204: post9 10
+    101206: post9 11
+    101208: post9 12
+    101210: post9 13
+    101212: post9 14
+    101214: post9 15
+    101216: post9 16
+    101218: post9 17
+    101220: post9 18
+    101222: post9 19
+    101224: post9 2
+    101226: post9 20
+    101228: post9 21
+    101230: post9 22
+    101232: post9 23
+    101234: post9 24
+    101236: post9 3
+    101238: post9 4
+    101240: post9 5
+    101242: post9 6
+    101244: post9 7
+    101246: post9 8
+    101248: post9 9
+    101250: post_left
+    101252: post_left 1
+    101254: post_left 10
+    101256: post_left 11
+    101258: post_left 12
+    101260: post_left 13
+    101262: post_left 14
+    101264: post_left 15
+    101266: post_left 16
+    101268: post_left 17
+    101270: post_left 18
+    101272: post_left 19
+    101274: post_left 2
+    101276: post_left 20
+    101278: post_left 21
+    101280: post_left 22
+    101282: post_left 3
+    101284: post_left 4
+    101286: post_left 5
+    101288: post_left 6
+    101290: post_left 7
+    101292: post_left 8
+    101294: post_left 9
+    101296: post_right
+    101298: post_right 1
+    101300: post_right 10
+    101302: post_right 11
+    101304: post_right 12
+    101306: post_right 13
+    101308: post_right 14
+    101310: post_right 15
+    101312: post_right 16
+    101314: post_right 17
+    101316: post_right 18
+    101318: post_right 19
+    101320: post_right 2
+    101322: post_right 20
+    101324: post_right 21
+    101326: post_right 22
+    101328: post_right 3
+    101330: post_right 4
+    101332: post_right 5
+    101334: post_right 6
+    101336: post_right 7
+    101338: post_right 8
+    101340: post_right 9
+    101342: rail_left
+    101344: rail_left 1
+    101346: rail_left 10
+    101348: rail_left 11
+    101350: rail_left 12
+    101352: rail_left 13
+    101354: rail_left 14
+    101356: rail_left 15
+    101358: rail_left 16
+    101360: rail_left 17
+    101362: rail_left 18
+    101364: rail_left 19
+    101366: rail_left 2
+    101368: rail_left 20
+    101370: rail_left 21
+    101372: rail_left 22
+    101374: rail_left 3
+    101376: rail_left 4
+    101378: rail_left 5
+    101380: rail_left 6
+    101382: rail_left 7
+    101384: rail_left 8
+    101386: rail_left 9
+    101388: rail_right
+    101390: rail_right 1
+    101392: rail_right 10
+    101394: rail_right 11
+    101396: rail_right 12
+    101398: rail_right 13
+    101400: rail_right 14
+    101402: rail_right 15
+    101404: rail_right 16
+    101406: rail_right 17
+    101408: rail_right 18
+    101410: rail_right 19
+    101412: rail_right 2
+    101414: rail_right 20
+    101416: rail_right 21
+    101418: rail_right 22
+    101420: rail_right 3
+    101422: rail_right 4
+    101424: rail_right 5
+    101426: rail_right 6
+    101428: rail_right 7
+    101430: rail_right 8
+    101432: rail_right 9
+    101434: railing
+    101436: railing 1
+    101438: railing 2
+    101440: railing 3
+    101442: railing 4
+    101444: road
+    101446: road 1
+    101448: road 10
+    101450: road 11
+    101452: road 12
+    101454: road 13
+    101456: road 14
+    101458: road 15
+    101460: road 16
+    101462: road 17
+    101464: road 18
+    101466: road 19
+    101468: road 2
+    101470: road 20
+    101472: road 21
+    101474: road 22
+    101476: road 23
+    101478: road 24
+    101480: road 25
+    101482: road 3
+    101484: road 4
+    101486: road 5
+    101488: road 6
+    101490: road 7
+    101492: road 8
+    101494: road 9
+    101496: road_end
+    101498: road_start
+    101500: start_finish
+    101502: Starter
+    101504: switcher
+    101506: switcher 1
+    101508: switcher 2
+    101510: switcher1
+    101512: track
+    101514: track 1
+    101516: track 10
+    101518: track 11
+    101520: track 12
+    101522: track 13
+    101524: track 14
+    101526: track 15
+    101528: track 16
+    101530: track 17
+    101532: track 18
+    101534: track 19
+    101536: track 2
+    101538: track 20
+    101540: track 21
+    101542: track 22
+    101544: track 3
+    101546: track 4
+    101548: track 5
+    101550: track 6
+    101552: track 7
+    101554: track 8
+    101556: track 9
+    101558: zigzaglight
+    101560: zigzaglight 1
+    101562: zigzaglight 10
+    101564: zigzaglight 11
+    101566: zigzaglight 12
+    101568: zigzaglight 13
+    101570: zigzaglight 14
+    101572: zigzaglight 15
+    101574: zigzaglight 16
+    101576: zigzaglight 17
+    101578: zigzaglight 18
+    101580: zigzaglight 19
+    101582: zigzaglight 2
+    101584: zigzaglight 20
+    101586: zigzaglight 21
+    101588: zigzaglight 22
+    101590: zigzaglight 23
+    101592: zigzaglight 24
+    101594: zigzaglight 25
+    101596: zigzaglight 26
+    101598: zigzaglight 27
+    101600: zigzaglight 28
+    101602: zigzaglight 29
+    101604: zigzaglight 3
+    101606: zigzaglight 30
+    101608: zigzaglight 31
+    101610: zigzaglight 32
+    101612: zigzaglight 33
+    101614: zigzaglight 34
+    101616: zigzaglight 35
+    101618: zigzaglight 36
+    101620: zigzaglight 37
+    101622: zigzaglight 38
+    101624: zigzaglight 39
+    101626: zigzaglight 4
+    101628: zigzaglight 40
+    101630: zigzaglight 41
+    101632: zigzaglight 42
+    101634: zigzaglight 43
+    101636: zigzaglight 44
+    101638: zigzaglight 45
+    101640: zigzaglight 46
+    101642: zigzaglight 47
+    101644: zigzaglight 48
+    101646: zigzaglight 49
+    101648: zigzaglight 5
+    101650: zigzaglight 50
+    101652: zigzaglight 51
+    101654: zigzaglight 52
+    101656: zigzaglight 53
+    101658: zigzaglight 54
+    101660: zigzaglight 55
+    101662: zigzaglight 56
+    101664: zigzaglight 57
+    101666: zigzaglight 58
+    101668: zigzaglight 59
+    101670: zigzaglight 6
+    101672: zigzaglight 60
+    101674: zigzaglight 61
+    101676: zigzaglight 62
+    101678: zigzaglight 63
+    101680: zigzaglight 64
+    101682: zigzaglight 65
+    101684: zigzaglight 66
+    101686: zigzaglight 67
+    101688: zigzaglight 68
+    101690: zigzaglight 7
+    101692: zigzaglight 8
+    101694: zigzaglight 9
+    101696: zigzaglight2
+    101698: zigzaglight2 1
+    101700: zigzaglight2 10
+    101702: zigzaglight2 11
+    101704: zigzaglight2 12
+    101706: zigzaglight2 13
+    101708: zigzaglight2 14
+    101710: zigzaglight2 15
+    101712: zigzaglight2 16
+    101714: zigzaglight2 17
+    101716: zigzaglight2 18
+    101718: zigzaglight2 19
+    101720: zigzaglight2 2
+    101722: zigzaglight2 20
+    101724: zigzaglight2 21
+    101726: zigzaglight2 22
+    101728: zigzaglight2 3
+    101730: zigzaglight2 4
+    101732: zigzaglight2 5
+    101734: zigzaglight2 6
+    101736: zigzaglight2 7
+    101738: zigzaglight2 8
+    101740: zigzaglight2 9
+    400000: arrowlight
+    400002: arrowlight 1
+    400004: arrowlight 10
+    400006: arrowlight 11
+    400008: arrowlight 12
+    400010: arrowlight 13
+    400012: arrowlight 14
+    400014: arrowlight 15
+    400016: arrowlight 16
+    400018: arrowlight 17
+    400020: arrowlight 18
+    400022: arrowlight 19
+    400024: arrowlight 2
+    400026: arrowlight 20
+    400028: arrowlight 21
+    400030: arrowlight 22
+    400032: arrowlight 3
+    400034: arrowlight 4
+    400036: arrowlight 5
+    400038: arrowlight 6
+    400040: arrowlight 7
+    400042: arrowlight 8
+    400044: arrowlight 9
+    400046: arrowlightreverse
+    400048: arrowlightreverse 1
+    400050: arrowlightreverse 10
+    400052: arrowlightreverse 11
+    400054: arrowlightreverse 12
+    400056: arrowlightreverse 13
+    400058: arrowlightreverse 14
+    400060: arrowlightreverse 15
+    400062: arrowlightreverse 16
+    400064: arrowlightreverse 17
+    400066: arrowlightreverse 18
+    400068: arrowlightreverse 19
+    400070: arrowlightreverse 2
+    400072: arrowlightreverse 20
+    400074: arrowlightreverse 21
+    400076: arrowlightreverse 22
+    400078: arrowlightreverse 3
+    400080: arrowlightreverse 4
+    400082: arrowlightreverse 5
+    400084: arrowlightreverse 6
+    400086: arrowlightreverse 7
+    400088: arrowlightreverse 8
+    400090: arrowlightreverse 9
+    400092: Banner
+    400094: banner
+    400096: barrier
+    400098: barrier 1
+    400100: barrier 2
+    400102: barrier 3
+    400104: barrier 4
+    400106: barrier_left
+    400108: barrier_left 1
+    400110: barrier_left 10
+    400112: barrier_left 11
+    400114: barrier_left 12
+    400116: barrier_left 13
+    400118: barrier_left 14
+    400120: barrier_left 15
+    400122: barrier_left 16
+    400124: barrier_left 17
+    400126: barrier_left 18
+    400128: barrier_left 19
+    400130: barrier_left 2
+    400132: barrier_left 20
+    400134: barrier_left 21
+    400136: barrier_left 22
+    400138: barrier_left 3
+    400140: barrier_left 4
+    400142: barrier_left 5
+    400144: barrier_left 6
+    400146: barrier_left 7
+    400148: barrier_left 8
+    400150: barrier_left 9
+    400152: barrier_right
+    400154: barrier_right 1
+    400156: barrier_right 10
+    400158: barrier_right 11
+    400160: barrier_right 12
+    400162: barrier_right 13
+    400164: barrier_right 14
+    400166: barrier_right 15
+    400168: barrier_right 16
+    400170: barrier_right 17
+    400172: barrier_right 18
+    400174: barrier_right 19
+    400176: barrier_right 2
+    400178: barrier_right 20
+    400180: barrier_right 21
+    400182: barrier_right 22
+    400184: barrier_right 3
+    400186: barrier_right 4
+    400188: barrier_right 5
+    400190: barrier_right 6
+    400192: barrier_right 7
+    400194: barrier_right 8
+    400196: barrier_right 9
+    400198: dashlight
+    400200: dashlight 1
+    400202: dashlight 10
+    400204: dashlight 11
+    400206: dashlight 12
+    400208: dashlight 13
+    400210: dashlight 14
+    400212: dashlight 15
+    400214: dashlight 16
+    400216: dashlight 17
+    400218: dashlight 18
+    400220: dashlight 19
+    400222: dashlight 2
+    400224: dashlight 20
+    400226: dashlight 21
+    400228: dashlight 22
+    400230: dashlight 23
+    400232: dashlight 24
+    400234: dashlight 25
+    400236: dashlight 26
+    400238: dashlight 27
+    400240: dashlight 28
+    400242: dashlight 29
+    400244: dashlight 3
+    400246: dashlight 30
+    400248: dashlight 31
+    400250: dashlight 32
+    400252: dashlight 33
+    400254: dashlight 34
+    400256: dashlight 35
+    400258: dashlight 36
+    400260: dashlight 37
+    400262: dashlight 38
+    400264: dashlight 39
+    400266: dashlight 4
+    400268: dashlight 40
+    400270: dashlight 41
+    400272: dashlight 42
+    400274: dashlight 43
+    400276: dashlight 44
+    400278: dashlight 45
+    400280: dashlight 5
+    400282: dashlight 6
+    400284: dashlight 7
+    400286: dashlight 8
+    400288: dashlight 9
+    400290: diamondslight
+    400292: diamondslight 1
+    400294: diamondslight 10
+    400296: diamondslight 11
+    400298: diamondslight 12
+    400300: diamondslight 13
+    400302: diamondslight 14
+    400304: diamondslight 15
+    400306: diamondslight 16
+    400308: diamondslight 17
+    400310: diamondslight 18
+    400312: diamondslight 19
+    400314: diamondslight 2
+    400316: diamondslight 20
+    400318: diamondslight 21
+    400320: diamondslight 22
+    400322: diamondslight 23
+    400324: diamondslight 24
+    400326: diamondslight 25
+    400328: diamondslight 26
+    400330: diamondslight 27
+    400332: diamondslight 28
+    400334: diamondslight 29
+    400336: diamondslight 3
+    400338: diamondslight 30
+    400340: diamondslight 31
+    400342: diamondslight 32
+    400344: diamondslight 33
+    400346: diamondslight 34
+    400348: diamondslight 35
+    400350: diamondslight 36
+    400352: diamondslight 37
+    400354: diamondslight 38
+    400356: diamondslight 39
+    400358: diamondslight 4
+    400360: diamondslight 40
+    400362: diamondslight 41
+    400364: diamondslight 42
+    400366: diamondslight 43
+    400368: diamondslight 44
+    400370: diamondslight 45
+    400372: diamondslight 5
+    400374: diamondslight 6
+    400376: diamondslight 7
+    400378: diamondslight 8
+    400380: diamondslight 9
+    400382: End
+    400384: group1
+    400386: group11
+    400388: group11 1
+    400390: group11 2
+    400392: group17
+    400394: group18
+    400396: group19
+    400398: group2
+    400400: group20
+    400402: group21
+    400404: group22
+    400406: group3_road10
+    400408: group3_road10 1
+    400410: group3_road10 10
+    400412: group3_road10 11
+    400414: group3_road10 12
+    400416: group3_road10 13
+    400418: group3_road10 14
+    400420: group3_road10 15
+    400422: group3_road10 16
+    400424: group3_road10 17
+    400426: group3_road10 18
+    400428: group3_road10 19
+    400430: group3_road10 2
+    400432: group3_road10 20
+    400434: group3_road10 21
+    400436: group3_road10 22
+    400438: group3_road10 23
+    400440: group3_road10 24
+    400442: group3_road10 25
+    400444: group3_road10 26
+    400446: group3_road10 27
+    400448: group3_road10 28
+    400450: group3_road10 29
+    400452: group3_road10 3
+    400454: group3_road10 30
+    400456: group3_road10 31
+    400458: group3_road10 32
+    400460: group3_road10 33
+    400462: group3_road10 34
+    400464: group3_road10 35
+    400466: group3_road10 36
+    400468: group3_road10 37
+    400470: group3_road10 38
+    400472: group3_road10 39
+    400474: group3_road10 4
+    400476: group3_road10 40
+    400478: group3_road10 41
+    400480: group3_road10 42
+    400482: group3_road10 43
+    400484: group3_road10 44
+    400486: group3_road10 45
+    400488: group3_road10 5
+    400490: group3_road10 6
+    400492: group3_road10 7
+    400494: group3_road10 8
+    400496: group3_road10 9
+    400498: group4
+    400500: group4 1
+    400502: group4 2
+    400504: group4 3
+    400506: group5
+    400508: group5 1
+    400510: group5 2
+    400512: group6
+    400514: group6 1
+    400516: group6 2
+    400518: group7
+    400520: group7 1
+    400522: group7 2
+    400524: group8
+    400526: group8 1
+    400528: group8 2
+    400530: group8 3
+    400532: group9
+    400534: group9 1
+    400536: group9 2
+    400538: group9 3
+    400540: //RootNode
+    400542: linelight
+    400544: linelight 1
+    400546: linelight 10
+    400548: linelight 11
+    400550: linelight 12
+    400552: linelight 13
+    400554: linelight 14
+    400556: linelight 15
+    400558: linelight 16
+    400560: linelight 17
+    400562: linelight 18
+    400564: linelight 19
+    400566: linelight 2
+    400568: linelight 20
+    400570: linelight 21
+    400572: linelight 22
+    400574: linelight 23
+    400576: linelight 24
+    400578: linelight 25
+    400580: linelight 26
+    400582: linelight 27
+    400584: linelight 28
+    400586: linelight 29
+    400588: linelight 3
+    400590: linelight 30
+    400592: linelight 31
+    400594: linelight 32
+    400596: linelight 33
+    400598: linelight 34
+    400600: linelight 35
+    400602: linelight 36
+    400604: linelight 37
+    400606: linelight 38
+    400608: linelight 39
+    400610: linelight 4
+    400612: linelight 40
+    400614: linelight 41
+    400616: linelight 42
+    400618: linelight 43
+    400620: linelight 44
+    400622: linelight 45
+    400624: linelight 5
+    400626: linelight 6
+    400628: linelight 7
+    400630: linelight 8
+    400632: linelight 9
+    400634: Mid
+    400636: Poles
+    400638: post
+    400640: post 1
+    400642: post 10
+    400644: post 11
+    400646: post 12
+    400648: post 13
+    400650: post 14
+    400652: post 15
+    400654: post 16
+    400656: post 17
+    400658: post 18
+    400660: post 19
+    400662: post 2
+    400664: post 20
+    400666: post 21
+    400668: post 22
+    400670: post 23
+    400672: post 24
+    400674: post 25
+    400676: post 26
+    400678: post 27
+    400680: post 28
+    400682: post 29
+    400684: post 3
+    400686: post 30
+    400688: post 31
+    400690: post 4
+    400692: post 5
+    400694: post 6
+    400696: post 7
+    400698: post 8
+    400700: post 9
+    400702: post1
+    400704: post1 1
+    400706: post1 10
+    400708: post1 11
+    400710: post1 12
+    400712: post1 13
+    400714: post1 14
+    400716: post1 15
+    400718: post1 16
+    400720: post1 17
+    400722: post1 18
+    400724: post1 19
+    400726: post1 2
+    400728: post1 20
+    400730: post1 21
+    400732: post1 22
+    400734: post1 23
+    400736: post1 24
+    400738: post1 25
+    400740: post1 3
+    400742: post1 4
+    400744: post1 5
+    400746: post1 6
+    400748: post1 7
+    400750: post1 8
+    400752: post1 9
+    400754: post10
+    400756: post10 1
+    400758: post10 2
+    400760: post11
+    400762: post11 1
+    400764: post11 2
+    400766: post12
+    400768: post12 1
+    400770: post12 2
+    400772: post13
+    400774: post13 1
+    400776: post13 2
+    400778: post14
+    400780: post14 1
+    400782: post14 2
+    400784: post15
+    400786: post15 1
+    400788: post15 2
+    400790: post16
+    400792: post17
+    400794: post18
+    400796: post19
+    400798: post2
+    400800: post2 1
+    400802: post2 10
+    400804: post2 11
+    400806: post2 12
+    400808: post2 13
+    400810: post2 14
+    400812: post2 15
+    400814: post2 16
+    400816: post2 17
+    400818: post2 18
+    400820: post2 19
+    400822: post2 2
+    400824: post2 20
+    400826: post2 21
+    400828: post2 22
+    400830: post2 23
+    400832: post2 24
+    400834: post2 25
+    400836: post2 3
+    400838: post2 4
+    400840: post2 5
+    400842: post2 6
+    400844: post2 7
+    400846: post2 8
+    400848: post2 9
+    400850: post20
+    400852: post21
+    400854: post22
+    400856: post23
+    400858: post24
+    400860: post25
+    400862: post26
+    400864: post27
+    400866: post28
+    400868: post29
+    400870: post3
+    400872: post3 1
+    400874: post3 10
+    400876: post3 11
+    400878: post3 12
+    400880: post3 13
+    400882: post3 14
+    400884: post3 15
+    400886: post3 16
+    400888: post3 17
+    400890: post3 18
+    400892: post3 19
+    400894: post3 2
+    400896: post3 20
+    400898: post3 21
+    400900: post3 22
+    400902: post3 23
+    400904: post3 24
+    400906: post3 25
+    400908: post3 3
+    400910: post3 4
+    400912: post3 5
+    400914: post3 6
+    400916: post3 7
+    400918: post3 8
+    400920: post3 9
+    400922: post30
+    400924: post31
+    400926: post32
+    400928: post33
+    400930: post34
+    400932: post35
+    400934: post36
+    400936: post37
+    400938: post38
+    400940: post39
+    400942: post4
+    400944: post4 1
+    400946: post4 10
+    400948: post4 11
+    400950: post4 12
+    400952: post4 13
+    400954: post4 14
+    400956: post4 15
+    400958: post4 16
+    400960: post4 17
+    400962: post4 18
+    400964: post4 19
+    400966: post4 2
+    400968: post4 20
+    400970: post4 21
+    400972: post4 22
+    400974: post4 23
+    400976: post4 24
+    400978: post4 3
+    400980: post4 4
+    400982: post4 5
+    400984: post4 6
+    400986: post4 7
+    400988: post4 8
+    400990: post4 9
+    400992: post40
+    400994: post5
+    400996: post5 1
+    400998: post5 10
+    401000: post5 11
+    401002: post5 12
+    401004: post5 13
+    401006: post5 14
+    401008: post5 15
+    401010: post5 16
+    401012: post5 17
+    401014: post5 18
+    401016: post5 19
+    401018: post5 2
+    401020: post5 20
+    401022: post5 21
+    401024: post5 22
+    401026: post5 23
+    401028: post5 24
+    401030: post5 3
+    401032: post5 4
+    401034: post5 5
+    401036: post5 6
+    401038: post5 7
+    401040: post5 8
+    401042: post5 9
+    401044: post6
+    401046: post6 1
+    401048: post6 10
+    401050: post6 11
+    401052: post6 12
+    401054: post6 13
+    401056: post6 14
+    401058: post6 15
+    401060: post6 16
+    401062: post6 17
+    401064: post6 18
+    401066: post6 19
+    401068: post6 2
+    401070: post6 20
+    401072: post6 21
+    401074: post6 22
+    401076: post6 23
+    401078: post6 24
+    401080: post6 25
+    401082: post6 3
+    401084: post6 4
+    401086: post6 5
+    401088: post6 6
+    401090: post6 7
+    401092: post6 8
+    401094: post6 9
+    401096: post7
+    401098: post7 1
+    401100: post7 10
+    401102: post7 11
+    401104: post7 12
+    401106: post7 13
+    401108: post7 14
+    401110: post7 15
+    401112: post7 16
+    401114: post7 17
+    401116: post7 18
+    401118: post7 19
+    401120: post7 2
+    401122: post7 20
+    401124: post7 21
+    401126: post7 22
+    401128: post7 23
+    401130: post7 24
+    401132: post7 25
+    401134: post7 3
+    401136: post7 4
+    401138: post7 5
+    401140: post7 6
+    401142: post7 7
+    401144: post7 8
+    401146: post7 9
+    401148: post8
+    401150: post8 1
+    401152: post8 10
+    401154: post8 11
+    401156: post8 12
+    401158: post8 13
+    401160: post8 14
+    401162: post8 15
+    401164: post8 16
+    401166: post8 17
+    401168: post8 18
+    401170: post8 19
+    401172: post8 2
+    401174: post8 20
+    401176: post8 21
+    401178: post8 22
+    401180: post8 23
+    401182: post8 24
+    401184: post8 25
+    401186: post8 3
+    401188: post8 4
+    401190: post8 5
+    401192: post8 6
+    401194: post8 7
+    401196: post8 8
+    401198: post8 9
+    401200: post9
+    401202: post9 1
+    401204: post9 10
+    401206: post9 11
+    401208: post9 12
+    401210: post9 13
+    401212: post9 14
+    401214: post9 15
+    401216: post9 16
+    401218: post9 17
+    401220: post9 18
+    401222: post9 19
+    401224: post9 2
+    401226: post9 20
+    401228: post9 21
+    401230: post9 22
+    401232: post9 23
+    401234: post9 24
+    401236: post9 3
+    401238: post9 4
+    401240: post9 5
+    401242: post9 6
+    401244: post9 7
+    401246: post9 8
+    401248: post9 9
+    401250: post_left
+    401252: post_left 1
+    401254: post_left 10
+    401256: post_left 11
+    401258: post_left 12
+    401260: post_left 13
+    401262: post_left 14
+    401264: post_left 15
+    401266: post_left 16
+    401268: post_left 17
+    401270: post_left 18
+    401272: post_left 19
+    401274: post_left 2
+    401276: post_left 20
+    401278: post_left 21
+    401280: post_left 22
+    401282: post_left 3
+    401284: post_left 4
+    401286: post_left 5
+    401288: post_left 6
+    401290: post_left 7
+    401292: post_left 8
+    401294: post_left 9
+    401296: post_right
+    401298: post_right 1
+    401300: post_right 10
+    401302: post_right 11
+    401304: post_right 12
+    401306: post_right 13
+    401308: post_right 14
+    401310: post_right 15
+    401312: post_right 16
+    401314: post_right 17
+    401316: post_right 18
+    401318: post_right 19
+    401320: post_right 2
+    401322: post_right 20
+    401324: post_right 21
+    401326: post_right 22
+    401328: post_right 3
+    401330: post_right 4
+    401332: post_right 5
+    401334: post_right 6
+    401336: post_right 7
+    401338: post_right 8
+    401340: post_right 9
+    401342: rail_left
+    401344: rail_left 1
+    401346: rail_left 10
+    401348: rail_left 11
+    401350: rail_left 12
+    401352: rail_left 13
+    401354: rail_left 14
+    401356: rail_left 15
+    401358: rail_left 16
+    401360: rail_left 17
+    401362: rail_left 18
+    401364: rail_left 19
+    401366: rail_left 2
+    401368: rail_left 20
+    401370: rail_left 21
+    401372: rail_left 22
+    401374: rail_left 3
+    401376: rail_left 4
+    401378: rail_left 5
+    401380: rail_left 6
+    401382: rail_left 7
+    401384: rail_left 8
+    401386: rail_left 9
+    401388: rail_right
+    401390: rail_right 1
+    401392: rail_right 10
+    401394: rail_right 11
+    401396: rail_right 12
+    401398: rail_right 13
+    401400: rail_right 14
+    401402: rail_right 15
+    401404: rail_right 16
+    401406: rail_right 17
+    401408: rail_right 18
+    401410: rail_right 19
+    401412: rail_right 2
+    401414: rail_right 20
+    401416: rail_right 21
+    401418: rail_right 22
+    401420: rail_right 3
+    401422: rail_right 4
+    401424: rail_right 5
+    401426: rail_right 6
+    401428: rail_right 7
+    401430: rail_right 8
+    401432: rail_right 9
+    401434: railing
+    401436: railing 1
+    401438: railing 2
+    401440: railing 3
+    401442: railing 4
+    401444: road
+    401446: road 1
+    401448: road 10
+    401450: road 11
+    401452: road 12
+    401454: road 13
+    401456: road 14
+    401458: road 15
+    401460: road 16
+    401462: road 17
+    401464: road 18
+    401466: road 19
+    401468: road 2
+    401470: road 20
+    401472: road 21
+    401474: road 22
+    401476: road 23
+    401478: road 24
+    401480: road 25
+    401482: road 3
+    401484: road 4
+    401486: road 5
+    401488: road 6
+    401490: road 7
+    401492: road 8
+    401494: road 9
+    401496: road_end
+    401498: road_start
+    401500: start_finish
+    401502: Starter
+    401504: switcher
+    401506: switcher 1
+    401508: switcher 2
+    401510: switcher1
+    401512: track
+    401514: track 1
+    401516: track 10
+    401518: track 11
+    401520: track 12
+    401522: track 13
+    401524: track 14
+    401526: track 15
+    401528: track 16
+    401530: track 17
+    401532: track 18
+    401534: track 19
+    401536: track 2
+    401538: track 20
+    401540: track 21
+    401542: track 22
+    401544: track 3
+    401546: track 4
+    401548: track 5
+    401550: track 6
+    401552: track 7
+    401554: track 8
+    401556: track 9
+    401558: zigzaglight
+    401560: zigzaglight 1
+    401562: zigzaglight 10
+    401564: zigzaglight 11
+    401566: zigzaglight 12
+    401568: zigzaglight 13
+    401570: zigzaglight 14
+    401572: zigzaglight 15
+    401574: zigzaglight 16
+    401576: zigzaglight 17
+    401578: zigzaglight 18
+    401580: zigzaglight 19
+    401582: zigzaglight 2
+    401584: zigzaglight 20
+    401586: zigzaglight 21
+    401588: zigzaglight 22
+    401590: zigzaglight 23
+    401592: zigzaglight 24
+    401594: zigzaglight 25
+    401596: zigzaglight 26
+    401598: zigzaglight 27
+    401600: zigzaglight 28
+    401602: zigzaglight 29
+    401604: zigzaglight 3
+    401606: zigzaglight 30
+    401608: zigzaglight 31
+    401610: zigzaglight 32
+    401612: zigzaglight 33
+    401614: zigzaglight 34
+    401616: zigzaglight 35
+    401618: zigzaglight 36
+    401620: zigzaglight 37
+    401622: zigzaglight 38
+    401624: zigzaglight 39
+    401626: zigzaglight 4
+    401628: zigzaglight 40
+    401630: zigzaglight 41
+    401632: zigzaglight 42
+    401634: zigzaglight 43
+    401636: zigzaglight 44
+    401638: zigzaglight 45
+    401640: zigzaglight 46
+    401642: zigzaglight 47
+    401644: zigzaglight 48
+    401646: zigzaglight 49
+    401648: zigzaglight 5
+    401650: zigzaglight 50
+    401652: zigzaglight 51
+    401654: zigzaglight 52
+    401656: zigzaglight 53
+    401658: zigzaglight 54
+    401660: zigzaglight 55
+    401662: zigzaglight 56
+    401664: zigzaglight 57
+    401666: zigzaglight 58
+    401668: zigzaglight 59
+    401670: zigzaglight 6
+    401672: zigzaglight 60
+    401674: zigzaglight 61
+    401676: zigzaglight 62
+    401678: zigzaglight 63
+    401680: zigzaglight 64
+    401682: zigzaglight 65
+    401684: zigzaglight 66
+    401686: zigzaglight 67
+    401688: zigzaglight 68
+    401690: zigzaglight 7
+    401692: zigzaglight 8
+    401694: zigzaglight 9
+    401696: zigzaglight2
+    401698: zigzaglight2 1
+    401700: zigzaglight2 10
+    401702: zigzaglight2 11
+    401704: zigzaglight2 12
+    401706: zigzaglight2 13
+    401708: zigzaglight2 14
+    401710: zigzaglight2 15
+    401712: zigzaglight2 16
+    401714: zigzaglight2 17
+    401716: zigzaglight2 18
+    401718: zigzaglight2 19
+    401720: zigzaglight2 2
+    401722: zigzaglight2 20
+    401724: zigzaglight2 21
+    401726: zigzaglight2 22
+    401728: zigzaglight2 3
+    401730: zigzaglight2 4
+    401732: zigzaglight2 5
+    401734: zigzaglight2 6
+    401736: zigzaglight2 7
+    401738: zigzaglight2 8
+    401740: zigzaglight2 9
+    2300000: Banner
+    2300002: barrier
+    2300004: barrier 1
+    2300006: barrier 2
+    2300008: barrier 3
+    2300010: barrier 4
+    2300012: barrier_left
+    2300014: barrier_left 1
+    2300016: barrier_left 10
+    2300018: barrier_left 11
+    2300020: barrier_left 12
+    2300022: barrier_left 13
+    2300024: barrier_left 14
+    2300026: barrier_left 15
+    2300028: barrier_left 16
+    2300030: barrier_left 17
+    2300032: barrier_left 18
+    2300034: barrier_left 19
+    2300036: barrier_left 2
+    2300038: barrier_left 20
+    2300040: barrier_left 21
+    2300042: barrier_left 22
+    2300044: barrier_left 3
+    2300046: barrier_left 4
+    2300048: barrier_left 5
+    2300050: barrier_left 6
+    2300052: barrier_left 7
+    2300054: barrier_left 8
+    2300056: barrier_left 9
+    2300058: barrier_right
+    2300060: barrier_right 1
+    2300062: barrier_right 10
+    2300064: barrier_right 11
+    2300066: barrier_right 12
+    2300068: barrier_right 13
+    2300070: barrier_right 14
+    2300072: barrier_right 15
+    2300074: barrier_right 16
+    2300076: barrier_right 17
+    2300078: barrier_right 18
+    2300080: barrier_right 19
+    2300082: barrier_right 2
+    2300084: barrier_right 20
+    2300086: barrier_right 21
+    2300088: barrier_right 22
+    2300090: barrier_right 3
+    2300092: barrier_right 4
+    2300094: barrier_right 5
+    2300096: barrier_right 6
+    2300098: barrier_right 7
+    2300100: barrier_right 8
+    2300102: barrier_right 9
+    2300104: dashlight 10
+    2300106: dashlight 11
+    2300108: dashlight 12
+    2300110: dashlight 13
+    2300112: dashlight 14
+    2300114: dashlight 15
+    2300116: dashlight 16
+    2300118: dashlight 17
+    2300120: dashlight 18
+    2300122: dashlight 32
+    2300124: dashlight 33
+    2300126: dashlight 34
+    2300128: dashlight 35
+    2300130: dashlight 36
+    2300132: dashlight 37
+    2300134: dashlight 38
+    2300136: dashlight 39
+    2300138: dashlight 40
+    2300140: dashlight 41
+    2300142: dashlight 42
+    2300144: dashlight 43
+    2300146: dashlight 44
+    2300148: dashlight 45
+    2300150: diamondslight 10
+    2300152: diamondslight 11
+    2300154: diamondslight 12
+    2300156: diamondslight 13
+    2300158: diamondslight 14
+    2300160: diamondslight 15
+    2300162: diamondslight 16
+    2300164: diamondslight 17
+    2300166: diamondslight 18
+    2300168: diamondslight 32
+    2300170: diamondslight 33
+    2300172: diamondslight 34
+    2300174: diamondslight 35
+    2300176: diamondslight 36
+    2300178: diamondslight 37
+    2300180: diamondslight 38
+    2300182: diamondslight 39
+    2300184: diamondslight 40
+    2300186: diamondslight 41
+    2300188: diamondslight 42
+    2300190: diamondslight 43
+    2300192: diamondslight 44
+    2300194: diamondslight 45
+    2300196: group3_road10
+    2300198: group3_road10 1
+    2300200: group3_road10 10
+    2300202: group3_road10 11
+    2300204: group3_road10 12
+    2300206: group3_road10 13
+    2300208: group3_road10 14
+    2300210: group3_road10 15
+    2300212: group3_road10 16
+    2300214: group3_road10 17
+    2300216: group3_road10 18
+    2300218: group3_road10 19
+    2300220: group3_road10 2
+    2300222: group3_road10 20
+    2300224: group3_road10 21
+    2300226: group3_road10 22
+    2300228: group3_road10 23
+    2300230: group3_road10 24
+    2300232: group3_road10 25
+    2300234: group3_road10 26
+    2300236: group3_road10 27
+    2300238: group3_road10 28
+    2300240: group3_road10 29
+    2300242: group3_road10 3
+    2300244: group3_road10 30
+    2300246: group3_road10 31
+    2300248: group3_road10 32
+    2300250: group3_road10 33
+    2300252: group3_road10 34
+    2300254: group3_road10 35
+    2300256: group3_road10 36
+    2300258: group3_road10 37
+    2300260: group3_road10 38
+    2300262: group3_road10 39
+    2300264: group3_road10 4
+    2300266: group3_road10 40
+    2300268: group3_road10 41
+    2300270: group3_road10 42
+    2300272: group3_road10 43
+    2300274: group3_road10 44
+    2300276: group3_road10 45
+    2300278: group3_road10 5
+    2300280: group3_road10 6
+    2300282: group3_road10 7
+    2300284: group3_road10 8
+    2300286: group3_road10 9
+    2300288: linelight 10
+    2300290: linelight 11
+    2300292: linelight 12
+    2300294: linelight 13
+    2300296: linelight 14
+    2300298: linelight 15
+    2300300: linelight 16
+    2300302: linelight 17
+    2300304: linelight 18
+    2300306: linelight 32
+    2300308: linelight 33
+    2300310: linelight 34
+    2300312: linelight 35
+    2300314: linelight 36
+    2300316: linelight 37
+    2300318: linelight 38
+    2300320: linelight 39
+    2300322: linelight 40
+    2300324: linelight 41
+    2300326: linelight 42
+    2300328: linelight 43
+    2300330: linelight 44
+    2300332: linelight 45
+    2300334: Poles
+    2300336: post
+    2300338: post 1
+    2300340: post 13
+    2300342: post 14
+    2300344: post 15
+    2300346: post 16
+    2300348: post 17
+    2300350: post 18
+    2300352: post 19
+    2300354: post 2
+    2300356: post 20
+    2300358: post 21
+    2300360: post 22
+    2300362: post 23
+    2300364: post 24
+    2300366: post 26
+    2300368: post 27
+    2300370: post 28
+    2300372: post 29
+    2300374: post 3
+    2300376: post 30
+    2300378: post 31
+    2300380: post 4
+    2300382: post 5
+    2300384: post 6
+    2300386: post 7
+    2300388: post 8
+    2300390: post1
+    2300392: post1 1
+    2300394: post1 10
+    2300396: post1 11
+    2300398: post1 12
+    2300400: post1 13
+    2300402: post1 14
+    2300404: post1 15
+    2300406: post1 16
+    2300408: post1 17
+    2300410: post1 18
+    2300412: post1 19
+    2300414: post1 2
+    2300416: post1 20
+    2300418: post1 21
+    2300420: post1 22
+    2300422: post1 23
+    2300424: post1 24
+    2300426: post1 25
+    2300428: post1 3
+    2300430: post1 4
+    2300432: post1 5
+    2300434: post1 6
+    2300436: post1 7
+    2300438: post1 8
+    2300440: post1 9
+    2300442: post10
+    2300444: post10 1
+    2300446: post10 2
+    2300448: post11
+    2300450: post11 1
+    2300452: post11 2
+    2300454: post12
+    2300456: post12 1
+    2300458: post12 2
+    2300460: post13
+    2300462: post13 1
+    2300464: post13 2
+    2300466: post14
+    2300468: post14 1
+    2300470: post14 2
+    2300472: post15
+    2300474: post15 1
+    2300476: post15 2
+    2300478: post16
+    2300480: post17
+    2300482: post18
+    2300484: post19
+    2300486: post2
+    2300488: post2 1
+    2300490: post2 10
+    2300492: post2 11
+    2300494: post2 12
+    2300496: post2 13
+    2300498: post2 14
+    2300500: post2 15
+    2300502: post2 16
+    2300504: post2 17
+    2300506: post2 18
+    2300508: post2 19
+    2300510: post2 2
+    2300512: post2 20
+    2300514: post2 21
+    2300516: post2 22
+    2300518: post2 23
+    2300520: post2 24
+    2300522: post2 25
+    2300524: post2 3
+    2300526: post2 4
+    2300528: post2 5
+    2300530: post2 6
+    2300532: post2 7
+    2300534: post2 8
+    2300536: post2 9
+    2300538: post20
+    2300540: post21
+    2300542: post22
+    2300544: post23
+    2300546: post24
+    2300548: post25
+    2300550: post26
+    2300552: post27
+    2300554: post28
+    2300556: post29
+    2300558: post3
+    2300560: post3 1
+    2300562: post3 10
+    2300564: post3 11
+    2300566: post3 12
+    2300568: post3 13
+    2300570: post3 14
+    2300572: post3 15
+    2300574: post3 16
+    2300576: post3 17
+    2300578: post3 18
+    2300580: post3 19
+    2300582: post3 2
+    2300584: post3 20
+    2300586: post3 21
+    2300588: post3 22
+    2300590: post3 23
+    2300592: post3 24
+    2300594: post3 25
+    2300596: post3 3
+    2300598: post3 4
+    2300600: post3 5
+    2300602: post3 6
+    2300604: post3 7
+    2300606: post3 8
+    2300608: post3 9
+    2300610: post30
+    2300612: post31
+    2300614: post32
+    2300616: post33
+    2300618: post34
+    2300620: post35
+    2300622: post36
+    2300624: post37
+    2300626: post38
+    2300628: post39
+    2300630: post4
+    2300632: post4 1
+    2300634: post4 10
+    2300636: post4 11
+    2300638: post4 12
+    2300640: post4 13
+    2300642: post4 14
+    2300644: post4 15
+    2300646: post4 16
+    2300648: post4 17
+    2300650: post4 18
+    2300652: post4 19
+    2300654: post4 2
+    2300656: post4 20
+    2300658: post4 21
+    2300660: post4 22
+    2300662: post4 23
+    2300664: post4 24
+    2300666: post4 3
+    2300668: post4 4
+    2300670: post4 5
+    2300672: post4 6
+    2300674: post4 7
+    2300676: post4 8
+    2300678: post4 9
+    2300680: post40
+    2300682: post5
+    2300684: post5 1
+    2300686: post5 10
+    2300688: post5 11
+    2300690: post5 12
+    2300692: post5 13
+    2300694: post5 14
+    2300696: post5 15
+    2300698: post5 16
+    2300700: post5 17
+    2300702: post5 18
+    2300704: post5 19
+    2300706: post5 2
+    2300708: post5 20
+    2300710: post5 21
+    2300712: post5 22
+    2300714: post5 23
+    2300716: post5 24
+    2300718: post5 3
+    2300720: post5 4
+    2300722: post5 5
+    2300724: post5 6
+    2300726: post5 7
+    2300728: post5 8
+    2300730: post5 9
+    2300732: post6
+    2300734: post6 1
+    2300736: post6 10
+    2300738: post6 11
+    2300740: post6 12
+    2300742: post6 13
+    2300744: post6 14
+    2300746: post6 15
+    2300748: post6 16
+    2300750: post6 17
+    2300752: post6 18
+    2300754: post6 19
+    2300756: post6 2
+    2300758: post6 20
+    2300760: post6 21
+    2300762: post6 22
+    2300764: post6 23
+    2300766: post6 24
+    2300768: post6 25
+    2300770: post6 3
+    2300772: post6 4
+    2300774: post6 5
+    2300776: post6 6
+    2300778: post6 7
+    2300780: post6 8
+    2300782: post6 9
+    2300784: post7
+    2300786: post7 1
+    2300788: post7 10
+    2300790: post7 11
+    2300792: post7 12
+    2300794: post7 13
+    2300796: post7 14
+    2300798: post7 15
+    2300800: post7 16
+    2300802: post7 17
+    2300804: post7 18
+    2300806: post7 19
+    2300808: post7 2
+    2300810: post7 20
+    2300812: post7 21
+    2300814: post7 22
+    2300816: post7 23
+    2300818: post7 24
+    2300820: post7 25
+    2300822: post7 3
+    2300824: post7 4
+    2300826: post7 5
+    2300828: post7 6
+    2300830: post7 7
+    2300832: post7 8
+    2300834: post7 9
+    2300836: post8
+    2300838: post8 1
+    2300840: post8 10
+    2300842: post8 11
+    2300844: post8 12
+    2300846: post8 13
+    2300848: post8 14
+    2300850: post8 15
+    2300852: post8 16
+    2300854: post8 17
+    2300856: post8 18
+    2300858: post8 19
+    2300860: post8 2
+    2300862: post8 20
+    2300864: post8 21
+    2300866: post8 22
+    2300868: post8 23
+    2300870: post8 24
+    2300872: post8 25
+    2300874: post8 3
+    2300876: post8 4
+    2300878: post8 5
+    2300880: post8 6
+    2300882: post8 7
+    2300884: post8 8
+    2300886: post8 9
+    2300888: post9
+    2300890: post9 1
+    2300892: post9 10
+    2300894: post9 11
+    2300896: post9 12
+    2300898: post9 13
+    2300900: post9 14
+    2300902: post9 15
+    2300904: post9 16
+    2300906: post9 17
+    2300908: post9 18
+    2300910: post9 19
+    2300912: post9 2
+    2300914: post9 20
+    2300916: post9 21
+    2300918: post9 22
+    2300920: post9 23
+    2300922: post9 24
+    2300924: post9 3
+    2300926: post9 4
+    2300928: post9 5
+    2300930: post9 6
+    2300932: post9 7
+    2300934: post9 8
+    2300936: post9 9
+    2300938: rail_left
+    2300940: rail_left 1
+    2300942: rail_left 10
+    2300944: rail_left 11
+    2300946: rail_left 12
+    2300948: rail_left 13
+    2300950: rail_left 14
+    2300952: rail_left 15
+    2300954: rail_left 16
+    2300956: rail_left 17
+    2300958: rail_left 18
+    2300960: rail_left 19
+    2300962: rail_left 2
+    2300964: rail_left 20
+    2300966: rail_left 21
+    2300968: rail_left 22
+    2300970: rail_left 3
+    2300972: rail_left 4
+    2300974: rail_left 5
+    2300976: rail_left 6
+    2300978: rail_left 7
+    2300980: rail_left 8
+    2300982: rail_left 9
+    2300984: rail_right
+    2300986: rail_right 1
+    2300988: rail_right 10
+    2300990: rail_right 11
+    2300992: rail_right 12
+    2300994: rail_right 13
+    2300996: rail_right 14
+    2300998: rail_right 15
+    2301000: rail_right 16
+    2301002: rail_right 17
+    2301004: rail_right 18
+    2301006: rail_right 19
+    2301008: rail_right 2
+    2301010: rail_right 20
+    2301012: rail_right 21
+    2301014: rail_right 22
+    2301016: rail_right 3
+    2301018: rail_right 4
+    2301020: rail_right 5
+    2301022: rail_right 6
+    2301024: rail_right 7
+    2301026: rail_right 8
+    2301028: rail_right 9
+    2301030: railing
+    2301032: railing 1
+    2301034: railing 2
+    2301036: railing 3
+    2301038: railing 4
+    2301040: road
+    2301042: road 1
+    2301044: road 10
+    2301046: road 11
+    2301048: road 12
+    2301050: road 13
+    2301052: road 14
+    2301054: road 15
+    2301056: road 16
+    2301058: road 17
+    2301060: road 18
+    2301062: road 19
+    2301064: road 2
+    2301066: road 20
+    2301068: road 21
+    2301070: road 22
+    2301072: road 23
+    2301074: road 24
+    2301076: road 25
+    2301078: road 3
+    2301080: road 4
+    2301082: road 5
+    2301084: road 6
+    2301086: road 7
+    2301088: road 8
+    2301090: road 9
+    2301092: road_end
+    2301094: road_start
+    2301096: zigzaglight 10
+    2301098: zigzaglight 11
+    2301100: zigzaglight 12
+    2301102: zigzaglight 13
+    2301104: zigzaglight 14
+    2301106: zigzaglight 15
+    2301108: zigzaglight 16
+    2301110: zigzaglight 17
+    2301112: zigzaglight 18
+    2301114: zigzaglight 19
+    2301116: zigzaglight 20
+    2301118: zigzaglight 21
+    2301120: zigzaglight 22
+    2301122: zigzaglight 23
+    2301124: zigzaglight 24
+    2301126: zigzaglight 25
+    2301128: zigzaglight 26
+    2301130: zigzaglight 27
+    2301132: zigzaglight 41
+    2301134: zigzaglight 42
+    2301136: zigzaglight 43
+    2301138: zigzaglight 44
+    2301140: zigzaglight 45
+    2301142: zigzaglight 46
+    2301144: zigzaglight 47
+    2301146: zigzaglight 48
+    2301148: zigzaglight 49
+    2301150: zigzaglight 50
+    2301152: zigzaglight 51
+    2301154: zigzaglight 52
+    2301156: zigzaglight 53
+    2301158: zigzaglight 54
+    2301160: zigzaglight 55
+    2301162: zigzaglight 56
+    2301164: zigzaglight 57
+    2301166: zigzaglight 58
+    2301168: zigzaglight 59
+    2301170: zigzaglight 60
+    2301172: zigzaglight 61
+    2301174: zigzaglight 62
+    2301176: zigzaglight 63
+    2301178: zigzaglight 64
+    2301180: zigzaglight 65
+    2301182: zigzaglight 66
+    2301184: zigzaglight 67
+    2301186: zigzaglight 68
+    3300000: Banner
+    3300002: barrier
+    3300004: barrier 1
+    3300006: barrier 2
+    3300008: barrier 3
+    3300010: barrier 4
+    3300012: barrier_left
+    3300014: barrier_left 1
+    3300016: barrier_left 10
+    3300018: barrier_left 11
+    3300020: barrier_left 12
+    3300022: barrier_left 13
+    3300024: barrier_left 14
+    3300026: barrier_left 15
+    3300028: barrier_left 16
+    3300030: barrier_left 17
+    3300032: barrier_left 18
+    3300034: barrier_left 19
+    3300036: barrier_left 2
+    3300038: barrier_left 20
+    3300040: barrier_left 21
+    3300042: barrier_left 22
+    3300044: barrier_left 3
+    3300046: barrier_left 4
+    3300048: barrier_left 5
+    3300050: barrier_left 6
+    3300052: barrier_left 7
+    3300054: barrier_left 8
+    3300056: barrier_left 9
+    3300058: barrier_right
+    3300060: barrier_right 1
+    3300062: barrier_right 10
+    3300064: barrier_right 11
+    3300066: barrier_right 12
+    3300068: barrier_right 13
+    3300070: barrier_right 14
+    3300072: barrier_right 15
+    3300074: barrier_right 16
+    3300076: barrier_right 17
+    3300078: barrier_right 18
+    3300080: barrier_right 19
+    3300082: barrier_right 2
+    3300084: barrier_right 20
+    3300086: barrier_right 21
+    3300088: barrier_right 22
+    3300090: barrier_right 3
+    3300092: barrier_right 4
+    3300094: barrier_right 5
+    3300096: barrier_right 6
+    3300098: barrier_right 7
+    3300100: barrier_right 8
+    3300102: barrier_right 9
+    3300104: dashlight 10
+    3300106: dashlight 11
+    3300108: dashlight 12
+    3300110: dashlight 13
+    3300112: dashlight 14
+    3300114: dashlight 15
+    3300116: dashlight 16
+    3300118: dashlight 17
+    3300120: dashlight 18
+    3300122: dashlight 32
+    3300124: dashlight 33
+    3300126: dashlight 34
+    3300128: dashlight 35
+    3300130: dashlight 36
+    3300132: dashlight 37
+    3300134: dashlight 38
+    3300136: dashlight 39
+    3300138: dashlight 40
+    3300140: dashlight 41
+    3300142: dashlight 42
+    3300144: dashlight 43
+    3300146: dashlight 44
+    3300148: dashlight 45
+    3300150: diamondslight 10
+    3300152: diamondslight 11
+    3300154: diamondslight 12
+    3300156: diamondslight 13
+    3300158: diamondslight 14
+    3300160: diamondslight 15
+    3300162: diamondslight 16
+    3300164: diamondslight 17
+    3300166: diamondslight 18
+    3300168: diamondslight 32
+    3300170: diamondslight 33
+    3300172: diamondslight 34
+    3300174: diamondslight 35
+    3300176: diamondslight 36
+    3300178: diamondslight 37
+    3300180: diamondslight 38
+    3300182: diamondslight 39
+    3300184: diamondslight 40
+    3300186: diamondslight 41
+    3300188: diamondslight 42
+    3300190: diamondslight 43
+    3300192: diamondslight 44
+    3300194: diamondslight 45
+    3300196: group3_road10
+    3300198: group3_road10 1
+    3300200: group3_road10 10
+    3300202: group3_road10 11
+    3300204: group3_road10 12
+    3300206: group3_road10 13
+    3300208: group3_road10 14
+    3300210: group3_road10 15
+    3300212: group3_road10 16
+    3300214: group3_road10 17
+    3300216: group3_road10 18
+    3300218: group3_road10 19
+    3300220: group3_road10 2
+    3300222: group3_road10 20
+    3300224: group3_road10 21
+    3300226: group3_road10 22
+    3300228: group3_road10 23
+    3300230: group3_road10 24
+    3300232: group3_road10 25
+    3300234: group3_road10 26
+    3300236: group3_road10 27
+    3300238: group3_road10 28
+    3300240: group3_road10 29
+    3300242: group3_road10 3
+    3300244: group3_road10 30
+    3300246: group3_road10 31
+    3300248: group3_road10 32
+    3300250: group3_road10 33
+    3300252: group3_road10 34
+    3300254: group3_road10 35
+    3300256: group3_road10 36
+    3300258: group3_road10 37
+    3300260: group3_road10 38
+    3300262: group3_road10 39
+    3300264: group3_road10 4
+    3300266: group3_road10 40
+    3300268: group3_road10 41
+    3300270: group3_road10 42
+    3300272: group3_road10 43
+    3300274: group3_road10 44
+    3300276: group3_road10 45
+    3300278: group3_road10 5
+    3300280: group3_road10 6
+    3300282: group3_road10 7
+    3300284: group3_road10 8
+    3300286: group3_road10 9
+    3300288: linelight 10
+    3300290: linelight 11
+    3300292: linelight 12
+    3300294: linelight 13
+    3300296: linelight 14
+    3300298: linelight 15
+    3300300: linelight 16
+    3300302: linelight 17
+    3300304: linelight 18
+    3300306: linelight 32
+    3300308: linelight 33
+    3300310: linelight 34
+    3300312: linelight 35
+    3300314: linelight 36
+    3300316: linelight 37
+    3300318: linelight 38
+    3300320: linelight 39
+    3300322: linelight 40
+    3300324: linelight 41
+    3300326: linelight 42
+    3300328: linelight 43
+    3300330: linelight 44
+    3300332: linelight 45
+    3300334: Poles
+    3300336: post
+    3300338: post 1
+    3300340: post 13
+    3300342: post 14
+    3300344: post 15
+    3300346: post 16
+    3300348: post 17
+    3300350: post 18
+    3300352: post 19
+    3300354: post 2
+    3300356: post 20
+    3300358: post 21
+    3300360: post 22
+    3300362: post 23
+    3300364: post 24
+    3300366: post 26
+    3300368: post 27
+    3300370: post 28
+    3300372: post 29
+    3300374: post 3
+    3300376: post 30
+    3300378: post 31
+    3300380: post 4
+    3300382: post 5
+    3300384: post 6
+    3300386: post 7
+    3300388: post 8
+    3300390: post1
+    3300392: post1 1
+    3300394: post1 10
+    3300396: post1 11
+    3300398: post1 12
+    3300400: post1 13
+    3300402: post1 14
+    3300404: post1 15
+    3300406: post1 16
+    3300408: post1 17
+    3300410: post1 18
+    3300412: post1 19
+    3300414: post1 2
+    3300416: post1 20
+    3300418: post1 21
+    3300420: post1 22
+    3300422: post1 23
+    3300424: post1 24
+    3300426: post1 25
+    3300428: post1 3
+    3300430: post1 4
+    3300432: post1 5
+    3300434: post1 6
+    3300436: post1 7
+    3300438: post1 8
+    3300440: post1 9
+    3300442: post10
+    3300444: post10 1
+    3300446: post10 2
+    3300448: post11
+    3300450: post11 1
+    3300452: post11 2
+    3300454: post12
+    3300456: post12 1
+    3300458: post12 2
+    3300460: post13
+    3300462: post13 1
+    3300464: post13 2
+    3300466: post14
+    3300468: post14 1
+    3300470: post14 2
+    3300472: post15
+    3300474: post15 1
+    3300476: post15 2
+    3300478: post16
+    3300480: post17
+    3300482: post18
+    3300484: post19
+    3300486: post2
+    3300488: post2 1
+    3300490: post2 10
+    3300492: post2 11
+    3300494: post2 12
+    3300496: post2 13
+    3300498: post2 14
+    3300500: post2 15
+    3300502: post2 16
+    3300504: post2 17
+    3300506: post2 18
+    3300508: post2 19
+    3300510: post2 2
+    3300512: post2 20
+    3300514: post2 21
+    3300516: post2 22
+    3300518: post2 23
+    3300520: post2 24
+    3300522: post2 25
+    3300524: post2 3
+    3300526: post2 4
+    3300528: post2 5
+    3300530: post2 6
+    3300532: post2 7
+    3300534: post2 8
+    3300536: post2 9
+    3300538: post20
+    3300540: post21
+    3300542: post22
+    3300544: post23
+    3300546: post24
+    3300548: post25
+    3300550: post26
+    3300552: post27
+    3300554: post28
+    3300556: post29
+    3300558: post3
+    3300560: post3 1
+    3300562: post3 10
+    3300564: post3 11
+    3300566: post3 12
+    3300568: post3 13
+    3300570: post3 14
+    3300572: post3 15
+    3300574: post3 16
+    3300576: post3 17
+    3300578: post3 18
+    3300580: post3 19
+    3300582: post3 2
+    3300584: post3 20
+    3300586: post3 21
+    3300588: post3 22
+    3300590: post3 23
+    3300592: post3 24
+    3300594: post3 25
+    3300596: post3 3
+    3300598: post3 4
+    3300600: post3 5
+    3300602: post3 6
+    3300604: post3 7
+    3300606: post3 8
+    3300608: post3 9
+    3300610: post30
+    3300612: post31
+    3300614: post32
+    3300616: post33
+    3300618: post34
+    3300620: post35
+    3300622: post36
+    3300624: post37
+    3300626: post38
+    3300628: post39
+    3300630: post4
+    3300632: post4 1
+    3300634: post4 10
+    3300636: post4 11
+    3300638: post4 12
+    3300640: post4 13
+    3300642: post4 14
+    3300644: post4 15
+    3300646: post4 16
+    3300648: post4 17
+    3300650: post4 18
+    3300652: post4 19
+    3300654: post4 2
+    3300656: post4 20
+    3300658: post4 21
+    3300660: post4 22
+    3300662: post4 23
+    3300664: post4 24
+    3300666: post4 3
+    3300668: post4 4
+    3300670: post4 5
+    3300672: post4 6
+    3300674: post4 7
+    3300676: post4 8
+    3300678: post4 9
+    3300680: post40
+    3300682: post5
+    3300684: post5 1
+    3300686: post5 10
+    3300688: post5 11
+    3300690: post5 12
+    3300692: post5 13
+    3300694: post5 14
+    3300696: post5 15
+    3300698: post5 16
+    3300700: post5 17
+    3300702: post5 18
+    3300704: post5 19
+    3300706: post5 2
+    3300708: post5 20
+    3300710: post5 21
+    3300712: post5 22
+    3300714: post5 23
+    3300716: post5 24
+    3300718: post5 3
+    3300720: post5 4
+    3300722: post5 5
+    3300724: post5 6
+    3300726: post5 7
+    3300728: post5 8
+    3300730: post5 9
+    3300732: post6
+    3300734: post6 1
+    3300736: post6 10
+    3300738: post6 11
+    3300740: post6 12
+    3300742: post6 13
+    3300744: post6 14
+    3300746: post6 15
+    3300748: post6 16
+    3300750: post6 17
+    3300752: post6 18
+    3300754: post6 19
+    3300756: post6 2
+    3300758: post6 20
+    3300760: post6 21
+    3300762: post6 22
+    3300764: post6 23
+    3300766: post6 24
+    3300768: post6 25
+    3300770: post6 3
+    3300772: post6 4
+    3300774: post6 5
+    3300776: post6 6
+    3300778: post6 7
+    3300780: post6 8
+    3300782: post6 9
+    3300784: post7
+    3300786: post7 1
+    3300788: post7 10
+    3300790: post7 11
+    3300792: post7 12
+    3300794: post7 13
+    3300796: post7 14
+    3300798: post7 15
+    3300800: post7 16
+    3300802: post7 17
+    3300804: post7 18
+    3300806: post7 19
+    3300808: post7 2
+    3300810: post7 20
+    3300812: post7 21
+    3300814: post7 22
+    3300816: post7 23
+    3300818: post7 24
+    3300820: post7 25
+    3300822: post7 3
+    3300824: post7 4
+    3300826: post7 5
+    3300828: post7 6
+    3300830: post7 7
+    3300832: post7 8
+    3300834: post7 9
+    3300836: post8
+    3300838: post8 1
+    3300840: post8 10
+    3300842: post8 11
+    3300844: post8 12
+    3300846: post8 13
+    3300848: post8 14
+    3300850: post8 15
+    3300852: post8 16
+    3300854: post8 17
+    3300856: post8 18
+    3300858: post8 19
+    3300860: post8 2
+    3300862: post8 20
+    3300864: post8 21
+    3300866: post8 22
+    3300868: post8 23
+    3300870: post8 24
+    3300872: post8 25
+    3300874: post8 3
+    3300876: post8 4
+    3300878: post8 5
+    3300880: post8 6
+    3300882: post8 7
+    3300884: post8 8
+    3300886: post8 9
+    3300888: post9
+    3300890: post9 1
+    3300892: post9 10
+    3300894: post9 11
+    3300896: post9 12
+    3300898: post9 13
+    3300900: post9 14
+    3300902: post9 15
+    3300904: post9 16
+    3300906: post9 17
+    3300908: post9 18
+    3300910: post9 19
+    3300912: post9 2
+    3300914: post9 20
+    3300916: post9 21
+    3300918: post9 22
+    3300920: post9 23
+    3300922: post9 24
+    3300924: post9 3
+    3300926: post9 4
+    3300928: post9 5
+    3300930: post9 6
+    3300932: post9 7
+    3300934: post9 8
+    3300936: post9 9
+    3300938: rail_left
+    3300940: rail_left 1
+    3300942: rail_left 10
+    3300944: rail_left 11
+    3300946: rail_left 12
+    3300948: rail_left 13
+    3300950: rail_left 14
+    3300952: rail_left 15
+    3300954: rail_left 16
+    3300956: rail_left 17
+    3300958: rail_left 18
+    3300960: rail_left 19
+    3300962: rail_left 2
+    3300964: rail_left 20
+    3300966: rail_left 21
+    3300968: rail_left 22
+    3300970: rail_left 3
+    3300972: rail_left 4
+    3300974: rail_left 5
+    3300976: rail_left 6
+    3300978: rail_left 7
+    3300980: rail_left 8
+    3300982: rail_left 9
+    3300984: rail_right
+    3300986: rail_right 1
+    3300988: rail_right 10
+    3300990: rail_right 11
+    3300992: rail_right 12
+    3300994: rail_right 13
+    3300996: rail_right 14
+    3300998: rail_right 15
+    3301000: rail_right 16
+    3301002: rail_right 17
+    3301004: rail_right 18
+    3301006: rail_right 19
+    3301008: rail_right 2
+    3301010: rail_right 20
+    3301012: rail_right 21
+    3301014: rail_right 22
+    3301016: rail_right 3
+    3301018: rail_right 4
+    3301020: rail_right 5
+    3301022: rail_right 6
+    3301024: rail_right 7
+    3301026: rail_right 8
+    3301028: rail_right 9
+    3301030: railing
+    3301032: railing 1
+    3301034: railing 2
+    3301036: railing 3
+    3301038: railing 4
+    3301040: road
+    3301042: road 1
+    3301044: road 10
+    3301046: road 11
+    3301048: road 12
+    3301050: road 13
+    3301052: road 14
+    3301054: road 15
+    3301056: road 16
+    3301058: road 17
+    3301060: road 18
+    3301062: road 19
+    3301064: road 2
+    3301066: road 20
+    3301068: road 21
+    3301070: road 22
+    3301072: road 23
+    3301074: road 24
+    3301076: road 25
+    3301078: road 3
+    3301080: road 4
+    3301082: road 5
+    3301084: road 6
+    3301086: road 7
+    3301088: road 8
+    3301090: road 9
+    3301092: road_end
+    3301094: road_start
+    3301096: zigzaglight 10
+    3301098: zigzaglight 11
+    3301100: zigzaglight 12
+    3301102: zigzaglight 13
+    3301104: zigzaglight 14
+    3301106: zigzaglight 15
+    3301108: zigzaglight 16
+    3301110: zigzaglight 17
+    3301112: zigzaglight 18
+    3301114: zigzaglight 19
+    3301116: zigzaglight 20
+    3301118: zigzaglight 21
+    3301120: zigzaglight 22
+    3301122: zigzaglight 23
+    3301124: zigzaglight 24
+    3301126: zigzaglight 25
+    3301128: zigzaglight 26
+    3301130: zigzaglight 27
+    3301132: zigzaglight 41
+    3301134: zigzaglight 42
+    3301136: zigzaglight 43
+    3301138: zigzaglight 44
+    3301140: zigzaglight 45
+    3301142: zigzaglight 46
+    3301144: zigzaglight 47
+    3301146: zigzaglight 48
+    3301148: zigzaglight 49
+    3301150: zigzaglight 50
+    3301152: zigzaglight 51
+    3301154: zigzaglight 52
+    3301156: zigzaglight 53
+    3301158: zigzaglight 54
+    3301160: zigzaglight 55
+    3301162: zigzaglight 56
+    3301164: zigzaglight 57
+    3301166: zigzaglight 58
+    3301168: zigzaglight 59
+    3301170: zigzaglight 60
+    3301172: zigzaglight 61
+    3301174: zigzaglight 62
+    3301176: zigzaglight 63
+    3301178: zigzaglight 64
+    3301180: zigzaglight 65
+    3301182: zigzaglight 66
+    3301184: zigzaglight 67
+    3301186: zigzaglight 68
+    4300000: road
+    4300002: barrier
+    4300004: railing
+    4300006: post
+    4300008: post1
+    4300010: post2
+    4300012: post3
+    4300014: post4
+    4300016: post5
+    4300018: post6
+    4300020: post7
+    4300022: post8
+    4300024: post9
+    4300026: post10
+    4300028: post11
+    4300030: post12
+    4300032: post13
+    4300034: post15
+    4300036: post14
+    4300038: road
+    4300040: barrier
+    4300042: railing
+    4300044: post
+    4300046: post1
+    4300048: post2
+    4300050: post3
+    4300052: post4
+    4300054: post5
+    4300056: post6
+    4300058: post7
+    4300060: post8
+    4300062: post9
+    4300064: post10
+    4300066: post11
+    4300068: post12
+    4300070: post13
+    4300072: post15
+    4300074: post14
+    4300076: Banner
+    4300078: Poles
+    4300080: post
+    4300082: post1
+    4300084: post2
+    4300086: post3
+    4300088: post4
+    4300090: post5
+    4300092: post6
+    4300094: post7
+    4300096: post8
+    4300098: post9
+    4300100: post10
+    4300102: post11
+    4300104: post12
+    4300106: post13
+    4300108: post14
+    4300110: post15
+    4300112: post16
+    4300114: railing
+    4300116: road_start
+    4300118: barrier
+    4300120: road
+    4300122: railing
+    4300124: post
+    4300126: post17
+    4300128: post18
+    4300130: post19
+    4300132: post20
+    4300134: post21
+    4300136: post22
+    4300138: post23
+    4300140: post24
+    4300142: post25
+    4300144: post26
+    4300146: post27
+    4300148: post28
+    4300150: post29
+    4300152: post30
+    4300154: post31
+    4300156: barrier
+    4300158: road_end
+    4300160: railing
+    4300162: post
+    4300164: post32
+    4300166: post33
+    4300168: post34
+    4300170: post35
+    4300172: post36
+    4300174: post37
+    4300176: post38
+    4300178: post39
+    4300180: post40
+    4300182: barrier
+    4300184: road
+    4300186: barrier_right
+    4300188: barrier_left
+    4300190: rail_right
+    4300192: rail_left
+    4300194: post
+    4300196: post1
+    4300198: post2
+    4300200: post3
+    4300202: post4
+    4300204: post5
+    4300206: post6
+    4300208: post7
+    4300210: post8
+    4300212: post9
+    4300214: linelight
+    4300216: group3_road10
+    4300218: diamondslight
+    4300220: zigzaglight
+    4300222: dashlight
+    4300224: zigzaglight
+    4300226: group3_road10
+    4300228: road
+    4300230: barrier_right
+    4300232: barrier_left
+    4300234: rail_right
+    4300236: rail_left
+    4300238: post
+    4300240: post1
+    4300242: post2
+    4300244: post3
+    4300246: post4
+    4300248: post5
+    4300250: post6
+    4300252: post7
+    4300254: post8
+    4300256: post9
+    4300258: linelight
+    4300260: group3_road10
+    4300262: diamondslight
+    4300264: zigzaglight
+    4300266: dashlight
+    4300268: zigzaglight
+    4300270: group3_road10
+    4300272: road
+    4300274: barrier_right
+    4300276: barrier_left
+    4300278: rail_right
+    4300280: rail_left
+    4300282: post
+    4300284: post1
+    4300286: post2
+    4300288: post3
+    4300290: post4
+    4300292: post5
+    4300294: post6
+    4300296: post7
+    4300298: post8
+    4300300: post9
+    4300302: linelight
+    4300304: group3_road10
+    4300306: diamondslight
+    4300308: zigzaglight
+    4300310: dashlight
+    4300312: zigzaglight
+    4300314: group3_road10
+    4300316: road
+    4300318: barrier_right
+    4300320: barrier_left
+    4300322: rail_right
+    4300324: rail_left
+    4300326: post
+    4300328: post1
+    4300330: post2
+    4300332: post3
+    4300334: post4
+    4300336: post5
+    4300338: post6
+    4300340: post7
+    4300342: post8
+    4300344: post9
+    4300346: linelight
+    4300348: group3_road10
+    4300350: diamondslight
+    4300352: zigzaglight
+    4300354: dashlight
+    4300356: zigzaglight
+    4300358: group3_road10
+    4300360: road
+    4300362: barrier_right
+    4300364: barrier_left
+    4300366: rail_right
+    4300368: rail_left
+    4300370: post
+    4300372: post1
+    4300374: post2
+    4300376: post3
+    4300378: post4
+    4300380: post5
+    4300382: post6
+    4300384: post7
+    4300386: post8
+    4300388: post9
+    4300390: linelight
+    4300392: group3_road10
+    4300394: diamondslight
+    4300396: zigzaglight
+    4300398: dashlight
+    4300400: zigzaglight
+    4300402: group3_road10
+    4300404: road
+    4300406: barrier_right
+    4300408: barrier_left
+    4300410: rail_right
+    4300412: rail_left
+    4300414: post
+    4300416: post1
+    4300418: post2
+    4300420: post3
+    4300422: post4
+    4300424: post5
+    4300426: post6
+    4300428: post7
+    4300430: post8
+    4300432: post9
+    4300434: linelight
+    4300436: group3_road10
+    4300438: diamondslight
+    4300440: zigzaglight
+    4300442: dashlight
+    4300444: zigzaglight
+    4300446: group3_road10
+    4300448: road
+    4300450: barrier_right
+    4300452: barrier_left
+    4300454: rail_right
+    4300456: rail_left
+    4300458: post
+    4300460: post1
+    4300462: post2
+    4300464: post3
+    4300466: post4
+    4300468: post5
+    4300470: post6
+    4300472: post7
+    4300474: post8
+    4300476: post9
+    4300478: linelight
+    4300480: group3_road10
+    4300482: diamondslight
+    4300484: zigzaglight
+    4300486: dashlight
+    4300488: zigzaglight
+    4300490: group3_road10
+    4300492: road
+    4300494: barrier_right
+    4300496: barrier_left
+    4300498: rail_right
+    4300500: rail_left
+    4300502: post
+    4300504: post1
+    4300506: post2
+    4300508: post3
+    4300510: post4
+    4300512: post5
+    4300514: post6
+    4300516: post7
+    4300518: post8
+    4300520: post9
+    4300522: linelight
+    4300524: group3_road10
+    4300526: diamondslight
+    4300528: zigzaglight
+    4300530: dashlight
+    4300532: zigzaglight
+    4300534: group3_road10
+    4300536: road
+    4300538: barrier_right
+    4300540: barrier_left
+    4300542: rail_right
+    4300544: rail_left
+    4300546: post
+    4300548: post1
+    4300550: post2
+    4300552: post3
+    4300554: post4
+    4300556: post5
+    4300558: post6
+    4300560: post7
+    4300562: post8
+    4300564: post9
+    4300566: linelight
+    4300568: group3_road10
+    4300570: diamondslight
+    4300572: zigzaglight
+    4300574: dashlight
+    4300576: zigzaglight
+    4300578: group3_road10
+    4300580: road
+    4300582: barrier_right
+    4300584: barrier_left
+    4300586: rail_right
+    4300588: rail_left
+    4300590: post
+    4300592: post1
+    4300594: post2
+    4300596: post3
+    4300598: post4
+    4300600: post5
+    4300602: post6
+    4300604: post7
+    4300606: post8
+    4300608: post9
+    4300610: linelight
+    4300612: group3_road10
+    4300614: diamondslight
+    4300616: zigzaglight
+    4300618: dashlight
+    4300620: zigzaglight
+    4300622: group3_road10
+    4300624: road
+    4300626: barrier_right
+    4300628: barrier_left
+    4300630: rail_right
+    4300632: rail_left
+    4300634: post
+    4300636: post1
+    4300638: post2
+    4300640: post3
+    4300642: post4
+    4300644: post5
+    4300646: post6
+    4300648: post7
+    4300650: post8
+    4300652: post9
+    4300654: linelight
+    4300656: group3_road10
+    4300658: diamondslight
+    4300660: zigzaglight
+    4300662: dashlight
+    4300664: zigzaglight
+    4300666: group3_road10
+    4300668: road
+    4300670: barrier_right
+    4300672: barrier_left
+    4300674: rail_right
+    4300676: rail_left
+    4300678: post
+    4300680: post1
+    4300682: post2
+    4300684: post3
+    4300686: post4
+    4300688: post5
+    4300690: post6
+    4300692: post7
+    4300694: post8
+    4300696: post9
+    4300698: linelight
+    4300700: group3_road10
+    4300702: diamondslight
+    4300704: zigzaglight
+    4300706: dashlight
+    4300708: zigzaglight
+    4300710: group3_road10
+    4300712: road
+    4300714: barrier_right
+    4300716: barrier_left
+    4300718: rail_right
+    4300720: rail_left
+    4300722: post
+    4300724: post1
+    4300726: post2
+    4300728: post3
+    4300730: post4
+    4300732: post5
+    4300734: post6
+    4300736: post7
+    4300738: post8
+    4300740: post9
+    4300742: linelight
+    4300744: group3_road10
+    4300746: diamondslight
+    4300748: zigzaglight
+    4300750: dashlight
+    4300752: zigzaglight
+    4300754: group3_road10
+    4300756: road
+    4300758: barrier_right
+    4300760: barrier_left
+    4300762: rail_right
+    4300764: rail_left
+    4300766: post
+    4300768: post1
+    4300770: post2
+    4300772: post3
+    4300774: post4
+    4300776: post5
+    4300778: post6
+    4300780: post7
+    4300782: post8
+    4300784: post9
+    4300786: linelight
+    4300788: group3_road10
+    4300790: diamondslight
+    4300792: zigzaglight
+    4300794: dashlight
+    4300796: zigzaglight
+    4300798: group3_road10
+    4300800: road
+    4300802: barrier_right
+    4300804: barrier_left
+    4300806: rail_right
+    4300808: rail_left
+    4300810: post
+    4300812: post1
+    4300814: post2
+    4300816: post3
+    4300818: post4
+    4300820: post5
+    4300822: post6
+    4300824: post7
+    4300826: post8
+    4300828: post9
+    4300830: linelight
+    4300832: group3_road10
+    4300834: diamondslight
+    4300836: zigzaglight
+    4300838: dashlight
+    4300840: zigzaglight
+    4300842: group3_road10
+    4300844: road
+    4300846: barrier_right
+    4300848: barrier_left
+    4300850: rail_right
+    4300852: rail_left
+    4300854: post
+    4300856: post1
+    4300858: post2
+    4300860: post3
+    4300862: post4
+    4300864: post5
+    4300866: post6
+    4300868: post7
+    4300870: post8
+    4300872: post9
+    4300874: linelight
+    4300876: group3_road10
+    4300878: diamondslight
+    4300880: zigzaglight
+    4300882: dashlight
+    4300884: zigzaglight
+    4300886: group3_road10
+    4300888: road
+    4300890: barrier_right
+    4300892: barrier_left
+    4300894: rail_right
+    4300896: rail_left
+    4300898: post
+    4300900: post1
+    4300902: post2
+    4300904: post3
+    4300906: post4
+    4300908: post5
+    4300910: post6
+    4300912: post7
+    4300914: post8
+    4300916: post9
+    4300918: linelight
+    4300920: group3_road10
+    4300922: diamondslight
+    4300924: zigzaglight
+    4300926: dashlight
+    4300928: zigzaglight
+    4300930: group3_road10
+    4300932: road
+    4300934: barrier_right
+    4300936: barrier_left
+    4300938: rail_right
+    4300940: rail_left
+    4300942: post
+    4300944: post1
+    4300946: post2
+    4300948: post3
+    4300950: post4
+    4300952: post5
+    4300954: post6
+    4300956: post7
+    4300958: post8
+    4300960: post9
+    4300962: linelight
+    4300964: group3_road10
+    4300966: diamondslight
+    4300968: zigzaglight
+    4300970: dashlight
+    4300972: zigzaglight
+    4300974: group3_road10
+    4300976: road
+    4300978: barrier_right
+    4300980: barrier_left
+    4300982: rail_right
+    4300984: rail_left
+    4300986: post
+    4300988: post1
+    4300990: post2
+    4300992: post3
+    4300994: post4
+    4300996: post5
+    4300998: post6
+    4301000: post7
+    4301002: post8
+    4301004: post9
+    4301006: linelight
+    4301008: group3_road10
+    4301010: diamondslight
+    4301012: zigzaglight
+    4301014: dashlight
+    4301016: zigzaglight
+    4301018: group3_road10
+    4301020: road
+    4301022: barrier_right
+    4301024: barrier_left
+    4301026: rail_right
+    4301028: rail_left
+    4301030: post
+    4301032: post1
+    4301034: post2
+    4301036: post3
+    4301038: post5
+    4301040: post6
+    4301042: post7
+    4301044: post8
+    4301046: linelight
+    4301048: group3_road10
+    4301050: diamondslight
+    4301052: zigzaglight
+    4301054: dashlight
+    4301056: zigzaglight
+    4301058: group3_road10
+    4301060: road
+    4301062: barrier_right
+    4301064: barrier_left
+    4301066: rail_right
+    4301068: rail_left
+    4301070: post
+    4301072: post1
+    4301074: post2
+    4301076: post3
+    4301078: post4
+    4301080: post5
+    4301082: post6
+    4301084: post7
+    4301086: post8
+    4301088: post9
+    4301090: linelight
+    4301092: group3_road10
+    4301094: diamondslight
+    4301096: zigzaglight
+    4301098: dashlight
+    4301100: zigzaglight
+    4301102: group3_road10
+    4301104: road
+    4301106: barrier_right
+    4301108: barrier_left
+    4301110: rail_right
+    4301112: rail_left
+    4301114: post
+    4301116: post1
+    4301118: post2
+    4301120: post3
+    4301122: post4
+    4301124: post5
+    4301126: post6
+    4301128: post7
+    4301130: post8
+    4301132: post9
+    4301134: linelight
+    4301136: group3_road10
+    4301138: diamondslight
+    4301140: zigzaglight
+    4301142: dashlight
+    4301144: zigzaglight
+    4301146: group3_road10
+    4301148: road
+    4301150: barrier_right
+    4301152: barrier_left
+    4301154: rail_right
+    4301156: rail_left
+    4301158: post1
+    4301160: post2
+    4301162: post3
+    4301164: post4
+    4301166: post6
+    4301168: post7
+    4301170: post8
+    4301172: post9
+    4301174: linelight
+    4301176: group3_road10
+    4301178: diamondslight
+    4301180: zigzaglight
+    4301182: dashlight
+    4301184: zigzaglight
+    4301186: group3_road10
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

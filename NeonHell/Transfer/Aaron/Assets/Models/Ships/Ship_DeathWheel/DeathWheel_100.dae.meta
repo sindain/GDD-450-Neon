@@ -1,0 +1,263 @@
+fileFormatVersion: 2
+guid: d76d2140ba41ffa4793d92f40621146c
+timeCreated: 1458772434
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Axel
+    100002: //RootNode
+    100004: DeathWheel_2_ncl1_1
+    100006: Flaps
+    100008: inFlap1
+    100010: inFlap2
+    100012: inFlap3
+    100014: leftSpokes
+    100016: leftThruster
+    100018: outFlap1
+    100020: outFlap2
+    100022: outFlap3
+    100024: polySurface106
+    100026: polySurface110
+    100028: polySurface113
+    100030: polySurface115
+    100032: polySurface119
+    100034: polySurface99
+    100036: rightSpokes
+    100038: rightThruster
+    100040: ThickSpinner
+    100042: ThickSpinner_ncl1_1
+    100044: ThinSpinner
+    100046: ThinSpinner_ncl1_1
+    400000: Axel
+    400002: //RootNode
+    400004: DeathWheel_2_ncl1_1
+    400006: Flaps
+    400008: inFlap1
+    400010: inFlap2
+    400012: inFlap3
+    400014: leftSpokes
+    400016: leftThruster
+    400018: outFlap1
+    400020: outFlap2
+    400022: outFlap3
+    400024: polySurface106
+    400026: polySurface110
+    400028: polySurface113
+    400030: polySurface115
+    400032: polySurface119
+    400034: polySurface99
+    400036: rightSpokes
+    400038: rightThruster
+    400040: ThickSpinner
+    400042: ThickSpinner_ncl1_1
+    400044: ThinSpinner
+    400046: ThinSpinner_ncl1_1
+    2300000: Axel
+    2300002: DeathWheel_2_ncl1_1
+    2300004: inFlap1
+    2300006: inFlap2
+    2300008: inFlap3
+    2300010: leftSpokes
+    2300012: leftThruster
+    2300014: outFlap1
+    2300016: outFlap2
+    2300018: outFlap3
+    2300020: polySurface106
+    2300022: polySurface110
+    2300024: polySurface113
+    2300026: polySurface115
+    2300028: polySurface119
+    2300030: polySurface99
+    2300032: rightSpokes
+    2300034: rightThruster
+    2300036: ThickSpinner
+    2300038: ThickSpinner_ncl1_1
+    2300040: ThinSpinner
+    2300042: ThinSpinner_ncl1_1
+    3300000: Axel
+    3300002: DeathWheel_2_ncl1_1
+    3300004: inFlap1
+    3300006: inFlap2
+    3300008: inFlap3
+    3300010: leftSpokes
+    3300012: leftThruster
+    3300014: outFlap1
+    3300016: outFlap2
+    3300018: outFlap3
+    3300020: polySurface106
+    3300022: polySurface110
+    3300024: polySurface113
+    3300026: polySurface115
+    3300028: polySurface119
+    3300030: polySurface99
+    3300032: rightSpokes
+    3300034: rightThruster
+    3300036: ThickSpinner
+    3300038: ThickSpinner_ncl1_1
+    3300040: ThinSpinner
+    3300042: ThinSpinner_ncl1_1
+    4300000: DeathWheel_2_ncl1_1
+    4300002: rightSpokes
+    4300004: leftSpokes
+    4300006: Axel
+    4300008: leftThruster
+    4300010: ThickSpinner
+    4300012: ThinSpinner
+    4300014: outFlap1
+    4300016: inFlap1
+    4300018: outFlap2
+    4300020: inFlap2
+    4300022: outFlap3
+    4300024: inFlap3
+    4300026: rightThruster
+    4300028: polySurface99
+    4300030: polySurface115
+    4300032: polySurface110
+    4300034: polySurface106
+    4300036: polySurface119
+    4300038: polySurface113
+    4300040: ThinSpinner_ncl1_1
+    4300042: ThickSpinner_ncl1_1
+    7400000: DeathWheelAnim
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: DeathWheelAnim
+      takeName: Take 001
+      firstFrame: 1
+      lastFrame: 60
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Axel
+        weight: 1
+      - path: Axel/leftThruster
+        weight: 1
+      - path: Axel/leftThruster/inFlap1
+        weight: 1
+      - path: Axel/leftThruster/inFlap2
+        weight: 1
+      - path: Axel/leftThruster/inFlap3
+        weight: 1
+      - path: Axel/leftThruster/outFlap1
+        weight: 1
+      - path: Axel/leftThruster/outFlap2
+        weight: 1
+      - path: Axel/leftThruster/outFlap3
+        weight: 1
+      - path: Axel/leftThruster/ThickSpinner
+        weight: 1
+      - path: Axel/leftThruster/ThinSpinner
+        weight: 1
+      - path: Axel/rightThruster
+        weight: 1
+      - path: Axel/rightThruster/Flaps
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface99
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface106
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface110
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface113
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface115
+        weight: 1
+      - path: Axel/rightThruster/Flaps/polySurface119
+        weight: 1
+      - path: Axel/rightThruster/ThickSpinner_ncl1_1
+        weight: 1
+      - path: Axel/rightThruster/ThinSpinner_ncl1_1
+        weight: 1
+      - path: DeathWheel_2_ncl1_1
+        weight: 1
+      - path: DeathWheel_2_ncl1_1/leftSpokes
+        weight: 1
+      - path: DeathWheel_2_ncl1_1/rightSpokes
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

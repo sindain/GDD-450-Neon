@@ -1,0 +1,274 @@
+fileFormatVersion: 2
+guid: 41f153327a410014b9905b5810639eb5
+timeCreated: 1458241290
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: barrier
+    100002: barrier 1
+    100004: post
+    100006: post 1
+    100008: post 2
+    100010: post 3
+    100012: post1
+    100014: post1 1
+    100016: post10
+    100018: post10 1
+    100020: post11
+    100022: post11 1
+    100024: post12
+    100026: post12 1
+    100028: post13
+    100030: post13 1
+    100032: post14
+    100034: post14 1
+    100036: post15
+    100038: post15 1
+    100040: post2
+    100042: post2 1
+    100044: post3
+    100046: post3 1
+    100048: post4
+    100050: post4 1
+    100052: post5
+    100054: post5 1
+    100056: post6
+    100058: post6 1
+    100060: post7
+    100062: post7 1
+    100064: post8
+    100066: post8 1
+    100068: post9
+    100070: post9 1
+    100072: railing
+    100074: railing 1
+    100076: road
+    100078: road 1
+    100080: //RootNode
+    100082: switcher 1
+    100084: switcher 2
+    100086: switcher1
+    400000: barrier
+    400002: barrier 1
+    400004: post
+    400006: post 1
+    400008: post 2
+    400010: post 3
+    400012: post1
+    400014: post1 1
+    400016: post10
+    400018: post10 1
+    400020: post11
+    400022: post11 1
+    400024: post12
+    400026: post12 1
+    400028: post13
+    400030: post13 1
+    400032: post14
+    400034: post14 1
+    400036: post15
+    400038: post15 1
+    400040: post2
+    400042: post2 1
+    400044: post3
+    400046: post3 1
+    400048: post4
+    400050: post4 1
+    400052: post5
+    400054: post5 1
+    400056: post6
+    400058: post6 1
+    400060: post7
+    400062: post7 1
+    400064: post8
+    400066: post8 1
+    400068: post9
+    400070: post9 1
+    400072: railing
+    400074: railing 1
+    400076: road
+    400078: road 1
+    400080: //RootNode
+    400082: switcher 1
+    400084: switcher 2
+    400086: switcher1
+    2300000: barrier
+    2300002: barrier 1
+    2300004: post 1
+    2300006: post 3
+    2300008: post1
+    2300010: post1 1
+    2300012: post10
+    2300014: post10 1
+    2300016: post11
+    2300018: post11 1
+    2300020: post12
+    2300022: post12 1
+    2300024: post13
+    2300026: post13 1
+    2300028: post14
+    2300030: post14 1
+    2300032: post15
+    2300034: post15 1
+    2300036: post2
+    2300038: post2 1
+    2300040: post3
+    2300042: post3 1
+    2300044: post4
+    2300046: post4 1
+    2300048: post5
+    2300050: post5 1
+    2300052: post6
+    2300054: post6 1
+    2300056: post7
+    2300058: post7 1
+    2300060: post8
+    2300062: post8 1
+    2300064: post9
+    2300066: post9 1
+    2300068: railing
+    2300070: railing 1
+    2300072: road
+    2300074: road 1
+    3300000: barrier
+    3300002: barrier 1
+    3300004: post 1
+    3300006: post 3
+    3300008: post1
+    3300010: post1 1
+    3300012: post10
+    3300014: post10 1
+    3300016: post11
+    3300018: post11 1
+    3300020: post12
+    3300022: post12 1
+    3300024: post13
+    3300026: post13 1
+    3300028: post14
+    3300030: post14 1
+    3300032: post15
+    3300034: post15 1
+    3300036: post2
+    3300038: post2 1
+    3300040: post3
+    3300042: post3 1
+    3300044: post4
+    3300046: post4 1
+    3300048: post5
+    3300050: post5 1
+    3300052: post6
+    3300054: post6 1
+    3300056: post7
+    3300058: post7 1
+    3300060: post8
+    3300062: post8 1
+    3300064: post9
+    3300066: post9 1
+    3300068: railing
+    3300070: railing 1
+    3300072: road
+    3300074: road 1
+    4300000: road
+    4300002: barrier
+    4300004: railing
+    4300006: post
+    4300008: post1
+    4300010: post2
+    4300012: post3
+    4300014: post4
+    4300016: post5
+    4300018: post6
+    4300020: post7
+    4300022: post8
+    4300024: post9
+    4300026: post10
+    4300028: post11
+    4300030: post12
+    4300032: post13
+    4300034: post15
+    4300036: post14
+    4300038: road
+    4300040: barrier
+    4300042: railing
+    4300044: post
+    4300046: post1
+    4300048: post2
+    4300050: post3
+    4300052: post4
+    4300054: post5
+    4300056: post6
+    4300058: post7
+    4300060: post8
+    4300062: post9
+    4300064: post10
+    4300066: post11
+    4300068: post12
+    4300070: post13
+    4300072: post15
+    4300074: post14
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
