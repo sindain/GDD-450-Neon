@@ -479,11 +479,11 @@ public class GameManager : NetworkManager
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceFinished))
       return;
 
-    //TODO:  Insert end race screen and transition phase
     GameState = GAME_STATE.RaceFinished;
     foreach(GameObject p in players){
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
-      _NetPlayer.incPoints(POINTS[_NetPlayer.iPlace-1]);
+      _NetPlayer.incPoints(POINTS[_NetPlayer.iPlace-1] + (_NetPlayer.hasFlag() ? 4 : 0));
+      _NetPlayer.incFlags (_NetPlayer.hasFlag()?1:0);
       if(_NetPlayer.isHuman())
         _NetPlayer.RpcShowScoreboard();
       else

@@ -192,7 +192,8 @@ public class SpHUD : MonoBehaviour
           slot.FindChild ("Name").GetComponent<Text> ().text = "Player " + (_NP.getPlayerNum() + 1).ToString();
           //Points
           slot.FindChild ("Points").GetComponent<Text> ().text = 
-            _NP.getPoints () - GameManager.POINTS [_NP.getPlace () - 1] + "+" + GameManager.POINTS [_NP.getPlace () - 1];
+            _NP.getPoints () - GameManager.POINTS [_NP.getPlace () - 1] - (_NP.hasFlag() ? 4 : 0) + "+" + 
+            (GameManager.POINTS [_NP.getPlace () - 1] + (_NP.hasFlag() ? 4 : 0));
           //Flag caps
           slot.FindChild ("Flags").GetComponent<Text> ().text = _NP.getFlags ().ToString ();
           //Time
@@ -210,7 +211,7 @@ public class SpHUD : MonoBehaviour
         foreach (GameObject p in players){
           NetPlayer _NP = p.GetComponent<NetPlayer> ();
           Transform slot = Scorboard.transform.FindChild ("Slots").GetChild (_NP.getPlace () - 1);
-          int liPoints = Mathf.FloorToInt (GameManager.POINTS [_NP.getPlace()-1] - fdt);
+          int liPoints = Mathf.FloorToInt (GameManager.POINTS [_NP.getPlace()-1] - fdt + (_NP.hasFlag() ? 4 : 0));
           if (liPoints <= 0.0f)
             slot.FindChild ("Points").GetComponent<Text> ().text = _NP.getPoints ().ToString();
           else

@@ -69,14 +69,22 @@ public class NetPlayer : NetworkBehaviour
       return;
     } // if (Track == null)
     Transform spawnPosition = track.transform.FindChild ("Start Positions").transform.GetChild (iPlace-1).transform;
-    //Set our ship in its correct spawn location
+    //Set our ship in its correct spawn location and reset values for next race
     ship.transform.position = spawnPosition.position;
     ship.transform.rotation = spawnPosition.rotation;
     ship.GetComponent<Rigidbody>().velocity = Vector3.zero;
     ship.GetComponent<ThrusterController> ().setbMagnetize (false);
+    PlayerController _PlayerController = ship.GetComponent<PlayerController> ();
+    ShipStats _ShipStats = ship.GetComponent<ShipStats> ();
+    _PlayerController.setEnergy (_ShipStats.fMaxEnergy);
+    _PlayerController.setHealth (_ShipStats.fMaxHealth);
+    _PlayerController.setCurrentThrust (0.0f);
+    if (bHasFlag)
+      toggleFlag ();
+    
     //Find and set first waypoint
     ship.GetComponent<PlayerController> ().setCurrentPoint (track.transform.GetChild (0).FindChild ("start_finish").FindChild ("Waypoints").GetChild (0).gameObject);
-    //TODO: Move this to its appropriate place later.
+
     iLap = 0;
     iNumWaypointsHit = 0;
 

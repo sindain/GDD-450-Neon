@@ -300,55 +300,8 @@ public class PlayerController : NetworkBehaviour
       _NetPlayer.CmdCaptureFlag ();
       other.transform.parent.GetComponent<FlagGate> ().CmdTurnOff ();
       break;
-  	case "HealthGate":
-  		fCurrentHealth += 50;
-  	  if (fCurrentHealth > 100) {
-  		  fCurrentHealth = 100;
-
-	}
-			if(fCurrentHealth >=100){
-        gameObject.transform.FindChild ("Model").GetChild (0).gameObject.SetActive (true);
-        gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-				modelChild = 0;
-			}
-			else if (fCurrentHealth < 100 && fCurrentHealth >=80)
-			{
-        gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (true);
-        gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-				modelChild = 1;
-			}
-			else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
-			{
-        gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (true);
-        gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-				modelChild = 2;
-			}
-			else if (fCurrentHealth < 60 && fCurrentHealth >=40)
-			{
-        gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (true);
-        gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-				modelChild = 3;
-			}
-			else{
-        gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-        gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (true);
-				modelChild = 4;
-			}
+    case "HealthGate":
+      updHealth (50.0f);
 	break;
 
     }
@@ -405,11 +358,11 @@ public class PlayerController : NetworkBehaviour
       break;
 
     case"Player":
-      NetPlayer otherNP = collision.gameObject.GetComponent<PlayerController> ().getNetPlayer ();
-      if (otherNP.hasFlag ()){
-        print ("HasFlag");
-        _NetPlayer.CmdRequestFlagChange (otherNP.getPlayerNum ());
-      }
+      if(_NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.Racing){
+        NetPlayer otherNP = collision.gameObject.GetComponent<PlayerController> ().getNetPlayer ();
+        if (otherNP.hasFlag ())
+          _NetPlayer.CmdRequestFlagChange (otherNP.getPlayerNum ());
+      } //End if(_NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.Racing)
 
       break;
 
@@ -420,54 +373,7 @@ public class PlayerController : NetworkBehaviour
     if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
     
-    fCurrentHealth -= 5;
-    fDamageTimer += fDamageCooldown;
-    gameObject.GetComponent<AudioSource>().PlayOneShot(soundEffects[0]);
-
-    if(fCurrentHealth >=100){
-      gameObject.transform.FindChild ("Model").GetChild (0).gameObject.SetActive (true);
-      gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-        modelChild = 0;
-    }
-    else if (fCurrentHealth < 100 && fCurrentHealth >=80)
-    {
-      gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (true);
-      gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-        modelChild = 1;
-    }
-    else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
-    {
-      gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (true);
-      gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-        modelChild = 2;
-    }
-    else if (fCurrentHealth < 60 && fCurrentHealth >=40)
-    {
-      gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (true);
-      gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (false);
-        modelChild = 3;
-    }
-    else{
-      gameObject.transform.FindChild("Model").GetChild(0).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(1).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(2).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(3).gameObject.SetActive (false);
-      gameObject.transform.FindChild("Model").GetChild(4).gameObject.SetActive (true);
-        modelChild = 4;
-    }
-    
+    updHealth (-5.0f);   
 
     if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25){
       //fMaxVelocity -= 5;
@@ -477,8 +383,6 @@ public class PlayerController : NetworkBehaviour
       } //End for (int i = 0; i < 4; i++)
       CmdSpawnPieces();
     } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
-
-    
   } //End void OnCollisionEnter(Collision collision)
 
   [ClientRpc]
@@ -510,10 +414,39 @@ public class PlayerController : NetworkBehaviour
 
   public float getDisplayEnergy(){return fCurrentEnergy / _ShipStats.fMaxEnergy * 100;}
   public float getHealth(){return fCurrentHealth;}
-  public void setHealth(float health) {fCurrentHealth = health;}
+  public void setHealth(float health) {
+    fCurrentHealth = health;
+    updHealth (0);
+  }
+  private void updHealth(float pfVal){
+    fCurrentHealth += pfVal;
+    if (pfVal < 0){
+      fDamageTimer += fDamageCooldown;
+      gameObject.GetComponent<AudioSource> ().PlayOneShot (soundEffects [0]);
+    }
+    fCurrentHealth = Mathf.Clamp (fCurrentHealth, 0, _ShipStats.fMaxHealth);
+
+    if(fCurrentHealth >=100)
+      setModel (0);
+
+    else if (fCurrentHealth < 100 && fCurrentHealth >=80)
+      setModel (1);
+
+    else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
+      setModel (2);
+
+    else if (fCurrentHealth < 60 && fCurrentHealth >=40)
+      setModel (3);
+
+    else
+      setModel (4);
+  }
 
   public float getEnergy() { return fCurrentEnergy; }
   public void setEnergy(float energy) { fCurrentEnergy = energy; }
+
+  public float getCurrentThrust(){return fThrustCurrent;}
+  public void setCurrentThrust(float pfCurrentThrust){fThrustCurrent = pfCurrentThrust;}
 
   public bool getCameraControl (){return bCameraControl;}
   public void setCameraControl (bool pbCameraControl){bCameraControl = pbCameraControl;}
@@ -525,5 +458,12 @@ public class PlayerController : NetworkBehaviour
   public void setNetPlayer(NetPlayer pNetPlayer){_NetPlayer = pNetPlayer;}
 
   public ShipStats getShipStats(){return _ShipStats;}
- 
+
+  public void setModel(int piVal){
+
+    for(int i = 0; i<5; i++)
+      gameObject.transform.FindChild("Model").GetChild(i).gameObject.SetActive (i == piVal ? true : false);
+    
+    modelChild = piVal;
+  } 
 }
