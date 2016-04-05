@@ -301,7 +301,7 @@ public class PlayerController : NetworkBehaviour
       other.transform.parent.GetComponent<FlagGate> ().CmdTurnOff ();
       break;
     case "HealthGate":
-      updHealth (50.0f);
+      updHealth (20.0f);
 	break;
 
     }
