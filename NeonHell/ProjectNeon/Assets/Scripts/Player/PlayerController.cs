@@ -164,7 +164,7 @@ public class PlayerController : NetworkBehaviour
     if(bTesting)
       rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque, ForceMode.Acceleration);
     else
-      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *1.5f) * rb.angularDrag * fTorque, ForceMode.Acceleration);
+      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *2.5f) * rb.angularDrag * fTorque, ForceMode.Acceleration);
     
     //If the player is close to the something, allow moving forward
     if (!lbIsAirborne) {
@@ -189,7 +189,7 @@ public class PlayerController : NetworkBehaviour
       fThrustCurrent = Mathf.Clamp (fThrustCurrent, 0, _ShipStats.fAcceleration);
       float fPercThrustPower = Mathf.Log (c * fThrustCurrent + 1);
 
-      float lfTotalThrust = _ShipStats.fMaxVelocity;
+      float lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 30.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 2.0f * _NetPlayer.getPlace();
 
       if ((bManuallyBoosting && fCurrentEnergy > 0.0f)) {
 				rb.AddForce(rb.transform.forward * 35.0f * rb.mass);
@@ -211,7 +211,7 @@ public class PlayerController : NetworkBehaviour
       if(bTesting)
         forwardForce= transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
       else
-        forwardForce= transform.forward * (_NetPlayer.isHuman()?lfTotalThrust*1.0f:lfTotalThrust*1.2f) * fPercThrustPower * rb.mass;
+        forwardForce= transform.forward * lfTotalThrust * fPercThrustPower * rb.mass;
       rb.AddForce (forwardForce);
 
       //Brake force
@@ -348,11 +348,14 @@ public class PlayerController : NetworkBehaviour
     switch(collision.gameObject.tag){
     case "Wall":
       Vector3 force = Vector3.zero;
+      Vector3 normal = Vector3.zero;
 
       foreach (ContactPoint c in collision.contacts){
         force += c.normal * collision.impulse.magnitude / collision.contacts.Length;
+        normal += c.normal;
       }
-      rb.AddForce (force, ForceMode.Impulse);
+      //Add a minimum force of 50000 newtons along the normal
+      rb.AddForce (force.magnitude < 10000.0f ? normal * 10000.0f : force, ForceMode.Impulse);
       rb.angularVelocity = Vector3.zero;
 
       break;
