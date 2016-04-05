@@ -78,7 +78,7 @@ public class PlayerController : NetworkBehaviour
 
     if(fDamageTimer >= 0)
       fDamageTimer = fDamageTimer - Time.deltaTime;
-
+    
 	if(Input.GetKey(KeyCode.R)) {
 		SucTimer += 1.0f*Time.deltaTime;
 	}
@@ -133,6 +133,9 @@ public class PlayerController : NetworkBehaviour
     
     if (bCameraControl || bTesting) {
       Camera cam = Camera.main;
+      GameObject minimap = GameObject.FindGameObjectWithTag("minimap");
+      minimap.transform.position = Vector3.Slerp(minimap.transform.position, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 30, gameObject.transform.position.z), _ShipStats.fSlerpTime);
+
       cam.transform.position = Vector3.Slerp (cam.transform.position, transform.position + transform.rotation * _ShipStats.vCameraOffset, _ShipStats.fSlerpTime);
       cam.transform.rotation = Quaternion.Slerp (cam.transform.rotation, transform.rotation, _ShipStats.fSlerpTime);
     }
