@@ -17,6 +17,7 @@ public class NetPlayer : NetworkBehaviour
   [SyncVar] public int iPoints = 0;
   [SyncVar] public int iFlags = 0;
   [SyncVar] public float fRaceTime;
+  [SyncVar] public bool bHasFlag = false;
   [SyncVar] public bool bIsHuman = false;
   public NetworkConnection connection;
   [SyncVar] public GameObject ship;
@@ -25,6 +26,8 @@ public class NetPlayer : NetworkBehaviour
   public string trackName;
 
   private float fStartTimer;
+  private float fFlagCD = 0.0f;
+  private float fFlagCDTime = 1.5f;
 
   void Start (){
     DontDestroyOnLoad (transform.gameObject);
@@ -32,14 +35,20 @@ public class NetPlayer : NetworkBehaviour
   }
 
   void Update(){
+    //Countdown timer transition into racing
     if(!bIsHuman && PlayerState == PLAYER_STATE.RaceReady && fStartTimer > 0){
       fStartTimer = fStartTimer - Time.deltaTime < 0 ? 0 :fStartTimer - Time.deltaTime;
       if(fStartTimer == 0)
         CmdChangeState(PLAYER_STATE.Racing);
     }
+    //Increment race time
     if ((isLocalPlayer || isServer) && PlayerState == PLAYER_STATE.Racing){
       fRaceTime += Time.deltaTime;
     }
+    //Decrement flag cooldown timer
+    if(isServer && PlayerState == PLAYER_STATE.Racing && fFlagCD > 0.0f)
+      fFlagCD = fFlagCD - Time.deltaTime <= 0.0f ? 0.0f : fFlagCD - Time.deltaTime;
+      
   }
 
   public void Setup (int piPlayerNum, bool pbIsHuman){
@@ -122,6 +131,12 @@ public class NetPlayer : NetworkBehaviour
   private void CmdChangeState(PLAYER_STATE state){
     PlayerState = state;
     GameObject.Find ("GameManager").GetComponent<GameManager> ().checkPlayerStates ();
+    if(state == PLAYER_STATE.VehicleSelectReady)
+      RpcVehicleReady(true);
+    else if(state == PLAYER_STATE.VehicleSelect){
+      RpcVehicleReady(false);      
+      RpcReturnToVehicleSelection();
+    }
   }
 
   [Command] 
@@ -140,6 +155,29 @@ public class NetPlayer : NetworkBehaviour
   [Command]
   public void CmdUpdRaceTime(float pfValue){
     setRaceTime (pfValue);
+  }
+
+  [Command]
+  public void CmdRequestFlagChange(int piOtherPlayerNum){
+    GameManager GM = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+    NetPlayer otherNP = GM.players [piOtherPlayerNum].GetComponent<NetPlayer>();
+    if(otherNP.fFlagCD == 0.0f && otherNP.hasFlag()){
+      toggleFlag ();
+      otherNP.toggleFlag ();
+    }
+  }
+
+  [Command]
+  public void CmdCaptureFlag(){
+    bool lbResult = false;
+    //Check each player to see if anyone has flag
+    foreach (GameObject p in GameObject.Find("GameManager").GetComponent<GameManager>().players)
+      if (p.GetComponent<NetPlayer> ().hasFlag ())
+        lbResult = true;
+    //If no one has the flag, then this player has it.
+    if (!lbResult){
+      toggleFlag ();
+    }
   }
 
   [ClientRpc]
@@ -227,6 +265,17 @@ public class NetPlayer : NetworkBehaviour
     GameObject.Find("UI").GetComponent<SpHUD>().startRaceOverTimer();
   }
 
+  [ClientRpc]
+  public void RpcVehicleReady(bool pbValue){
+    GameObject.Find("MainMenu").transform.FindChild("VehicleSelection").FindChild("Players").GetChild(iPlayerNum).FindChild("Background").GetComponent<Image>().color = new Color(38.0f/255.0f,198.0f/255.0f,0.0f,pbValue?255.0f/255.0f:0.0f);
+  }
+
+  [ClientRpc]
+  public void RpcReturnToVehicleSelection(){
+    if(isLocalPlayer && bIsHuman)
+      GameObject.Find("MainMenu").transform.FindChild("MapSelection").GetComponent<MapSelection>().returnToVehicleSelection();
+  }
+
 //----------------------------------------------Getters and Setters-----------------------------------------------------
 
   public int getShipChoice(){return iShipChoice;}
@@ -272,6 +321,14 @@ public class NetPlayer : NetworkBehaviour
   public float getRaceTime(){return fRaceTime;}
   public void setRaceTime(float pfValue){fRaceTime = pfValue;}
 
+  public bool hasFlag(){return bHasFlag;}
+  public void setHasFlag(bool pbHasFlag){bHasFlag = pbHasFlag;}
+  public void toggleFlag(){
+    bHasFlag = !bHasFlag;
+    fFlagCD = fFlagCDTime;
+    ship.GetComponent<PlayerController> ().transform.FindChild ("Flag").gameObject.SetActive (bHasFlag);
+  }
+
   public bool isHuman(){return bIsHuman;}
   public void setIsHuman(bool pbIsHuman){bIsHuman = pbIsHuman;}
 
@@ -280,7 +337,7 @@ public class NetPlayer : NetworkBehaviour
     CmdChangeState (pState);
     //Finalize race time once race if over.
     if (pState == PLAYER_STATE.RaceFinished)
-      CmdUpdRaceTime (fRaceTime);
+      CmdUpdRaceTime (fRaceTime);      
   }
 	public void OnExitClicked (){
 		CmdPeacOut ();

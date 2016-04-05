@@ -32,10 +32,13 @@ public class MapSelection : MonoBehaviour {
 
     foreach (GameObject i in players) {
       NetPlayer netPlayer = i.GetComponent<NetPlayer> ();
-      if (netPlayer.isLocalPlayer)
-        netPlayer.setPlayerState(NetPlayer.PLAYER_STATE.VehicleSelect);
+      netPlayer.setPlayerState(netPlayer.isHuman()?NetPlayer.PLAYER_STATE.VehicleSelect : NetPlayer.PLAYER_STATE.VehicleSelectReady);
     } 
+  }
+
+  public void returnToVehicleSelection(){
     transform.parent.FindChild ("VehicleSelection").gameObject.SetActive (true);
+    transform.parent.FindChild("Wait").gameObject.SetActive(false);
     gameObject.SetActive (false);
   }
 }

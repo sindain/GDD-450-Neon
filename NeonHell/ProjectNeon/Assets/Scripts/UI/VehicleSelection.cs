@@ -39,8 +39,8 @@ public class VehicleSelection : MonoBehaviour
   //Returns:
   //--------------------------------------------------------------------------------------------------------------------
   public void changePlayerPortrait (int piPlayer, int piChoice){    
-    transform.FindChild("Players").GetChild(piPlayer).GetComponent<Image>().sprite = 
-      transform.FindChild("Vehicles").GetChild(piChoice).GetComponent<Image>().sprite;
+    transform.FindChild("Players").GetChild(piPlayer).FindChild("Foreground").GetComponent<Image>().sprite = 
+      transform.FindChild("Vehicles").GetChild(piChoice).FindChild("Foreground").GetComponent<Image>().sprite;
   }
 
   public void onReadyClicked (){
