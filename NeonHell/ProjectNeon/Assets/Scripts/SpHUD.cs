@@ -88,7 +88,6 @@ public class SpHUD : MonoBehaviour
       switch (miniMapZoom)
       {
         case 0:
-          print(GameObject.FindGameObjectWithTag("minimap"));
           GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
           HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
           GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 50;

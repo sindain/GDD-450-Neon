@@ -21,11 +21,11 @@ public class GameManager : NetworkManager
   public GAME_STATE GameState;
   public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
                                                  "CitySmall", "CityMed", "CityLarge", //Ar Circuit
-                                                 "CityMed", "CityLarge", "CityXL", //Xe Circuit
+                                                 "CityMed", "CityLarge", "CityLarge", //Xe Circuit
                                                  "CityMed", "CityXL", "CityXL"}; //Noble Circuit
   public readonly string[] TRACK_NAMES = new string[12]{"InfTrack", "T-Track", "OverUnder", //He Circuit
                                                         "T-Split", "Mobius","JumpBridge", //Ar Circuit
-                                                        "","","", //Xe Circuit
+                                                        "LoopTheLoop","WallRider","ThreadTheNeedle", //Xe Circuit
                                                         "","",""}; //Noble Circuit
   public static readonly int[] POINTS = {9,8,5,4,3,2,1,0};
   public string[] circuitScenes;

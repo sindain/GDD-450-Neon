@@ -70,15 +70,15 @@ public class ThrusterController : MonoBehaviour {
 					return;
 				if((hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
 					return;
-        if (hit.transform.tag == "KillPlane")
+        if (hit.transform.tag == "KillPlane" || hit.transform.tag == "Wall")
 					return;
         if (hit.transform.gameObject == gameObject)
           return;
           				
 				//Calculate g force to apply on each thruster
-        if(hit.distance <= fThrustDistance || hit.transform.gameObject.tag == "Wall")
+        if(hit.distance <= fThrustDistance)
 					fGForce = ((fGMax - 1)/Mathf.Pow(fThrustDistance, 2)) * Mathf.Pow(hit.distance - fThrustDistance,2) + 1;
-        else if(hit.distance > fThrustDistance && !bMagnetize || hit.transform.tag == "Wall")
+        else if(hit.distance > fThrustDistance && !bMagnetize)
 					fGForce = (1/Mathf.Pow(fThrustDistance - alpha * fThrustDistance, 2)) * Mathf.Pow(hit.distance - alpha*fThrustDistance, 2);
 				else{
 					fGMax *= 1.5f;
