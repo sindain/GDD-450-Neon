@@ -17,5 +17,10 @@ public class FlagGate : NetworkBehaviour {
   [Command]
   public void CmdTurnOff(){
     transform.FindChild ("FlagGate").gameObject.SetActive (false);
+    RpcTurnOff ();
+  }
+  [ClientRpc]
+  public void RpcTurnOff(){
+    transform.FindChild ("FlagGate").gameObject.SetActive (false);
   }
 }

@@ -335,6 +335,11 @@ public class NetPlayer : NetworkBehaviour
     bHasFlag = !bHasFlag;
     fFlagCD = fFlagCDTime;
     ship.GetComponent<PlayerController> ().transform.FindChild ("Flag").gameObject.SetActive (bHasFlag);
+    RpcToggleFlag (bHasFlag);
+  }
+  [ClientRpc]
+  public void RpcToggleFlag(bool val){
+    ship.GetComponent<PlayerController> ().transform.FindChild ("Flag").gameObject.SetActive (val);
   }
 
   public bool isHuman(){return bIsHuman;}
