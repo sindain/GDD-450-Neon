@@ -63,7 +63,7 @@ public class SpHUD : MonoBehaviour
     //Trans = GameManager.TRANSITION.None;
     //countdownText.color = Color.red;
     //countdownText.text = "3";
-    countdownText.text = "";
+    //countdownText.text = "";
     PlayerPrefs.SetFloat ("start", 0);
 	  IsPaused = false;
   }
@@ -128,7 +128,14 @@ public class SpHUD : MonoBehaviour
       UpdateHUD ();
       fTimer -= Time.deltaTime;
       if(fTimer > 0){
-        cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt (fTimer)];
+        if (fTimer > 3)
+        {
+          cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)-1];
+        }
+        else
+        {
+          cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)];
+        }
         //countdownText.color = countdownColors [Mathf.CeilToInt (fTimer)];
       }
       else if (fTimer <= 0 && fTimer > -1){
@@ -139,7 +146,7 @@ public class SpHUD : MonoBehaviour
         //countdownText.color = Color.green;
       } // End if (fStartTimer < 0)
       if (fTimer <= -1){
-        transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (false);
+        //transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (false);
         UIState = UI_STATE.HUD;
         cdtimer.SetActive(false);
       } //End if (fStartTimer <= -500)
@@ -304,12 +311,12 @@ public class SpHUD : MonoBehaviour
   public void startCountdown(){
     UIState = UI_STATE.Countdown;
     fTimer = 4.0f;
-    transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (true);
+    //transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (true);
   	HUD.GetComponent<Image>().sprite = Huds [_NetPlayer.iShipChoice];
   	HUD.GetComponent<Image> ().enabled = true;
     HUD.transform.FindChild("MiniMapBack").GetComponent<Image>().sprite = MapBorders[_NetPlayer.iShipChoice];
-    countdownText.text = "3";
-    countdownText.color = Color.red;
+    //countdownText.text = "3";
+    //countdownText.color = Color.red;
   } //End public void startCountdown()
 
   public void startRaceOverTimer(){
