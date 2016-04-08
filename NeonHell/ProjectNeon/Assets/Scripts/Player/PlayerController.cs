@@ -27,12 +27,17 @@ public class PlayerController : NetworkBehaviour
   private float rotationVelocityX = 0.0f;
   private float rotationVelocityZ = 0.0f;
   private float fRotationSeekSpeed = 0.6f;
-  //private float fBoostTime = 0.25f;
   private float fBoostTargetTime;
   private float fThrustCurrent;
   private float fTurnThreshold;
   private float fDamageTimer;
   private float fDamageCooldown = 5.0f;
+  public float fVelResetTimer;
+  private float fVelResetTimerLimit = 1.5f;
+  public float fColResetTimer;
+  private float fColResetTimerLimit = 1.5f;
+  public float fResetTimer;
+  private float fResetTimerLimit = 3.0f;
   private bool  bCameraControl = false;
   private bool  bManuallyBoosting = false;
 	public bool bPaused = false;
@@ -44,7 +49,13 @@ public class PlayerController : NetworkBehaviour
   private float SucTimer = 0.0f;
   private AudioSource engine;
   public int modelChild;
-  // Use this for initialization
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         Start
+  //Description:  Default start function, nothing special here
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   void Start (){
     engine = gameObject.AddComponent<AudioSource>();
     engine.clip = soundEffects[1];
@@ -70,28 +81,51 @@ public class PlayerController : NetworkBehaviour
   }
   //End void Start()
 	
-  // Update is called once per frame
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         Update
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   void Update (){
       engine.pitch = 1+ (rb.velocity.magnitude / gameObject.GetComponent<ShipStats>().fMaxVelocity);
-    if (!hasAuthority && !bTesting)
+    if (!checkPrivilege ())
       return;
 
     if(fDamageTimer >= 0)
       fDamageTimer = fDamageTimer - Time.deltaTime;
     
-	if(Input.GetKey(KeyCode.R)) {
-		SucTimer += 1.0f*Time.deltaTime;
-	}
-	if (SucTimer >= 1.0f) {
-		transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
-		transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
-		gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-		gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
-		SucTimer = 0.0f;
-	}
-	if(Input.GetKeyUp (KeyCode.R)) {
-		SucTimer = 0.0f;
-	}
+  	if(Input.GetKey(KeyCode.R)) 
+  		SucTimer += Time.deltaTime;
+
+    else if(Input.GetKeyUp (KeyCode.R)) 
+      SucTimer = 0.0f;
+    
+  	if (SucTimer >= 0.5f) {
+      ResetToWaypoint ();
+  		SucTimer = 0.0f;
+  	}
+
+    if (_NetPlayer.getPlayerState () != NetPlayer.PLAYER_STATE.Racing){
+      fColResetTimer = 0.0f;
+      fVelResetTimer = 0.0f;
+      fResetTimer = 0.0f;
+      return;
+    }
+    
+    fColResetTimer = fColResetTimer - Time.deltaTime <= 0.0f ? 0.0f : fColResetTimer - Time.deltaTime;
+    fVelResetTimer = fVelResetTimer - Time.deltaTime <= 0.0f ? 0.0f : fVelResetTimer - Time.deltaTime;
+    //If the player is going under 5 m/s and they recently collided with something
+    if (fColResetTimer != 0.0f && fVelResetTimer != 0.0f)
+        fResetTimer = fResetTimer - Time.deltaTime <= 0.0f ? 0.0f : fResetTimer - Time.deltaTime;
+    else
+      fResetTimer = fResetTimerLimit;
+
+    if (fResetTimer == 0.0f){
+      ResetToWaypoint ();
+      fResetTimer = fResetTimerLimit;
+    }
+  	
     bManuallyBoosting = Input.GetKey (KeyCode.Space);
 
     if (!bManuallyBoosting){
@@ -100,17 +134,23 @@ public class PlayerController : NetworkBehaviour
     } //End if (!bManuallyBoosting)
   } //End void Update()
 
-  //FixedUpdate is called every frame
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         FixedUpdate
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   void FixedUpdate (){
     
     if (_NetPlayer == null && !bTesting)
       return;
     //Only continue if the player has authority of this ship, or is an NPC, or testing
-    if (!bTesting){
-      if ((_NetPlayer.isHuman () && !hasAuthority) &&
-        (!_NetPlayer.isHuman () && !isServer))
-        return;
-    }
+    if (!checkPrivilege ())
+      return;
+
+    //Reset Velocity reset timer if its under 5 m/s
+    if (rb.velocity.magnitude < 1.0f)
+      fVelResetTimer = fVelResetTimerLimit;
 
     //Vector help keep the ship upright
     float fTorque = 0.0f;
@@ -126,8 +166,10 @@ public class PlayerController : NetworkBehaviour
     //Right the ship if it is airborne
     if(lbIsAirborne){
       newRotation = transform.eulerAngles;
-      newRotation.x = Mathf.SmoothDampAngle (newRotation.x, 0.0f, ref rotationVelocityX, fRotationSeekSpeed);
-      newRotation.z = Mathf.SmoothDampAngle (newRotation.z, 0.0f, ref rotationVelocityZ, fRotationSeekSpeed);
+      newRotation.x = Mathf.SmoothDampAngle (newRotation.x, currentPoint == null? 0.0f : currentPoint.transform.eulerAngles.x, ref rotationVelocityX, fRotationSeekSpeed);
+      newRotation.z = Mathf.SmoothDampAngle (newRotation.z, currentPoint == null? 0.0f : currentPoint.transform.eulerAngles.z, ref rotationVelocityZ, fRotationSeekSpeed);
+      if(_NetPlayer.isHuman())
+        print (currentPoint == null ? 0.0f : currentPoint.transform.rotation.x);
       transform.eulerAngles = newRotation;
     } //End if(lbAirborne)
     
@@ -135,7 +177,6 @@ public class PlayerController : NetworkBehaviour
       Camera cam = Camera.main;
       GameObject minimap = GameObject.FindGameObjectWithTag("minimap");
       minimap.transform.position = Vector3.Slerp(minimap.transform.position, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 30, gameObject.transform.position.z), _ShipStats.fSlerpTime);
-
       cam.transform.position = Vector3.Slerp (cam.transform.position, transform.position + transform.rotation * _ShipStats.vCameraOffset, _ShipStats.fSlerpTime);
       cam.transform.rotation = Quaternion.Slerp (cam.transform.rotation, transform.rotation, _ShipStats.fSlerpTime);
     }
@@ -143,6 +184,8 @@ public class PlayerController : NetworkBehaviour
     if(!bTesting)
 		if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing || bPaused)
         return;
+
+    //
 
     //Apply torque, e.g. turn the ship left and right
     if(bTesting)
@@ -222,19 +265,17 @@ public class PlayerController : NetworkBehaviour
 		else
       rb.drag = 0.0f;
   } // End void FixedUpdate()
-
+    
   //-----------------------------------------------------------------------------------------------------------------
-  //Name: 		OnTriggerEnter
+  //Name: 		    OnTriggerEnter
   //Description:	Handles events that occure when entering a trigger
   //Parameters:   Collider other - What the object has collided with
+  //Return:       NA
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
-    if (!bTesting){
-      //Only continue if the player has authority of this ship, or is an NPC
-      if ((_NetPlayer.isHuman () && !hasAuthority) ||
-        (!_NetPlayer.isHuman () && !isServer))
-        return;
-    }
+    if (!checkPrivilege ())
+      return;
+    
     switch (other.tag) {
     case "Waypoint":
       if (currentPoint == null || _NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing)
@@ -268,20 +309,16 @@ public class PlayerController : NetworkBehaviour
     case "KillPlane":
       if (gameObject == null || currentPoint == null)
         return;
-      transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
-      transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
-      gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
-      gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+      ResetToWaypoint ();
       break;
-//		case "+Booster":
-//			fBoostTargetTime = Time.time + fBoostTime;
-//			BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
-//			BoostDir = other.transform.right;
-//      break;
-//    case "-Booster":
-//      fBoostTargetTime = Time.time + fBoostTime;
-//      BoostType = _ShipStats.Polarity == -1 ? 1 : -1;
-//      break;
+    case "+Booster": //blue and 1
+      if(_ShipStats.Polarity == 1)
+        rb.AddForce (rb.mass * 8.0f * other.transform.right, ForceMode.Impulse);
+      break;
+    case "-Booster": //red and -1
+      if(_ShipStats.Polarity == -1)
+        rb.AddForce (rb.mass * 8.0f * other.transform.right, ForceMode.Impulse);
+      break;
     case "SwitchGate":
       if (_ShipStats.Polarity == 0)
         return;
@@ -302,17 +339,24 @@ public class PlayerController : NetworkBehaviour
       break;
     case "HealthGate":
       updHealth (20.0f);
+      fCurrentEnergy += _ShipStats.fMaxEnergy * 0.2f;
+      if (fCurrentEnergy > _ShipStats.fMaxEnergy)
+        fCurrentEnergy = _ShipStats.fMaxEnergy;
 	break;
 
     }
   }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         OnTriggerStay
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
 	void OnTriggerStay (Collider other){
-		if (!bTesting){
-			//Only continue if the player has authority of this ship, or is an NPC
-			if ((_NetPlayer.isHuman () && !hasAuthority) ||
-				(!_NetPlayer.isHuman () && !isServer))
-				return;
-		}
+    if (!checkPrivilege ())
+      return;
+    
 		switch (other.tag) {
 		case "+Booster":
 			BoostType = _ShipStats.Polarity == 1 ? 1 : -1;
@@ -325,13 +369,16 @@ public class PlayerController : NetworkBehaviour
 		}
 	}
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         OnTriggerExit
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
 	void OnTriggerExit (Collider other){
-		if (!bTesting){
-			//Only continue if the player has authority of this ship, or is an NPC
-			if ((_NetPlayer.isHuman () && !hasAuthority) ||
-				(!_NetPlayer.isHuman () && !isServer))
-				return;
-		}
+    if (!checkPrivilege ())
+      return;
+    
 		switch (other.tag) {
 		case "+Booster":
 			BoostType = 0;
@@ -342,9 +389,20 @@ public class PlayerController : NetworkBehaviour
 		}
 	}
 
-
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         OnCollisionEnter
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   void OnCollisionEnter(Collision collision){
       
+    if (!checkPrivilege ())
+      return;
+
+    //Restart collision timer.
+    fColResetTimer = fColResetTimerLimit;
+
     switch(collision.gameObject.tag){
     case "Wall":
       Vector3 force = Vector3.zero;
@@ -361,7 +419,9 @@ public class PlayerController : NetworkBehaviour
       break;
 
     case"Player":
-      if(_NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.Racing){
+      //Make sure both players are racing before checking to swap the flag
+      if(_NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.Racing && 
+        collision.gameObject.GetComponent<PlayerController>().getNetPlayer().getPlayerState() == NetPlayer.PLAYER_STATE.Racing){
         NetPlayer otherNP = collision.gameObject.GetComponent<PlayerController> ().getNetPlayer ();
         if (otherNP.hasFlag ())
           _NetPlayer.CmdRequestFlagChange (otherNP.getPlayerNum ());
@@ -371,7 +431,7 @@ public class PlayerController : NetworkBehaviour
 
     default:
       break;
-    }
+    } //End switch(collision.gameObject.tag)
 
     if (fCurrentHealth == 0 || fDamageTimer > 0 || !hasAuthority)
         return;
@@ -388,16 +448,95 @@ public class PlayerController : NetworkBehaviour
     } //End if ((int)fCurrentHealth/25 > (int)(fCurrentHealth-10)/25)
   } //End void OnCollisionEnter(Collision collision)
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         onCollisionStay
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
+  void OnCollisionStay(Collision collisionInfo) {
+    if (!checkPrivilege ())
+      return;
+
+    //Restart collision timer.
+    fColResetTimer = fColResetTimerLimit;
+
+    if (collisionInfo.gameObject.tag == "Wall"){
+      Vector3 force = Vector3.zero;
+      Vector3 normal = Vector3.zero;
+
+      foreach (ContactPoint c in collisionInfo.contacts){
+        force += c.normal * collisionInfo.impulse.magnitude / collisionInfo.contacts.Length;
+        normal += c.normal;
+      }
+      //Add a minimum force of 50000 newtons along the normal
+      rb.AddForce (force.magnitude < 10000.0f ? normal * 10000.0f : force, ForceMode.Impulse);
+      rb.angularVelocity = Vector3.zero;
+    }
+
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         ResetToWaypoint
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
+  private void ResetToWaypoint(){
+    transform.position = new Vector3 (currentPoint.transform.position.x, currentPoint.transform.position.y, currentPoint.transform.position.z);
+    transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
+    gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
+    gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
+    print ("Reset: " + gameObject.name);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         checkPrivilege
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
+  private bool checkPrivilege(){
+    bool lbResult = true;
+    if (!bTesting){
+      if (_NetPlayer == null)
+        lbResult = false;
+      //Only continue if the player has authority of this ship, or is an NPC
+      else if ((_NetPlayer.isHuman () && !hasAuthority) ||
+              (!_NetPlayer.isHuman () && !isServer))
+        lbResult = false;
+    }
+    return lbResult;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         RpcSetup
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   [ClientRpc]
   public void RpcSetup (){
     DontDestroyOnLoad (transform.gameObject);
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         CmdUpdPlaces
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   [Command]
   public void CmdUpdPlaces(){
     GameObject.Find ("GameManager").GetComponent<GameManager> ().UpdatePlaces ();
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:         CmdSpawnPieces
+  //Description:  
+  //Parameters:   NA
+  //Returns:      NA
+  //--------------------------------------------------------------------------------------------------------------------
   [Command]
   public void CmdSpawnPieces()
   {
@@ -421,6 +560,7 @@ public class PlayerController : NetworkBehaviour
     fCurrentHealth = health;
     updHealth (0);
   }
+
   private void updHealth(float pfVal){
     fCurrentHealth += pfVal;
     if (pfVal < 0){

@@ -336,6 +336,7 @@ public class NetPlayer : NetworkBehaviour
     fFlagCD = fFlagCDTime;
     ship.GetComponent<PlayerController> ().transform.FindChild ("Flag").gameObject.SetActive (bHasFlag);
     RpcToggleFlag (bHasFlag);
+
   }
   [ClientRpc]
   public void RpcToggleFlag(bool val){
