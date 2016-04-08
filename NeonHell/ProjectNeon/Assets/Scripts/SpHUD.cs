@@ -33,6 +33,8 @@ public class SpHUD : MonoBehaviour
   public Sprite[] Huds;
   public Sprite[] MapBorders;
   public Sprite[] ShipIcons;
+  public Sprite[] cDown;
+  public GameObject cdtimer;
   //public Image menu;
 
   public float fTimer;
@@ -54,13 +56,16 @@ public class SpHUD : MonoBehaviour
   public bool IsPaused;
   // Use this for initialization
   void Start (){
+    cdtimer = GameObject.FindGameObjectWithTag("countdown");
+    cdtimer.GetComponent<Image>().sprite = cDown[3];
     //Initialize all variables to their starting positions\
     UIState = UI_STATE.None;
     //Trans = GameManager.TRANSITION.None;
-    countdownText.color = Color.red;
-    countdownText.text = "3";
+    //countdownText.color = Color.red;
+    //countdownText.text = "3";
+    countdownText.text = "";
     PlayerPrefs.SetFloat ("start", 0);
-	IsPaused = false;
+	  IsPaused = false;
   }
 
   // Update is called once per frame
@@ -123,18 +128,20 @@ public class SpHUD : MonoBehaviour
       UpdateHUD ();
       fTimer -= Time.deltaTime;
       if(fTimer > 0){
-        countdownText.text = Mathf.CeilToInt (fTimer).ToString();
-        countdownText.color = countdownColors [Mathf.CeilToInt (fTimer)];
+        cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt (fTimer)];
+        //countdownText.color = countdownColors [Mathf.CeilToInt (fTimer)];
       }
       else if (fTimer <= 0 && fTimer > -1){
         if (_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.RaceReady)
           _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.Racing);
-        countdownText.text = "GO!!!";
-        countdownText.color = Color.green;
+        //countdownText.text = "GO!!!";
+        cdtimer.GetComponent<Image>().sprite = cDown[0];
+        //countdownText.color = Color.green;
       } // End if (fStartTimer < 0)
       if (fTimer <= -1){
         transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (false);
         UIState = UI_STATE.HUD;
+        cdtimer.SetActive(false);
       } //End if (fStartTimer <= -500)
     } //End if(UIState == UI_STATE.Countdown)
 
