@@ -41,7 +41,7 @@ public class PlayerController : NetworkBehaviour
   private bool  bCameraControl = false;
   private bool  bManuallyBoosting = false;
 	public bool bPaused = false;
-  private GameObject currentPoint;
+  public GameObject currentPoint;
   private GameObject direction;
   private Rigidbody rb;
   private NetPlayer _NetPlayer;
@@ -106,11 +106,15 @@ public class PlayerController : NetworkBehaviour
   		SucTimer = 0.0f;
   	}
 
-    if (_NetPlayer.getPlayerState () != NetPlayer.PLAYER_STATE.Racing){
-      fColResetTimer = 0.0f;
-      fVelResetTimer = 0.0f;
-      fResetTimer = 0.0f;
-      return;
+    if (_NetPlayer != null)
+    {
+        if (_NetPlayer.getPlayerState() != NetPlayer.PLAYER_STATE.Racing)
+        {
+            fColResetTimer = 0.0f;
+            fVelResetTimer = 0.0f;
+            fResetTimer = 0.0f;
+            return;
+        }
     }
     
     fColResetTimer = fColResetTimer - Time.deltaTime <= 0.0f ? 0.0f : fColResetTimer - Time.deltaTime;
@@ -168,15 +172,14 @@ public class PlayerController : NetworkBehaviour
       newRotation = transform.eulerAngles;
       newRotation.x = Mathf.SmoothDampAngle (newRotation.x, currentPoint == null? 0.0f : currentPoint.transform.eulerAngles.x, ref rotationVelocityX, fRotationSeekSpeed);
       newRotation.z = Mathf.SmoothDampAngle (newRotation.z, currentPoint == null? 0.0f : currentPoint.transform.eulerAngles.z, ref rotationVelocityZ, fRotationSeekSpeed);
-      if(_NetPlayer.isHuman())
-        print (currentPoint == null ? 0.0f : currentPoint.transform.rotation.x);
       transform.eulerAngles = newRotation;
     } //End if(lbAirborne)
     
     if (bCameraControl || bTesting) {
       Camera cam = Camera.main;
       GameObject minimap = GameObject.FindGameObjectWithTag("minimap");
-      minimap.transform.position = Vector3.Slerp(minimap.transform.position, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 30, gameObject.transform.position.z), _ShipStats.fSlerpTime);
+      if(minimap != null)
+        minimap.transform.position = Vector3.Slerp(minimap.transform.position, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 30, gameObject.transform.position.z), _ShipStats.fSlerpTime);
       cam.transform.position = Vector3.Slerp (cam.transform.position, transform.position + transform.rotation * _ShipStats.vCameraOffset, _ShipStats.fSlerpTime);
       cam.transform.rotation = Quaternion.Slerp (cam.transform.rotation, transform.rotation, _ShipStats.fSlerpTime);
     }
@@ -232,7 +235,11 @@ public class PlayerController : NetworkBehaviour
       fThrustCurrent = Mathf.Clamp (fThrustCurrent, 0, _ShipStats.fAcceleration);
       float fPercThrustPower = Mathf.Log (c * fThrustCurrent + 1);
 
-      float lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 30.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 2.0f * _NetPlayer.getPlace();
+      float lfTotalThrust;
+      if (_NetPlayer != null)
+          lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 30.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 2.0f * _NetPlayer.getPlace();
+      else
+          lfTotalThrust = _ShipStats.fMaxVelocity;
 
       if ((bManuallyBoosting && fCurrentEnergy > 0.0f)) {
 				rb.AddForce(rb.transform.forward * 35.0f * rb.mass);
