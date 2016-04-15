@@ -38,8 +38,10 @@ public class MultiplayerLobby : MonoBehaviour
   //Returns:    NA
   //--------------------------------------------------------------------------------------------------------------------
   public void matchResponse (UnityEngine.Networking.Match.ListMatchResponse matches){
-    descriptions = matches.matches.ToArray ();
     toggleWaitScreen (false, "");
+    if (matches.matches == null)
+      return;
+    descriptions = matches.matches.ToArray ();
 
     //Remove any children currently present
     for (int i = 0; i < viewPort.transform.childCount; i++)

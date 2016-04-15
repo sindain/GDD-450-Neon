@@ -7,6 +7,8 @@ public class SpHUD : MonoBehaviour
 {
   public enum UI_STATE {
     None=1, //Nothing's goin on...
+    FadeIn, //Fading into the scene
+    FadeOut, //Fading out of the scene
     Countdown, //Countdown before to race starting
     HUD, //Show in game race hud
     SBWait,  //Wait 3 seconds once race is over before showing the scoreboard (SB stands for scoreboard)
@@ -23,15 +25,19 @@ public class SpHUD : MonoBehaviour
   public GameObject Menu;
   public Text countdownText;
   public Text velocityText;
-  public Image polarityImage;
   public Text EnergyText;
   public Text HealthText;
   public Text placeText;
   public Text lapsText;
   public Text raceTimeText;
   public Text raceOverTimeText;
+  public Image polarityImage;
+  public Image fader;
   public Sprite[] Huds;
+  public Sprite[] MapBorders;
   public Sprite[] ShipIcons;
+  public Sprite[] cDown;
+  public GameObject cdtimer;
   //public Image menu;
 
   public float fTimer;
@@ -40,6 +46,9 @@ public class SpHUD : MonoBehaviour
   //private GameManager.TRANSITION Trans;
   public UI_STATE UIState;
 
+  private int miniMapZoom = 0;
+  private float fFadeTime = 1.5f;
+  private float fRefA;
   private float[] fSBTimes = { 
     15.0f, //wait
     12.0f, //points
@@ -52,13 +61,12 @@ public class SpHUD : MonoBehaviour
   public bool IsPaused;
   // Use this for initialization
   void Start (){
+    cdtimer = GameObject.FindGameObjectWithTag("countdown");
+    cdtimer.GetComponent<Image>().sprite = cDown[3];
     //Initialize all variables to their starting positions\
     UIState = UI_STATE.None;
-    //Trans = GameManager.TRANSITION.None;
-    countdownText.color = Color.red;
-    countdownText.text = "3";
     PlayerPrefs.SetFloat ("start", 0);
-	IsPaused = false;
+	  IsPaused = false;
   }
 
   // Update is called once per frame
@@ -73,6 +81,55 @@ public class SpHUD : MonoBehaviour
     if (_NetPlayer == null)
       return;
 
+    if(Input.GetKeyDown(KeyCode.Tab)){
+      if(miniMapZoom < 3){  
+        miniMapZoom++;
+      }
+      else{
+        miniMapZoom = 0;
+      }
+    }
+    if (_NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.Racing || _NetPlayer.getPlayerState() == NetPlayer.PLAYER_STATE.RaceReady)
+    {
+      switch (miniMapZoom)
+      {
+        case 0:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 50;
+          break;
+        case 1:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 85;
+          break;
+        case 2:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = true;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(true);
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().orthographicSize = 150;
+          break;
+        case 3:
+          GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = false;
+          HUD.transform.FindChild("MiniMapBack").gameObject.SetActive(false);
+          break;
+      }
+    }
+
+    //Fading in and out
+    if(UIState == UI_STATE.FadeIn){
+      if (fader.color.a < 0.1f){
+        fader.color = new Color (0, 0, 0, 0);
+        fader.gameObject.SetActive (false);
+
+      }
+      else if (fader.color.a != 0.0f)
+        fader.color = new Color (0, 0, 0, Mathf.SmoothDamp (fader.color.a, 0, ref fRefA, fFadeTime));
+    }
+    else if(UIState == UI_STATE.FadeOut){
+      
+    }
+      
+
     //------------------------------------
     //---------Update HUD-----------------
     //------------------------------------
@@ -86,18 +143,27 @@ public class SpHUD : MonoBehaviour
       UpdateHUD ();
       fTimer -= Time.deltaTime;
       if(fTimer > 0){
-        countdownText.text = Mathf.CeilToInt (fTimer).ToString();
-        countdownText.color = countdownColors [Mathf.CeilToInt (fTimer)];
+        if (fTimer > 3)
+        {
+          cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)-1];
+        }
+        else
+        {
+          cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)];
+        }
+        //countdownText.color = countdownColors [Mathf.CeilToInt (fTimer)];
       }
       else if (fTimer <= 0 && fTimer > -1){
         if (_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.RaceReady)
           _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.Racing);
-        countdownText.text = "GO!!!";
-        countdownText.color = Color.green;
+        //countdownText.text = "GO!!!";
+        cdtimer.GetComponent<Image>().sprite = cDown[0];
+        //countdownText.color = Color.green;
       } // End if (fStartTimer < 0)
       if (fTimer <= -1){
-        transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (false);
+        //transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (false);
         UIState = UI_STATE.HUD;
+        cdtimer.SetActive(false);
       } //End if (fStartTimer <= -500)
     } //End if(UIState == UI_STATE.Countdown)
 
@@ -129,6 +195,7 @@ public class SpHUD : MonoBehaviour
       case UI_STATE.SBWait:
         changeState (1, UI_STATE.SBPoints);
         HUD.SetActive(false);
+        GameObject.FindGameObjectWithTag("minimap").GetComponent<Camera>().enabled = false;
         break;
 
       case UI_STATE.SBPoints:
@@ -153,7 +220,8 @@ public class SpHUD : MonoBehaviour
           slot.FindChild ("Name").GetComponent<Text> ().text = "Player " + (_NP.getPlayerNum() + 1).ToString();
           //Points
           slot.FindChild ("Points").GetComponent<Text> ().text = 
-            _NP.getPoints () - GameManager.POINTS [_NP.getPlace () - 1] + "+" + GameManager.POINTS [_NP.getPlace () - 1];
+            _NP.getPoints () - GameManager.POINTS [_NP.getPlace () - 1] - (_NP.hasFlag() ? 4 : 0) + "+" + 
+            (GameManager.POINTS [_NP.getPlace () - 1] + (_NP.hasFlag() ? 4 : 0));
           //Flag caps
           slot.FindChild ("Flags").GetComponent<Text> ().text = _NP.getFlags ().ToString ();
           //Time
@@ -171,7 +239,7 @@ public class SpHUD : MonoBehaviour
         foreach (GameObject p in players){
           NetPlayer _NP = p.GetComponent<NetPlayer> ();
           Transform slot = Scorboard.transform.FindChild ("Slots").GetChild (_NP.getPlace () - 1);
-          int liPoints = Mathf.FloorToInt (GameManager.POINTS [_NP.getPlace()-1] - fdt);
+          int liPoints = Mathf.FloorToInt (GameManager.POINTS [_NP.getPlace()-1] - fdt + (_NP.hasFlag() ? 4 : 0));
           if (liPoints <= 0.0f)
             slot.FindChild ("Points").GetComponent<Text> ().text = _NP.getPoints ().ToString();
           else
@@ -258,11 +326,9 @@ public class SpHUD : MonoBehaviour
   public void startCountdown(){
     UIState = UI_STATE.Countdown;
     fTimer = 4.0f;
-    transform.FindChild ("Canvas").FindChild ("CountdownText").gameObject.SetActive (true);
   	HUD.GetComponent<Image>().sprite = Huds [_NetPlayer.iShipChoice];
   	HUD.GetComponent<Image> ().enabled = true;
-    countdownText.text = "3";
-    countdownText.color = Color.red;
+    HUD.transform.FindChild("MiniMapBack").GetComponent<Image>().sprite = MapBorders[_NetPlayer.iShipChoice];
   } //End public void startCountdown()
 
   public void startRaceOverTimer(){
