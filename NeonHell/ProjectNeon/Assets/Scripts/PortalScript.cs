@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class PortalScript : MonoBehaviour {
-
+	public GameObject EndPortal;
 	// Use this for initialization
 	void Start () {
 	
