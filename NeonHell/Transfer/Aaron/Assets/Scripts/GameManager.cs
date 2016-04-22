@@ -22,7 +22,7 @@ public class GameManager : NetworkManager
   public GameObject[] players;
 
   private readonly int PLAYER_COUNT = 8;
-  private int iRaceCounter;
+  public int iRaceCounter;
   private float fTimer;
   private float fUpdPlaceTime = 0.333f;
   public float fRaceOverTimer;
@@ -374,6 +374,7 @@ public class GameManager : NetworkManager
       checkPlayersLoadedScene ();
       break;
     case GAME_STATE.SceneIntro:
+      checkSceneIntroDone ();
       break;
     case GAME_STATE.RaceReady:
       checkPlayersRaceReady ();
@@ -458,8 +459,10 @@ public class GameManager : NetworkManager
 //    foreach(GameObject p in players)
 //      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
 
-    foreach(GameObject p in players)
-      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneOutro);
+    foreach (GameObject p in players){
+      NetPlayer _lNP = p.GetComponent<NetPlayer> ();
+      _lNP.setPlayerState (_lNP.isHuman() ? NetPlayer.PLAYER_STATE.SceneOutro : NetPlayer.PLAYER_STATE.SceneChangeReady);
+    }
     
 //    GameState = GAME_STATE.SceneChange;
 //    ServerChangeScene (circuitScenes[iRaceCounter]);
@@ -479,10 +482,22 @@ public class GameManager : NetworkManager
       return;
 
     foreach(GameObject p in players)
-      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LoadingScene);
 
     GameState = GAME_STATE.SceneChange;
-    ServerChangeScene (circuitScenes[iRaceCounter]);
+    //If we'er in the main scene, just start races, otherwise we need to update race counter and such
+    if(SceneManager.GetActiveScene().name == "_Main")
+      ServerChangeScene (circuitScenes[iRaceCounter]);
+    else{
+      //Move to next scene
+      iRaceCounter++;
+      if (iRaceCounter >= circuitScenes.Length)
+        returnToMain ();
+      else{
+        GameState = GAME_STATE.SceneChange;
+        ServerChangeScene (circuitScenes [iRaceCounter]);
+      }
+    }
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -496,7 +511,7 @@ public class GameManager : NetworkManager
       return;
 
     //Everyone has loaded the new scene
-    GameState = GAME_STATE.RaceReady;
+    GameState = GAME_STATE.SceneIntro;
     foreach (GameObject p in players){
       if (p == null)
         continue;
@@ -513,8 +528,22 @@ public class GameManager : NetworkManager
   //Parameters:
   //Returns:
   //--------------------------------------------------------------------------------------------------------------------
+  private void checkSceneIntroDone(){
+    //Advance players states once everyone has played the into
+    if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceReady))
+      return;
+    GameState = GAME_STATE.RaceReady;
+    checkPlayersRaceReady ();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private void checkPlayersRaceReady(){
-    if(players[0].GetComponent<NetPlayer>().getPlayerState() == NetPlayer.PLAYER_STATE.Racing)
+    //if(players[0].GetComponent<NetPlayer>().getPlayerState() == NetPlayer.PLAYER_STATE.Racing)
       
     //Check if everyone has started racing to change game state
     if (arePlayerStatesSynced (NetPlayer.PLAYER_STATE.Racing))
@@ -558,7 +587,7 @@ public class GameManager : NetworkManager
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceFinished))
       return;
 
-    GameState = GAME_STATE.RaceFinished;
+    GameState = GAME_STATE.SceneOutro;
     foreach(GameObject p in players){
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
       _NetPlayer.incPoints(POINTS[_NetPlayer.iPlace-1] + (_NetPlayer.hasFlag() ? 4 : 0));
@@ -579,7 +608,7 @@ public class GameManager : NetworkManager
   private void checkChangeScene(){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.SceneChangeReady))
       return;
-    
+    print ("Changing scene");
     //Move to next scene
     iRaceCounter++;
     if (iRaceCounter >= circuitScenes.Length)

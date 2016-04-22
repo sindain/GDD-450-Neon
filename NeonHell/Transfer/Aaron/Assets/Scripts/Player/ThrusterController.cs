@@ -66,14 +66,18 @@ public class ThrusterController : MonoBehaviour {
 				//Ensure object hit wasn't a trigger or wall
 				//if(hit.collider.isTrigger || hit.transform.tag == "Wall")
 					//return;
-				if((hit.transform.tag == "NegLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== 1))
-					return;
-				if((hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
-					return;
-        if (hit.transform.tag == "KillPlane" || hit.transform.tag == "Wall")
-					return;
-        if (hit.transform.gameObject == gameObject)
+        if ((hit.transform.tag == "NegLightBridge" && gameObject.GetComponent<ShipStats> ().Polarity == 1) ||
+        (hit.transform.tag == "PosLightBridge" && gameObject.GetComponent<ShipStats> ().Polarity == -1) ||
+          (hit.transform.tag == "KillPlane" || hit.transform.tag == "Wall" || hit.transform.tag == "Waypoint") ||
+        (hit.transform.gameObject == gameObject))
           return;
+//					return;
+//				if((hit.transform.tag == "PosLightBridge"&&gameObject.GetComponent<ShipStats>().Polarity== -1))
+//					return;
+//        if (hit.transform.tag == "KillPlane" || hit.transform.tag == "Wall")
+//					return;
+//        if (hit.transform.gameObject == gameObject)
+//          return;
           				
 				//Calculate g force to apply on each thruster
         if(hit.distance <= fThrustDistance)
