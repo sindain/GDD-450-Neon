@@ -353,11 +353,11 @@ public class PlayerController : NetworkBehaviour
 		case "Portal":
 			Camera cam = Camera.main;
 			Vector3 offset = other.transform.position - transform.position;
-			//Mathf.Acos((Vector3.Dot(other.transform.forward,transform.forward))/(other.transform.forward.magnitude*transform.forward.magnitude));
-
-			offset = Quaternion.Euler (0, Mathf.Acos((Vector3.Dot(other.transform.forward,transform.forward))/(other.transform.forward.magnitude*transform.forward.magnitude)), 0) * offset;
-			transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position+offset;
-			//transform.position = new Vector3(other.GetComponent<PortalScript> ().EndPortal.transform.position.x+offset.x,other.GetComponent<PortalScript> ().EndPortal.transform.position.y+offset.y,other.GetComponent<PortalScript> ().EndPortal.transform.position.z+offset.z);
+			print (offset);
+			offset = Quaternion.Euler (0,Vector3.Angle(other.transform.forward,other.GetComponent<PortalScript>().EndPortal.transform.forward),0) * offset;
+			print (offset);
+			transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position-offset;
+			//transform.position = new Vector3(other.GetComponent<PortalScript> ().EndPortal.transform.position.x+offset.x,other.GetComponent<PortalScript> ().EndPortal.transform.position.y-offset.y,other.GetComponent<PortalScript> ().EndPortal.transform.position.z);
 			transform.rotation = other.GetComponent<PortalScript> ().EndPortal.transform.rotation;
 			rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
 			cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
