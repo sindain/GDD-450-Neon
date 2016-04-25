@@ -49,7 +49,7 @@ public class PlayerController : NetworkBehaviour
   private float SucTimer = 0.0f;
   private AudioSource engine;
   public int modelChild;
-
+  public GameObject switchbox;
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
   //Description:  Default start function, nothing special here
@@ -78,6 +78,14 @@ public class PlayerController : NetworkBehaviour
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += _ShipStats.fMass * 250.0f;
+    if (GameObject.Find("Switchbox") != null)
+    {
+      switchbox = GameObject.Find("Switchbox");
+    }
+    else
+    {
+      switchbox = null;
+    }
   }
   //End void Start()
 	
@@ -362,6 +370,13 @@ public class PlayerController : NetworkBehaviour
 			rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
 			cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
 			cam.transform.rotation = transform.rotation;
+      break;
+    case "offBox":
+      switchbox.SetActive(false);
+      break;
+    case "onBox":
+      switchbox.SetActive(true);
+      break;
 		break;
 
     }
