@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class PlayTrailer : MonoBehaviour {
 
   public MovieTexture movie;
-  private AudioSource audio;
+  private new AudioSource audio;
   private float fTimeToSwitch;
 
 	// Use this for initialization

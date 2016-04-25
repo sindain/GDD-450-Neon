@@ -7,8 +7,7 @@ public class SpHUD : MonoBehaviour
 {
   public enum UI_STATE {
     None=1, //Nothing's goin on...
-    FadeIn, //Fading into the scene
-    FadeOut, //Fading out of the scene
+    Waiting, //Waiting for the countdown to start
     Countdown, //Countdown before to race starting
     HUD, //Show in game race hud
     SBWait,  //Wait 3 seconds once race is over before showing the scoreboard (SB stands for scoreboard)
@@ -47,8 +46,6 @@ public class SpHUD : MonoBehaviour
   public UI_STATE UIState;
 
   private int miniMapZoom = 0;
-  private float fFadeTime = 1.5f;
-  private float fRefA;
   private float[] fSBTimes = { 
     15.0f, //wait
     12.0f, //points
@@ -115,25 +112,10 @@ public class SpHUD : MonoBehaviour
       }
     }
 
-    //Fading in and out
-    if(UIState == UI_STATE.FadeIn){
-      if (fader.color.a < 0.1f){
-        fader.color = new Color (0, 0, 0, 0);
-        fader.gameObject.SetActive (false);
-
-      }
-      else if (fader.color.a != 0.0f)
-        fader.color = new Color (0, 0, 0, Mathf.SmoothDamp (fader.color.a, 0, ref fRefA, fFadeTime));
-    }
-    else if(UIState == UI_STATE.FadeOut){
-      
-    }
-      
-
     //------------------------------------
     //---------Update HUD-----------------
     //------------------------------------
-    if (UIState == UI_STATE.HUD)
+    if (UIState == UI_STATE.HUD || UIState == UI_STATE.Waiting)
       UpdateHUD ();
 
     //------------------------------------
@@ -142,17 +124,8 @@ public class SpHUD : MonoBehaviour
     else if(UIState == UI_STATE.Countdown){
       UpdateHUD ();
       fTimer -= Time.deltaTime;
-      if(fTimer > 0){
-        if (fTimer > 3)
-        {
-          cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)-1];
-        }
-        else
-        {
-          cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)];
-        }
-        //countdownText.color = countdownColors [Mathf.CeilToInt (fTimer)];
-      }
+      if(fTimer > 0)
+        cdtimer.GetComponent<Image>().sprite = cDown[Mathf.CeilToInt(fTimer)];
       else if (fTimer <= 0 && fTimer > -1){
         if (_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.RaceReady)
           _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.Racing);
@@ -269,7 +242,7 @@ public class SpHUD : MonoBehaviour
         break;
 
       case UI_STATE.SBDone:
-        _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.SceneChangeReady);
+        _NetPlayer.setPlayerState (NetPlayer.PLAYER_STATE.SceneOutro);
         break;
 
       default:
@@ -325,10 +298,8 @@ public class SpHUD : MonoBehaviour
 
   public void startCountdown(){
     UIState = UI_STATE.Countdown;
-    fTimer = 4.0f;
-  	HUD.GetComponent<Image>().sprite = Huds [_NetPlayer.iShipChoice];
-  	HUD.GetComponent<Image> ().enabled = true;
-    HUD.transform.FindChild("MiniMapBack").GetComponent<Image>().sprite = MapBorders[_NetPlayer.iShipChoice];
+    fTimer = 3.0f;
+    cdtimer.SetActive (true);
   } //End public void startCountdown()
 
   public void startRaceOverTimer(){
@@ -349,4 +320,13 @@ public class SpHUD : MonoBehaviour
 		//call grants function here.
 		_NetPlayer.OnExitClicked();
 	}
+  public void setNetPlayer(NetPlayer pNP){
+    _NetPlayer = pNP;
+
+    cdtimer.SetActive (false);
+    HUD.GetComponent<Image>().sprite = Huds [_NetPlayer.iShipChoice];
+    HUD.GetComponent<Image> ().enabled = true;
+    HUD.transform.FindChild("MiniMapBack").GetComponent<Image>().sprite = MapBorders[_NetPlayer.iShipChoice];
+    UIState = UI_STATE.Waiting;
+  }
 }

@@ -6,8 +6,20 @@ using System.Collections;
 
 public class NetPlayer : NetworkBehaviour
 {
-  public enum PLAYER_STATE {None = 0, Testing, VehicleSelect, VehicleSelectReady, LevelSelect, LevelSelectReady, 
-                            SceneChangeReady, LoadingScene, SceneLoaded, RaceReady, Racing, RaceFinished};
+  public enum PLAYER_STATE {None = 0, 
+    Testing, 
+    VehicleSelect, 
+    VehicleSelectReady, 
+    LevelSelect, 
+    LevelSelectReady, 
+    SceneOutro,
+    SceneChangeReady, 
+    LoadingScene, 
+    SceneLoaded, 
+    SceneIntro,
+    RaceReady, 
+    Racing, 
+    RaceFinished};
 
   [SyncVar] public int iShipChoice = -1;
   [SyncVar] public int iPlayerNum = -1;
@@ -91,6 +103,7 @@ public class NetPlayer : NetworkBehaviour
     if (!isLocalPlayer)
       return;
 
+    //Make connection to HUD
     GameObject Hud = GameObject.Find ("UI");
     if (Hud == null) {
       print ("Error: NetPlayer.69 - No HUD found in scene");
@@ -98,20 +111,9 @@ public class NetPlayer : NetworkBehaviour
     }
 
     SpHUD _Hud = Hud.GetComponent<SpHUD> ();
-    if(_Hud != null)
-    _Hud._NetPlayer = this;
-  }
-
-  void OnLevelWasLoaded(int level) {
-    if (!isLocalPlayer)
-      return;
-    //setupRace ();
-    //CmdChangeState (PLAYER_STATE.Racing);
-  }
-
-  [Command]
-  private void CmdChangeShip (int piChoice){
-    ChangeShip (piChoice);
+    if (_Hud != null){
+      _Hud.setNetPlayer (this);
+    }
   }
 
   private void ChangeShip(int piChoice){
@@ -135,16 +137,23 @@ public class NetPlayer : NetworkBehaviour
       CmdChangeState(PLAYER_STATE.VehicleSelectReady);
   }
 
+  //Make faders connection to this object and start fader
+  private void activateFader(Fader.FADE_STATE pState){
+    if (isLocalPlayer && bIsHuman){
+      Fader fader = GameObject.FindGameObjectWithTag ("Fader").GetComponent<Fader> ();
+      fader._NP = this;
+      fader.setFadeState (pState, true);
+    }
+  }
+
+  [Command]
+  private void CmdChangeShip (int piChoice){
+    ChangeShip (piChoice);
+  }
+
   [Command]
   private void CmdChangeState(PLAYER_STATE state){
-    PlayerState = state;
-    GameObject.Find ("GameManager").GetComponent<GameManager> ().checkPlayerStates ();
-    if(state == PLAYER_STATE.VehicleSelectReady)
-      RpcVehicleReady(true);
-    else if(state == PLAYER_STATE.VehicleSelect){
-      RpcVehicleReady(false);      
-      RpcReturnToVehicleSelection();
-    }
+    setPlayerState (state);
   }
 
   [Command] 
@@ -206,22 +215,17 @@ public class NetPlayer : NetworkBehaviour
   public void RpcSetTrack(string pTrack){
     trackName = pTrack;
     setupRace ();
-    CmdChangeState (PLAYER_STATE.RaceReady);
+    setPlayerState (bIsHuman ? PLAYER_STATE.SceneIntro : PLAYER_STATE.RaceReady);
   }
 
   [ClientRpc]
   public void RpcStartRaceCountdown(){
     if(!bIsHuman)
-      fStartTimer = 4.0f;
+      fStartTimer = 3.0f;
       
     if(!isLocalPlayer)
       return;
-//    SpHUD _Hud = GameObject.Find ("HUD").GetComponent<SpHUD> ();
-//    print (GameObject.Find ("HUD"));
-//    if (_Hud._NetPlayer == null){
-//      
-//      _Hud._NetPlayer = this;
-//    }
+    
     GameObject.Find ("UI").GetComponent<SpHUD> ().startCountdown ();
   }
 
@@ -282,6 +286,11 @@ public class NetPlayer : NetworkBehaviour
   public void RpcReturnToVehicleSelection(){
     if(isLocalPlayer && bIsHuman)
       GameObject.Find("MainMenu").transform.FindChild("MapSelection").GetComponent<MapSelection>().returnToVehicleSelection();
+  }
+
+  [ClientRpc]
+  public void RpcActivateFader(Fader.FADE_STATE pState){
+    activateFader (pState);
   }
 
 //----------------------------------------------Getters and Setters-----------------------------------------------------
@@ -348,10 +357,48 @@ public class NetPlayer : NetworkBehaviour
 
   public PLAYER_STATE getPlayerState(){return PlayerState;}
   public void setPlayerState(PLAYER_STATE pState){
-    CmdChangeState (pState);
-    //Finalize race time once race if over.
-    if (pState == PLAYER_STATE.RaceFinished)
-      CmdUpdRaceTime (fRaceTime);      
+    if (isServer){
+      PlayerState = pState;
+      GameObject.Find ("GameManager").GetComponent<GameManager> ().checkPlayerStates ();
+
+      switch(pState){
+      case PLAYER_STATE.VehicleSelectReady:
+        RpcVehicleReady (true);
+        break;
+      case PLAYER_STATE.VehicleSelect:
+        RpcVehicleReady (false);      
+        RpcReturnToVehicleSelection ();
+        break;
+      case PLAYER_STATE.RaceFinished:
+        setRaceTime (fRaceTime);
+        break;
+      case PLAYER_STATE.SceneOutro:
+        RpcActivateFader (Fader.FADE_STATE.FadeOut);
+        break;
+      case PLAYER_STATE.SceneIntro:
+        RpcActivateFader (Fader.FADE_STATE.FadeIn);
+        break;
+      default:
+        break;
+      }
+//      if (pState == PLAYER_STATE.VehicleSelectReady)
+//      else if (pState == PLAYER_STATE.VehicleSelect){
+//      }
+//      else if (pState == PLAYER_STATE.RaceFinished)
+//      else if (pState == PLAYER_STATE.SceneOutro)
+//      else if (pState == PLAYER_STATE.SceneIntro)
+    }//End if(isServer)
+    else{
+      print (isServer + " " + iPlayerNum);
+      CmdChangeState (pState);    
+    }
+//    
+//    if (pState == PLAYER_STATE.SceneOutro || pState == PLAYER_STATE.SceneIntro){
+//      if (isServer && isLocalPlayer)
+//        activateFader ();
+//      else if (isServer && !isLocalPlayer)
+//        RpcActivateFader ();
+//    }
   }
 	public void OnExitClicked (){
 		CmdPeacOut ();
