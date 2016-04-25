@@ -7,15 +7,24 @@ using System.Collections;
 public class GameManager : NetworkManager
 {
   public enum GAME_MODE {None=0, Singleplayer, Multiplayer};
-  public enum GAME_STATE {None=0, VehicleSelection, LevelSelection, SceneChange, RacePrep, Racing, RaceFinished}
-  public enum TRANSITION {None=0, In, Out}
+  public enum GAME_STATE {
+    None=0, 
+    VehicleSelection, 
+    LevelSelection, 
+    SceneOutro,
+    SceneChange, 
+    SceneIntro,
+    RaceReady, 
+    Countdown,
+    Racing, 
+    RaceFinished}
 
   public GameObject[] players;
 
   private readonly int PLAYER_COUNT = 8;
-  private int iRaceCounter;
+  public int iRaceCounter;
   private float fTimer;
-  private float fUpdPlaceTime = 200.0f;
+  private float fUpdPlaceTime = 0.333f;
   public float fRaceOverTimer;
   public GAME_MODE GameMode;
   public GAME_STATE GameState;
@@ -45,9 +54,15 @@ public class GameManager : NetworkManager
     players = new GameObject[PLAYER_COUNT];
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   void Update(){
     //Update places
-    if(fTimer + fUpdPlaceTime >= Time.time && GameState == GAME_STATE.Racing){
+    if(fTimer + fUpdPlaceTime <= Time.time && GameState == GAME_STATE.Racing){
       fTimer = Time.time;
       UpdatePlaces ();
     }
@@ -83,6 +98,9 @@ public class GameManager : NetworkManager
   //Returns:      none
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerAddPlayer (NetworkConnection conn, short playerControllerId){
+    if (GameState != GAME_STATE.VehicleSelection)
+      return;
+
     GameObject player = (GameObject)Instantiate (playerPrefab, Vector3.zero, Quaternion.identity);
     player.GetComponent<NetPlayer> ().connection = conn;
     NetworkServer.AddPlayerForConnection (conn, player, playerControllerId);
@@ -93,6 +111,8 @@ public class GameManager : NetworkManager
         break;
       } //End if (players [i] == null)
     } // End for (int i = 0; i < PLAYER_COUNT; i++)
+
+
 
     //If Single player, populate other seats with NPC's
     if(GameMode == GAME_MODE.Singleplayer){
@@ -115,43 +135,6 @@ public class GameManager : NetworkManager
   //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerDisconnect (NetworkConnection conn){
     returnToMain();
-    /*bool found = false;
-    print("FUCKING BITCH ASS PLAYER LEFT THE GAME");
-    GameObject player = new GameObject();
-    foreach(GameObject i in players){
-      if (found == false)
-      {
-        if (i.GetComponent<NetPlayer>().connection.connectionId == conn.connectionId)
-        {
-          player = i;
-          print("Match Found");
-          found = true;
-        }
-        else
-        {
-          print("Not a Match");
-        }
-      }
-    }
-
-    player.gameObject.GetComponent<NetPlayer>().ship.SetActive(false);
-    GameObject NpcPlayer = (GameObject)Instantiate(player);
-    NetPlayer _NetPlayer = NpcPlayer.GetComponent<NetPlayer>();
-    _NetPlayer.connection = players[0].GetComponent<NetPlayer>().connection;
-    _NetPlayer.setIsHuman(false);
-    
-    NetworkServer.Spawn(NpcPlayer);
-    GameObject NpcShip = (GameObject)Instantiate(player.GetComponent<NetPlayer>().ship);
-    
-    print(NpcShip);
-    NetworkServer.Spawn(NpcShip);
-    
-    _NetPlayer.RpcSetShip(NpcShip);
-
-    print("SHIT SHOULD BE SPAWNED YO");
-    
-    base.OnServerDisconnect(conn);
-    //players.Remove (player.gameObject);*/
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -175,6 +158,12 @@ public class GameManager : NetworkManager
     refreshMatches ();
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public void StopMatchmaking(){
     StopMatchMaker ();
   }
@@ -238,10 +227,22 @@ public class GameManager : NetworkManager
     NetworkManager.singleton.StartHost ();
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public void StopLocalGame(){
     NetworkManager.singleton.StopHost ();
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public void returnToMain(){
 //    if (matchMaker != null)
 //        print (true);
@@ -261,6 +262,12 @@ public class GameManager : NetworkManager
     NetworkManager.singleton.StartClient ();
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public override void OnServerSceneChanged (string sceneName){
     base.OnServerSceneChanged (sceneName);
 
@@ -274,6 +281,12 @@ public class GameManager : NetworkManager
     }
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   public override void OnClientSceneChanged (NetworkConnection conn)
   {
     base.OnClientSceneChanged (conn);
@@ -354,11 +367,19 @@ public class GameManager : NetworkManager
     case GAME_STATE.LevelSelection:
       checkLevelSelectReady ();
       break;
+    case GAME_STATE.SceneOutro:
+      checkSceneOutroDone ();
+      break;
     case GAME_STATE.SceneChange:
       checkPlayersLoadedScene ();
       break;
-    case GAME_STATE.RacePrep:
-      checkPlayersRacePrep ();
+    case GAME_STATE.SceneIntro:
+      checkSceneIntroDone ();
+      break;
+    case GAME_STATE.RaceReady:
+      checkPlayersRaceReady ();
+      break;
+    case GAME_STATE.Countdown:
       break;
     case GAME_STATE.Racing:
       checkRaceFinished ();
@@ -373,6 +394,12 @@ public class GameManager : NetworkManager
     }
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private bool arePlayerStatesSynced(NetPlayer.PLAYER_STATE pState){
     bool bResult = true;
     foreach(GameObject p in players){
@@ -386,6 +413,12 @@ public class GameManager : NetworkManager
     return bResult;
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private void checkVehicleSelectReady (){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.VehicleSelectReady))
       return;
@@ -413,23 +446,72 @@ public class GameManager : NetworkManager
     } //End for(int i = 0; i < PLAYER_COUNT; i++)
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private void checkLevelSelectReady(){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.LevelSelectReady))
       return;
 
-    foreach(GameObject p in players)
-      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+//    foreach(GameObject p in players)
+//      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.SceneChangeReady);
+
+    GameState = GAME_STATE.SceneOutro;
+    foreach (GameObject p in players){
+      NetPlayer _lNP = p.GetComponent<NetPlayer> ();
+      _lNP.setPlayerState (_lNP.isHuman() ? NetPlayer.PLAYER_STATE.SceneOutro : NetPlayer.PLAYER_STATE.SceneChangeReady);
+    }
     
-    GameState = GAME_STATE.SceneChange;
-    ServerChangeScene (circuitScenes[iRaceCounter]);
+//    GameState = GAME_STATE.SceneChange;
+//    ServerChangeScene (circuitScenes[iRaceCounter]);
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  private void checkSceneOutroDone(){
+    //Advance players states once everyone has played the outro
+    //Player is advanced to SceneChangeRdy state by the NetPlayer script once fading out is done
+    if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.SceneChangeReady))
+      return;
+
+    foreach(GameObject p in players)
+      p.GetComponent<NetPlayer>().setPlayerState(NetPlayer.PLAYER_STATE.LoadingScene);
+
+    GameState = GAME_STATE.SceneChange;
+    //If we'er in the main scene, just start races, otherwise we need to update race counter and such
+    if(SceneManager.GetActiveScene().name == "_Main")
+      ServerChangeScene (circuitScenes[iRaceCounter]);
+    else{
+      //Move to next scene
+      iRaceCounter++;
+      if (iRaceCounter >= circuitScenes.Length)
+        returnToMain ();
+      else{
+        GameState = GAME_STATE.SceneChange;
+        ServerChangeScene (circuitScenes [iRaceCounter]);
+      }
+    }
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private void checkPlayersLoadedScene(){
     if (!arePlayerStatesSynced(NetPlayer.PLAYER_STATE.SceneLoaded))
       return;
 
-    //Everyone is ready
-    GameState = GAME_STATE.RacePrep;
+    //Everyone has loaded the new scene
+    GameState = GAME_STATE.SceneIntro;
     foreach (GameObject p in players){
       if (p == null)
         continue;
@@ -440,8 +522,28 @@ public class GameManager : NetworkManager
     }
   }
 
-  private void checkPlayersRacePrep(){
-    if(players[0].GetComponent<NetPlayer>().getPlayerState() == NetPlayer.PLAYER_STATE.Racing)
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  private void checkSceneIntroDone(){
+    //Advance players states once everyone has played the into
+    if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceReady))
+      return;
+    GameState = GAME_STATE.RaceReady;
+    checkPlayersRaceReady ();
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
+  private void checkPlayersRaceReady(){
+    //if(players[0].GetComponent<NetPlayer>().getPlayerState() == NetPlayer.PLAYER_STATE.Racing)
       
     //Check if everyone has started racing to change game state
     if (arePlayerStatesSynced (NetPlayer.PLAYER_STATE.Racing))
@@ -459,6 +561,12 @@ public class GameManager : NetworkManager
     }
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private void checkRaceFinished(){
     
     //Someone has finished the race, start the countdown timer if it hasn't started already.
@@ -479,7 +587,7 @@ public class GameManager : NetworkManager
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.RaceFinished))
       return;
 
-    GameState = GAME_STATE.RaceFinished;
+    GameState = GAME_STATE.SceneOutro;
     foreach(GameObject p in players){
       NetPlayer _NetPlayer = p.GetComponent<NetPlayer>();
       _NetPlayer.incPoints(POINTS[_NetPlayer.iPlace-1] + (_NetPlayer.hasFlag() ? 4 : 0));
@@ -491,10 +599,16 @@ public class GameManager : NetworkManager
     } //End foreach(GameObject p in players)
   }
 
+  //--------------------------------------------------------------------------------------------------------------------
+  //Name:
+  //Description:
+  //Parameters:
+  //Returns:
+  //--------------------------------------------------------------------------------------------------------------------
   private void checkChangeScene(){
     if (!arePlayerStatesSynced (NetPlayer.PLAYER_STATE.SceneChangeReady))
       return;
-    
+    print ("Changing scene");
     //Move to next scene
     iRaceCounter++;
     if (iRaceCounter >= circuitScenes.Length)
