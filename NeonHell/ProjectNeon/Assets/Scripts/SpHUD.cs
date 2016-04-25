@@ -275,7 +275,7 @@ public class SpHUD : MonoBehaviour
     EnergyText.text = Mathf.Floor(_PlayerController.getDisplayEnergy()) + "%";
     placeText.text = _NetPlayer.getPlace ().ToString() + "/8";
     lapsText.text = _NetPlayer.getLap () < 1 ? "1" : _NetPlayer.getLap ().ToString ();
-	HealthText.text=Mathf.Floor(_PlayerController.getHealth()) + "%";
+	  HealthText.text=Mathf.Floor(_PlayerController.getHealth()) + "%";
 
     //Update Race time
     if (_NetPlayer.PlayerState == NetPlayer.PLAYER_STATE.Racing)

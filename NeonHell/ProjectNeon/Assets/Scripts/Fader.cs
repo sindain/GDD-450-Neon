@@ -38,6 +38,8 @@ public class Fader : MonoBehaviour {
       }
 
       fadeState = FADE_STATE.Stay;
+      if (liTarget == 0)
+        gameObject.SetActive (false);
     } //End if (lfDiff < 0.1f)
     else{
       fader.color = new Color (0, 0, 0, Mathf.SmoothDamp (fader.color.a, (float)liTarget, ref refA, fFadeTime));

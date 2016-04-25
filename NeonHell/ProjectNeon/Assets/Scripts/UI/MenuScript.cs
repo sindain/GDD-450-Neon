@@ -14,7 +14,7 @@ public class MenuScript : MonoBehaviour
   void Start (){
     cameraTargetPos = new Vector3 (13.0f, 11.0f, 44.0f);
     cameraTargetRot.eulerAngles = new Vector3 (0.0f, 270.0f, 0.0f);
-    GameObject.FindGameObjectWithTag ("Fader").GetComponent<Fader> ().setFadeState (Fader.FADE_STATE.FadeIn, false);
+    GameObject.Find("Fader").GetComponent<Fader> ().setFadeState (Fader.FADE_STATE.FadeIn, false);
   }
 
   void Update (){

@@ -140,7 +140,19 @@ public class NetPlayer : NetworkBehaviour
   //Make faders connection to this object and start fader
   private void activateFader(Fader.FADE_STATE pState){
     if (isLocalPlayer && bIsHuman){
-      Fader fader = GameObject.FindGameObjectWithTag ("Fader").GetComponent<Fader> ();
+      GameObject goFader;
+      //Get the fader
+
+      if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName ("_Main"))
+        goFader = GameObject.Find ("MainMenu").transform.FindChild ("Fader").gameObject;
+      else
+        goFader = GameObject.Find ("UI").transform.FindChild ("Canvas").FindChild ("Fader").gameObject;
+      //GameObject goFader = GameObject.Find ("Fader");
+      print (goFader);
+      if (pState == Fader.FADE_STATE.FadeOut)
+        goFader.SetActive (true);
+        
+      Fader fader = goFader.GetComponent<Fader>();//GameObject.FindGameObjectWithTag ("Fader").GetComponent<Fader> ();
       fader._NP = this;
       fader.setFadeState (pState, true);
     }
