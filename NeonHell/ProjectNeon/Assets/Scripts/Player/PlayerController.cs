@@ -379,7 +379,8 @@ public class PlayerController : NetworkBehaviour
     case "onBox":
       switchbox.SetActive(true);
       break;
-		break;
+    default:
+		  break;
 
     }
   }
