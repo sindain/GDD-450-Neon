@@ -31,7 +31,7 @@ public class GameManager : NetworkManager
   public readonly string[] CIRCUIT_SCENES = new string[12]{"CitySmall", "CitySmall", "CityMed", //He Circuit
                                                  "CitySmall", "CityMed", "CityLarge", //Ne Circuit
                                                  "CityMed", "CityLarge", "CityLarge", //Ar Circuit
-                                                 "CityMed", "CityXL", "CityXL"}; //Xe Circuit
+                                                 "CityXL", "CityXL", "CityXL"}; //Xe Circuit
   public readonly string[] TRACK_NAMES = new string[12]{"InfTrack", "T-Track", "OverUnder", //He Circuit
                                                         "T-Split", "Mobius","JumpBridge", //Ne Circuit
                                                         "LoopTheLoop","WallRider","ThreadTheNeedle", //Ar Circuit
