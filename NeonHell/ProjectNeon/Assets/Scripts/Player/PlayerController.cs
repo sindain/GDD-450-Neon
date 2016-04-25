@@ -78,14 +78,7 @@ public class PlayerController : NetworkBehaviour
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += _ShipStats.fMass * 250.0f;
-    if (GameObject.Find("Switchbox") != null)
-    {
-      switchbox = GameObject.Find("Switchbox");
-    }
-    else
-    {
-      switchbox = null;
-    }
+   
   }
   //End void Start()
 	
@@ -174,7 +167,7 @@ public class PlayerController : NetworkBehaviour
     //Consider the ship airborne if the raycast fails or hits a wall.
     if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance))
       lbIsAirborne = hit.collider.tag == "Wall";
-
+		Debug.DrawRay (transform.position, transform.up, Color.green, 10f);
     //Right the ship if it is airborne
     if(lbIsAirborne){
       newRotation = transform.eulerAngles;
@@ -196,8 +189,15 @@ public class PlayerController : NetworkBehaviour
 		if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing || bPaused)
         return;
 
-    //
-
+		if (switchbox == null) {
+			if (GameObject.Find ("Switchbox") != null) {
+				print ("found");
+				switchbox = GameObject.Find ("Switchbox");
+			} else {
+				print ("NotFound");
+				switchbox = null;
+			}
+		}
     //Apply torque, e.g. turn the ship left and right
     if(bTesting)
       fTorque = Input.GetAxis ("Horizontal");
@@ -364,21 +364,18 @@ public class PlayerController : NetworkBehaviour
 			Camera cam = Camera.main;
 			Vector3 offset = other.transform.position - transform.position;
 			print (offset);
-			offset = Quaternion.Euler (0,Vector3.Angle(other.transform.forward,other.GetComponent<PortalScript>().EndPortal.transform.forward),0) * offset;
+			offset = Quaternion.Euler (0, Vector3.Angle (other.transform.forward, other.GetComponent<PortalScript> ().EndPortal.transform.forward), 0) * offset;
 			print (offset);
-			transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position-offset;
+			transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position - offset;
 			//transform.position = new Vector3(other.GetComponent<PortalScript> ().EndPortal.transform.position.x+offset.x,other.GetComponent<PortalScript> ().EndPortal.transform.position.y-offset.y,other.GetComponent<PortalScript> ().EndPortal.transform.position.z);
 			transform.rotation = other.GetComponent<PortalScript> ().EndPortal.transform.rotation;
 			rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
+			if (checkPrivilege ())
+				return;
 			cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
 			cam.transform.rotation = transform.rotation;
-      break;
-    case "offBox":
-      switchbox.SetActive(false);
-      break;
-    case "onBox":
-      switchbox.SetActive(true);
-      break;
+			break;
+			default:
     default:
 		  break;
 
@@ -607,16 +604,16 @@ public class PlayerController : NetworkBehaviour
     }
     fCurrentHealth = Mathf.Clamp (fCurrentHealth, 0, _ShipStats.fMaxHealth);
 
-    if(fCurrentHealth >=100)
+    if(fCurrentHealth >=80)
       setModel (0);
 
-    else if (fCurrentHealth < 100 && fCurrentHealth >=80)
+    else if (fCurrentHealth < 80 && fCurrentHealth >=60)
       setModel (1);
 
-    else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
+    else if (fCurrentHealth < 60 && fCurrentHealth >= 40)
       setModel (2);
 
-    else if (fCurrentHealth < 60 && fCurrentHealth >=40)
+    else if (fCurrentHealth < 40 && fCurrentHealth >=20)
       setModel (3);
 
     else
