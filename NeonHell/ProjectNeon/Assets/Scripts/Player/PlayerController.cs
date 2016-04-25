@@ -210,7 +210,8 @@ public class PlayerController : NetworkBehaviour
     if(bTesting)
       rb.AddTorque (transform.up * _ShipStats.fHandling * rb.angularDrag * fTorque, ForceMode.Acceleration);
     else
-      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *2.5f) * rb.angularDrag * fTorque, ForceMode.Acceleration);
+      rb.AddTorque (transform.up * (_NetPlayer.isHuman() ? _ShipStats.fHandling *1.0f : _ShipStats.fHandling *3.0f) * 
+                                    rb.angularDrag * fTorque, ForceMode.Acceleration);
     
     //If the player is close to the something, allow moving forward
     if (!lbIsAirborne) {
@@ -222,7 +223,7 @@ public class PlayerController : NetworkBehaviour
       else if(_NetPlayer.bIsHuman)
         fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
       else
-        fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration;
+        fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration*0.75f;
       
       float c = (Mathf.Exp (1) - 1) / _ShipStats.fAcceleration;
       if (fThrustTarget <= fThrustCurrent)
@@ -237,7 +238,8 @@ public class PlayerController : NetworkBehaviour
 
       float lfTotalThrust;
       if (_NetPlayer != null)
-          lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 30.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 2.0f * _NetPlayer.getPlace();
+        lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 15.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 
+                        (2.0f + (!_NetPlayer.isHuman() ? 5.0f : 0.0f)) * _NetPlayer.getPlace();
       else
           lfTotalThrust = _ShipStats.fMaxVelocity;
 
@@ -250,12 +252,11 @@ public class PlayerController : NetworkBehaviour
         }
 
       }
-        if (BoostType == 1) {
-		  rb.AddForce(BoostDir * 50.0f * rb.mass);
-        }
-        else if (BoostType == -1) {
-          lfTotalThrust *=.75f;
-        }
+      if (BoostType == 1) 
+	      rb.AddForce(BoostDir * 35.0f * rb.mass);
+      else if (BoostType == -1) 
+        lfTotalThrust *=.75f;
+      
       //More force calculations
       Vector3 forwardForce;
       if(bTesting)
@@ -304,8 +305,9 @@ public class PlayerController : NetworkBehaviour
           //If just hit the finish line, increment the lap counter.
           if (_WaypointController.bFinishLine){
             if (_NetPlayer != null){
+              if(_NetPlayer.getLap() > 0)
+                fCurrentEnergy += _ShipStats.fMaxEnergy * 0.33f; //TODO:  Move this to repair station eventually.
               _NetPlayer.incLap ();
-              fCurrentEnergy += _ShipStats.fMaxEnergy * 0.5f; //TODO:  Move this to repair station eventually.
             }
             else
               Debug.Log ("_NetPlayer missing in PlayerController:OnTriggerEnter", gameObject);
@@ -320,11 +322,11 @@ public class PlayerController : NetworkBehaviour
       break;
     case "+Booster": //blue and 1
       if(_ShipStats.Polarity == 1)
-        rb.AddForce (rb.mass * 8.0f * other.transform.right, ForceMode.Impulse);
+        rb.AddForce (rb.mass * 5.0f * other.transform.right, ForceMode.Impulse);
       break;
     case "-Booster": //red and -1
       if(_ShipStats.Polarity == -1)
-        rb.AddForce (rb.mass * 8.0f * other.transform.right, ForceMode.Impulse);
+        rb.AddForce (rb.mass * 5.0f * other.transform.right, ForceMode.Impulse);
       break;
     case "SwitchGate":
       if (_ShipStats.Polarity == 0)
@@ -420,6 +422,7 @@ public class PlayerController : NetworkBehaviour
         normal += c.normal;
       }
       //Add a minimum force of 50000 newtons along the normal
+      force *= 0.5f;
       rb.AddForce (force.magnitude < 10000.0f ? normal * 10000.0f : force, ForceMode.Impulse);
       rb.angularVelocity = Vector3.zero;
 
@@ -494,7 +497,6 @@ public class PlayerController : NetworkBehaviour
     transform.rotation = new Quaternion (currentPoint.transform.rotation.x, currentPoint.transform.rotation.y, currentPoint.transform.rotation.z, currentPoint.transform.rotation.w);
     gameObject.GetComponent<Rigidbody> ().velocity = Vector3.zero;
     gameObject.GetComponent<Rigidbody> ().angularVelocity = Vector3.zero;
-    print ("Reset: " + gameObject.name);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
