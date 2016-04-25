@@ -147,8 +147,7 @@ public class NetPlayer : NetworkBehaviour
         goFader = GameObject.Find ("MainMenu").transform.FindChild ("Fader").gameObject;
       else
         goFader = GameObject.Find ("UI").transform.FindChild ("Canvas").FindChild ("Fader").gameObject;
-      //GameObject goFader = GameObject.Find ("Fader");
-      print (goFader);
+      
       if (pState == Fader.FADE_STATE.FadeOut)
         goFader.SetActive (true);
         

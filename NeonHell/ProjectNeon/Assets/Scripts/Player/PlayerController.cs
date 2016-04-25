@@ -78,7 +78,14 @@ public class PlayerController : NetworkBehaviour
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += _ShipStats.fMass * 250.0f;
-   
+    if (GameObject.Find("Switchbox") != null)
+    {
+      switchbox = GameObject.Find("Switchbox");
+    }
+    else
+    {
+      switchbox = null;
+    }
   }
   //End void Start()
 	
@@ -167,7 +174,7 @@ public class PlayerController : NetworkBehaviour
     //Consider the ship airborne if the raycast fails or hits a wall.
     if (Physics.Raycast (transform.position, -this.transform.up, out hit, fAirborneDistance))
       lbIsAirborne = hit.collider.tag == "Wall";
-		Debug.DrawRay (transform.position, transform.up, Color.green, 10f);
+
     //Right the ship if it is airborne
     if(lbIsAirborne){
       newRotation = transform.eulerAngles;
@@ -189,15 +196,8 @@ public class PlayerController : NetworkBehaviour
 		if (_NetPlayer.PlayerState != NetPlayer.PLAYER_STATE.Racing || bPaused)
         return;
 
-		if (switchbox == null) {
-			if (GameObject.Find ("Switchbox") != null) {
-				print ("found");
-				switchbox = GameObject.Find ("Switchbox");
-			} else {
-				print ("NotFound");
-				switchbox = null;
-			}
-		}
+    //
+
     //Apply torque, e.g. turn the ship left and right
     if(bTesting)
       fTorque = Input.GetAxis ("Horizontal");
@@ -207,7 +207,6 @@ public class PlayerController : NetworkBehaviour
       direction.transform.position = transform.position;
       WaypointController _WaypointController = currentPoint.GetComponent<WaypointController> ();
       direction.transform.LookAt (_WaypointController.nextPoint [Random.Range (0, _WaypointController.nextPoint.Length - 1)].transform);
-
       //Find the angle the ship is going and where it wants to go relative to eachother
       Vector3 tProj = direction.transform.forward - (Vector3.Dot(direction.transform.forward, gameObject.transform.up)/Mathf.Pow(Vector3.Magnitude(gameObject.transform.up),2)) * gameObject.transform.up;
       fDegOffset = Mathf.Acos(Mathf.Clamp(Vector3.Dot(tProj, gameObject.transform.forward) / (Vector3.Magnitude(tProj) * Vector3.Magnitude(gameObject.transform.forward)), -1.0f, 1.0f));
@@ -360,24 +359,29 @@ public class PlayerController : NetworkBehaviour
       if (fCurrentEnergy > _ShipStats.fMaxEnergy)
         fCurrentEnergy = _ShipStats.fMaxEnergy;
 	break;
-		case "Portal":
-			Camera cam = Camera.main;
-			Vector3 offset = other.transform.position - transform.position;
-			print (offset);
-			offset = Quaternion.Euler (0, Vector3.Angle (other.transform.forward, other.GetComponent<PortalScript> ().EndPortal.transform.forward), 0) * offset;
-			print (offset);
-			transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position - offset;
+    case "Portal":
+      Camera cam = Camera.main;
+      Vector3 offset = other.transform.position - transform.position;
+      print (offset);
+      offset = Quaternion.Euler (0, Vector3.Angle (other.transform.forward, other.GetComponent<PortalScript> ().EndPortal.transform.forward), 0) * offset;
+      print (offset);
+      transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position - offset;
 			//transform.position = new Vector3(other.GetComponent<PortalScript> ().EndPortal.transform.position.x+offset.x,other.GetComponent<PortalScript> ().EndPortal.transform.position.y-offset.y,other.GetComponent<PortalScript> ().EndPortal.transform.position.z);
-			transform.rotation = other.GetComponent<PortalScript> ().EndPortal.transform.rotation;
-			rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
-			if (checkPrivilege ())
-				return;
+      transform.rotation = other.GetComponent<PortalScript> ().EndPortal.transform.rotation;
+      rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
+      if (!checkPrivilege ())
+        break;
 			cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
 			cam.transform.rotation = transform.rotation;
-			break;
-			default:
+      break;
+//    case "offBox":
+//      switchbox.SetActive(false);
+//      break;
+//    case "onBox":
+//      switchbox.SetActive(true);
+//      break;
+    default:
 		  break;
-
     }
   }
 
@@ -603,16 +607,16 @@ public class PlayerController : NetworkBehaviour
     }
     fCurrentHealth = Mathf.Clamp (fCurrentHealth, 0, _ShipStats.fMaxHealth);
 
-    if(fCurrentHealth >=80)
+    if(fCurrentHealth >=100)
       setModel (0);
 
-    else if (fCurrentHealth < 80 && fCurrentHealth >=60)
+    else if (fCurrentHealth < 100 && fCurrentHealth >=80)
       setModel (1);
 
-    else if (fCurrentHealth < 60 && fCurrentHealth >= 40)
+    else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
       setModel (2);
 
-    else if (fCurrentHealth < 40 && fCurrentHealth >=20)
+    else if (fCurrentHealth < 60 && fCurrentHealth >=40)
       setModel (3);
 
     else
