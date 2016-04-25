@@ -299,6 +299,7 @@ public class SpHUD : MonoBehaviour
   public void startCountdown(){
     UIState = UI_STATE.Countdown;
     fTimer = 3.0f;
+    gameObject.GetComponent<AudioSource>().Play();
     cdtimer.SetActive (true);
   } //End public void startCountdown()
 
