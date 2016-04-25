@@ -376,7 +376,6 @@ public class PlayerController : NetworkBehaviour
 			cam.transform.rotation = transform.rotation;
 			break;
 			default:
-    default:
 		  break;
 
     }
