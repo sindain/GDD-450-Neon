@@ -4,13 +4,14 @@ using UnityEngine.Networking;
 
 public class BridgeTrigger : NetworkBehaviour {
 	public GameObject Bridge;
+	public float BridgeCounter;
 	// Use this for initialization
 	void Start () {
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
 	}
 
 	[Command]
