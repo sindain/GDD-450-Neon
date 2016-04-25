@@ -28,6 +28,7 @@ public class TitleMenu : MonoBehaviour
   }
 
   public void onControlsClicked (){
+	transform.parent.FindChild ("Neon Sign").gameObject.SetActive (false);
     transform.parent.FindChild ("Controls").gameObject.SetActive (true);
     gameObject.SetActive (false);
   }

@@ -49,7 +49,7 @@ public class PlayerController : NetworkBehaviour
   private float SucTimer = 0.0f;
   private AudioSource engine;
   public int modelChild;
-
+  public GameObject switchbox;
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
   //Description:  Default start function, nothing special here
@@ -78,6 +78,14 @@ public class PlayerController : NetworkBehaviour
     rb = GetComponent<Rigidbody> ();
     rb.angularDrag = 3.0f;
     rb.mass += _ShipStats.fMass * 250.0f;
+    if (GameObject.Find("Switchbox") != null)
+    {
+      switchbox = GameObject.Find("Switchbox");
+    }
+    else
+    {
+      switchbox = null;
+    }
   }
   //End void Start()
 	
@@ -281,7 +289,7 @@ public class PlayerController : NetworkBehaviour
   //Return:       NA
   //-----------------------------------------------------------------------------------------------------------------
   void OnTriggerEnter (Collider other){
-    if (!checkPrivilege ())
+		if (!checkPrivilege ())
       return;
     
     switch (other.tag) {
@@ -352,6 +360,26 @@ public class PlayerController : NetworkBehaviour
       if (fCurrentEnergy > _ShipStats.fMaxEnergy)
         fCurrentEnergy = _ShipStats.fMaxEnergy;
 	break;
+		case "Portal":
+			Camera cam = Camera.main;
+			Vector3 offset = other.transform.position - transform.position;
+			print (offset);
+			offset = Quaternion.Euler (0,Vector3.Angle(other.transform.forward,other.GetComponent<PortalScript>().EndPortal.transform.forward),0) * offset;
+			print (offset);
+			transform.position = other.GetComponent<PortalScript> ().EndPortal.transform.position-offset;
+			//transform.position = new Vector3(other.GetComponent<PortalScript> ().EndPortal.transform.position.x+offset.x,other.GetComponent<PortalScript> ().EndPortal.transform.position.y-offset.y,other.GetComponent<PortalScript> ().EndPortal.transform.position.z);
+			transform.rotation = other.GetComponent<PortalScript> ().EndPortal.transform.rotation;
+			rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
+			cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
+			cam.transform.rotation = transform.rotation;
+      break;
+    case "offBox":
+      switchbox.SetActive(false);
+      break;
+    case "onBox":
+      switchbox.SetActive(true);
+      break;
+		break;
 
     }
   }
