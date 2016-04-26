@@ -230,7 +230,7 @@ public class PlayerController : NetworkBehaviour
       else if(_NetPlayer.bIsHuman)
         fThrustTarget = Mathf.Clamp (Input.GetAxis ("Vertical"), 0, 1) * _ShipStats.fAcceleration;
       else
-        fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration*0.75f;
+        fThrustTarget = (1.0f - Mathf.Clamp(fDegOffset/ fTurnThreshold,0,1)) * _ShipStats.fAcceleration*0.9f;
       
       float c = (Mathf.Exp (1) - 1) / _ShipStats.fAcceleration;
       if (fThrustTarget <= fThrustCurrent)
@@ -246,7 +246,7 @@ public class PlayerController : NetworkBehaviour
       float lfTotalThrust;
       if (_NetPlayer != null)
         lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 15.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 
-                        (2.0f + (!_NetPlayer.isHuman() ? 5.0f : 0.0f)) * _NetPlayer.getPlace();
+                        (2.0f + (!_NetPlayer.isHuman() ? 2.0f : 0.0f)) * _NetPlayer.getPlace();
       else
           lfTotalThrust = _ShipStats.fMaxVelocity;
 
@@ -369,10 +369,10 @@ public class PlayerController : NetworkBehaviour
 			//transform.position = new Vector3(other.GetComponent<PortalScript> ().EndPortal.transform.position.x+offset.x,other.GetComponent<PortalScript> ().EndPortal.transform.position.y-offset.y,other.GetComponent<PortalScript> ().EndPortal.transform.position.z);
       transform.rotation = other.GetComponent<PortalScript> ().EndPortal.transform.rotation;
       rb.velocity = rb.velocity.magnitude * other.GetComponent<PortalScript> ().EndPortal.transform.forward;
-      if (!checkPrivilege ())
-        break;
-			cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
-			cam.transform.rotation = transform.rotation;
+      if (bCameraControl || bTesting){
+        cam.transform.position = transform.position + transform.rotation * _ShipStats.vCameraOffset;
+        cam.transform.rotation = transform.rotation;
+      }
       break;
 //    case "offBox":
 //      switchbox.SetActive(false);
