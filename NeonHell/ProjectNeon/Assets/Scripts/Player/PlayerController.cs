@@ -607,16 +607,16 @@ public class PlayerController : NetworkBehaviour
     }
     fCurrentHealth = Mathf.Clamp (fCurrentHealth, 0, _ShipStats.fMaxHealth);
 
-    if(fCurrentHealth >=100)
+    if(fCurrentHealth >=80)
       setModel (0);
 
-    else if (fCurrentHealth < 100 && fCurrentHealth >=80)
+    else if (fCurrentHealth < 80 && fCurrentHealth >=60)
       setModel (1);
 
-    else if (fCurrentHealth < 80 && fCurrentHealth >= 60)
+    else if (fCurrentHealth < 60 && fCurrentHealth >= 40)
       setModel (2);
 
-    else if (fCurrentHealth < 60 && fCurrentHealth >=40)
+    else if (fCurrentHealth < 40 && fCurrentHealth >=20)
       setModel (3);
 
     else
