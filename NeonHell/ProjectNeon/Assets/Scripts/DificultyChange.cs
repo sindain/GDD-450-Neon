@@ -12,4 +12,13 @@ public class DificultyChange : MonoBehaviour {
 	void Update () {
 	
 	}
+	public void OnEasyClicked(){
+		PlayerController.DificultyMod = -10f;
+	}
+	public void OnNormalClicked(){
+		PlayerController.DificultyMod = 7f;
+	}
+	public void OnHardClicked(){
+		PlayerController.DificultyMod = 17f;
+	}
 }

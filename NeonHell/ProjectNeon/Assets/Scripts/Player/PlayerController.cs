@@ -50,6 +50,7 @@ public class PlayerController : NetworkBehaviour
   private AudioSource engine;
   public int modelChild;
   public GameObject switchbox;
+	public static float DificultyMod=7f;
   //--------------------------------------------------------------------------------------------------------------------
   //Name:         Start
   //Description:  Default start function, nothing special here
@@ -245,7 +246,7 @@ public class PlayerController : NetworkBehaviour
 
       float lfTotalThrust;
       if (_NetPlayer != null)
-        lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? 15.0f : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 
+				lfTotalThrust = (_ShipStats.fMaxVelocity + (!_NetPlayer.isHuman() ? DificultyMod : 0.0f)) * (_NetPlayer.hasFlag() ? .85f : 1.0f) + 
                         (2.0f + (!_NetPlayer.isHuman() ? 2.0f : 0.0f)) * _NetPlayer.getPlace();
       else
           lfTotalThrust = _ShipStats.fMaxVelocity;

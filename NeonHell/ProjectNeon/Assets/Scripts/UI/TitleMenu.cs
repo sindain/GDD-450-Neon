@@ -34,6 +34,7 @@ public class TitleMenu : MonoBehaviour
   }
 
   public void onCreditsClicked (){
+		transform.parent.FindChild ("Neon Sign").gameObject.SetActive (false);
     transform.parent.FindChild ("Credits").gameObject.SetActive (true);
     gameObject.SetActive (false);
   }
