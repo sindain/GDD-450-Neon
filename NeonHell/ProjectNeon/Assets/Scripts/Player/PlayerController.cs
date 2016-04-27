@@ -109,7 +109,7 @@ public class PlayerController : NetworkBehaviour
     else if(Input.GetKeyUp (KeyCode.R)) 
       SucTimer = 0.0f;
     
-  	if (SucTimer >= 0.5f) {
+    if (SucTimer >= 0.5f && _NetPlayer.isHuman() && hasAuthority) {
       ResetToWaypoint ();
   		SucTimer = 0.0f;
   	}
